@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Interactive Maps — Geothermal Potential | Vaibhav Jaiswal</title>
+<meta name="description" content="Interactive folium maps showing geothermal heat extraction rates and power output across Germany under CMIP6 climate scenarios." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,800;1,9..144,400&family=JetBrains+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="../assets/style.css">
+
+<style>
+/* ===== MAPS-PAGE STYLES ===== */
+
+.page-hero {
+  padding: 140px 40px 60px;
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 60px;
+  align-items: end;
+}
+.page-hero .eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 20px;
+  display: flex; align-items: center; gap: 12px;
+}
+.page-hero .eyebrow::before { content: ""; width: 32px; height: 1px; background: var(--accent); }
+.page-hero h1 {
+  font-size: clamp(2.4rem, 5vw, 4rem);
+  margin-bottom: 24px;
+  font-weight: 400;
+}
+.page-hero h1 em { font-style: italic; color: var(--accent-deep); font-weight: 300; }
+.page-hero .lead {
+  font-size: 1.1rem;
+  color: var(--ink-soft);
+  max-width: 540px;
+  line-height: 1.7;
+}
+.page-hero .stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  border-top: 1px solid var(--ink);
+}
+.page-hero .stat {
+  padding: 20px 24px 8px 0;
+  border-right: 1px solid var(--line);
+}
+.page-hero .stat:last-child { border-right: none; padding-left: 24px; }
+.page-hero .stat .num {
+  font-family: 'Fraunces', serif;
+  font-size: 2rem;
+  color: var(--accent);
+  line-height: 1;
+  margin-bottom: 8px;
+}
+.page-hero .stat .label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+@media (max-width: 900px) {
+  .page-hero { grid-template-columns: 1fr; padding: 120px 20px 40px; gap: 40px; }
+}
+
+/* Filters / scenario selector */
+.scenario-bar {
+  background: var(--paper);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  padding: 20px 40px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+  position: sticky;
+  top: 56px;
+  z-index: 50;
+  backdrop-filter: blur(12px);
+}
+.scenario-bar .label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+.scenario-pills { display: flex; gap: 8px; flex-wrap: wrap; }
+.pill {
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--ink-soft);
+  padding: 8px 16px;
+  font-size: 0.85rem;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  border-radius: 30px;
+  transition: all 0.2s;
+}
+.pill:hover { border-color: var(--ink); color: var(--ink); }
+.pill.active { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+
+@media (max-width: 720px) {
+  .scenario-bar { padding: 16px 16px; gap: 12px; }
+  .scenario-bar .label { display: none; }
+}
+
+/* Map cards grid */
+.maps-section {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 60px 40px 100px;
+}
+.maps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  gap: 24px;
+}
+.map-card {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: var(--ink);
+  transition: all 0.3s;
+  overflow: hidden;
+  position: relative;
+}
+.map-card:hover { transform: translateY(-4px); border-color: var(--ink); box-shadow: 0 14px 32px -10px rgba(26,22,18,0.18); }
+
+.map-preview {
+  aspect-ratio: 4/3;
+  background: linear-gradient(135deg, var(--bg-alt) 0%, var(--bg) 100%);
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid var(--line);
+}
+.map-preview svg { width: 100%; height: 100%; }
+.map-preview .badge {
+  position: absolute;
+  top: 14px; left: 14px;
+  background: var(--ink);
+  color: var(--bg);
+  padding: 5px 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+}
+.map-preview .badge.live {
+  background: var(--accent);
+}
+.map-preview .badge.soon {
+  background: var(--ink-faint);
+  color: var(--bg);
+}
+
+.map-info {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex-grow: 1;
+}
+.map-info .scenario-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+  text-transform: uppercase;
+}
+.map-info h3 { font-size: 1.2rem; font-weight: 600; }
+.map-info p { font-size: 0.9rem; color: var(--ink-soft); flex-grow: 1; }
+.map-info .open {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--accent);
+  margin-top: 12px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.map-card.disabled { opacity: 0.6; pointer-events: none; }
+
+/* Quick guide section */
+.guide-section {
+  background: var(--ink);
+  color: var(--bg);
+  padding: 80px 40px;
+  margin-top: 60px;
+}
+.guide-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 60px;
+}
+.guide-section h2 {
+  font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+  color: var(--bg);
+  font-weight: 400;
+}
+.guide-section h2 em { color: #ff8a4f; font-style: italic; font-weight: 300; }
+.guide-section .eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #ff8a4f;
+  margin-bottom: 16px;
+}
+.guide-list { display: grid; gap: 24px; }
+.guide-item {
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  gap: 20px;
+  align-items: start;
+  border-bottom: 1px solid rgba(250,247,242,0.15);
+  padding-bottom: 24px;
+}
+.guide-item:last-child { border-bottom: none; padding-bottom: 0; }
+.guide-item .num {
+  font-family: 'Fraunces', serif;
+  font-size: 2rem;
+  color: #ff8a4f;
+  line-height: 1;
+}
+.guide-item h4 { color: var(--bg); margin-bottom: 6px; font-size: 1.1rem; }
+.guide-item p { color: rgba(250,247,242,0.7); font-size: 0.92rem; line-height: 1.6; }
+
+@media (max-width: 720px) {
+  .guide-inner { grid-template-columns: 1fr; gap: 32px; }
+  .guide-section { padding: 60px 20px; }
+}
+
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <a href="../index.html" class="brand">Vaibhav <span>Jaiswal</span></a>
+  <nav>
+    <a href="../index.html">Home</a>
+    <a href="../thesis/index.html">Research</a>
+    <a href="index.html" class="active">Maps</a>
+    <a href="../index.html#contact">Contact</a>
+  </nav>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="page-hero fade-in">
+  <div>
+    <div class="eyebrow">§ Interactive Geospatial Dashboards</div>
+    <h1>Live <em>maps</em> of Germany's geothermal future.</h1>
+    <p class="lead">Explore the spatial distribution of heat extraction rates and renewable power output across Germany under different climate change scenarios. Built with folium / Leaflet.js — toggle layers, zoom into your region, query specific locations.</p>
+  </div>
+  <div class="stats">
+    <div class="stat">
+      <div class="num">8</div>
+      <div class="label">Climate models</div>
+    </div>
+    <div class="stat">
+      <div class="num">2</div>
+      <div class="label">SSP scenarios</div>
+    </div>
+    <div class="stat">
+      <div class="num">3</div>
+      <div class="label">Time horizons</div>
+    </div>
+    <div class="stat">
+      <div class="num">~5km</div>
+      <div class="label">Resolution</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SCENARIO SELECTOR ============ -->
+<div class="scenario-bar">
+  <span class="label">Filter:</span>
+  <div class="scenario-pills">
+    <button class="pill active" data-filter="all">All</button>
+    <button class="pill" data-filter="ssp245">SSP 2-4.5</button>
+    <button class="pill" data-filter="ssp585">SSP 5-8.5</button>
+    <button class="pill" data-filter="50yr">50 years</button>
+    <button class="pill" data-filter="100yr">100 years</button>
+    <button class="pill" data-filter="sustainable">Sustainable</button>
+  </div>
+</div>
+
+<!-- ============ MAP GRID ============ -->
+<section class="maps-section">
+  <div class="maps-grid" id="maps-grid">
+
+    <!-- Map 1: 50yr SSP245 extraction rate -->
+    <a class="map-card" href="map_ssp245_50yr_extraction.html" target="_blank" data-tags="ssp245 50yr">
+      <div class="map-preview">
+        <span class="badge live">LIVE</span>
+        <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="m1" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#440154"/>
+              <stop offset="50%" stop-color="#21908d"/>
+              <stop offset="100%" stop-color="#fde725"/>
+            </linearGradient>
+          </defs>
+          <rect width="400" height="300" fill="#f1ebe1"/>
+          <path d="M 120 50 Q 100 80 110 130 Q 90 170 130 210 Q 160 250 220 240 Q 290 230 300 180 Q 320 130 290 80 Q 250 40 200 50 Q 160 55 120 50 Z" fill="url(#m1)" opacity="0.85"/>
+          <circle cx="180" cy="120" r="6" fill="#fff"/>
+          <circle cx="220" cy="180" r="6" fill="#fff"/>
+        </svg>
+      </div>
+      <div class="map-info">
+        <div class="scenario-tag">SSP 2-4.5 · 50 YEARS</div>
+        <h3>Heat extraction rate</h3>
+        <p>Spatial distribution of geothermal heat extraction rates [W/m] across Germany under modest mitigation scenario.</p>
+        <div class="open">Open map <span>→</span></div>
+      </div>
+    </a>
+
+    <!-- Map 2: 50yr SSP585 extraction rate -->
+    <a class="map-card" href="map_ssp585_50yr_extraction.html" target="_blank" data-tags="ssp585 50yr">
+      <div class="map-preview">
+        <span class="badge live">LIVE</span>
+        <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="m2" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#3e0303"/>
+              <stop offset="50%" stop-color="#cf3a1a"/>
+              <stop offset="100%" stop-color="#fde725"/>
+            </linearGradient>
+          </defs>
+          <rect width="400" height="300" fill="#f1ebe1"/>
+          <path d="M 120 50 Q 100 80 110 130 Q 90 170 130 210 Q 160 250 220 240 Q 290 230 300 180 Q 320 130 290 80 Q 250 40 200 50 Q 160 55 120 50 Z" fill="url(#m2)" opacity="0.9"/>
+          <circle cx="180" cy="120" r="6" fill="#fff"/>
+          <circle cx="220" cy="180" r="6" fill="#fff"/>
+        </svg>
+      </div>
+      <div class="map-info">
+        <div class="scenario-tag">SSP 5-8.5 · 50 YEARS</div>
+        <h3>Heat extraction rate</h3>
+        <p>Heat extraction rates [W/m] under high-emissions scenario — notably enhanced yields from subsurface warming.</p>
+        <div class="open">Open map <span>→</span></div>
+      </div>
+    </a>
+
+    <!-- Map 3: 100yr SSP245 power -->
+    <a class="map-card" href="map_ssp245_100yr_power.html" target="_blank" data-tags="ssp245 100yr">
+      <div class="map-preview">
+        <span class="badge live">LIVE</span>
+        <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="m3" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#fff5f0"/>
+              <stop offset="50%" stop-color="#fb6a4a"/>
+              <stop offset="100%" stop-color="#67000d"/>
+            </linearGradient>
+          </defs>
+          <rect width="400" height="300" fill="#f1ebe1"/>
+          <path d="M 120 50 Q 100 80 110 130 Q 90 170 130 210 Q 160 250 220 240 Q 290 230 300 180 Q 320 130 290 80 Q 250 40 200 50 Q 160 55 120 50 Z" fill="url(#m3)" opacity="0.9"/>
+          <circle cx="180" cy="120" r="6" fill="#fff"/>
+          <circle cx="220" cy="180" r="6" fill="#fff"/>
+        </svg>
+      </div>
+      <div class="map-info">
+        <div class="scenario-tag">SSP 2-4.5 · 100 YEARS</div>
+        <h3>Renewable power output</h3>
+        <p>Total thermal power [W] per borehole over the 100-year horizon under modest mitigation pathway.</p>
+        <div class="open">Open map <span>→</span></div>
+      </div>
+    </a>
+
+    <!-- Map 4: 100yr SSP585 power -->
+    <a class="map-card" href="map_ssp585_100yr_power.html" target="_blank" data-tags="ssp585 100yr">
+      <div class="map-preview">
+        <span class="badge live">LIVE</span>
+        <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+          <rect width="400" height="300" fill="#f1ebe1"/>
+          <path d="M 120 50 Q 100 80 110 130 Q 90 170 130 210 Q 160 250 220 240 Q 290 230 300 180 Q 320 130 290 80 Q 250 40 200 50 Q 160 55 120 50 Z" fill="url(#m3)" opacity="1"/>
+          <circle cx="180" cy="120" r="6" fill="#fff"/>
+          <circle cx="220" cy="180" r="6" fill="#fff"/>
+        </svg>
+      </div>
+      <div class="map-info">
+        <div class="scenario-tag">SSP 5-8.5 · 100 YEARS</div>
+        <h3>Renewable power output</h3>
+        <p>Power output [W] under high-emissions trajectory — long-term sustainability assessment with climate forcing.</p>
+        <div class="open">Open map <span>→</span></div>
+      </div>
+    </a>
+
+    <!-- Map 5: Sustainable SSP245 -->
+    <a class="map-card" href="map_ssp245_sustainable.html" target="_blank" data-tags="ssp245 sustainable">
+      <div class="map-preview">
+        <span class="badge live">LIVE</span>
+        <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="m5" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#0d3b1f"/>
+              <stop offset="50%" stop-color="#3d8c4f"/>
+              <stop offset="100%" stop-color="#bff5a0"/>
+            </linearGradient>
+          </defs>
+          <rect width="400" height="300" fill="#f1ebe1"/>
+          <path d="M 120 50 Q 100 80 110 130 Q 90 170 130 210 Q 160 250 220 240 Q 290 230 300 180 Q 320 130 290 80 Q 250 40 200 50 Q 160 55 120 50 Z" fill="url(#m5)" opacity="0.85"/>
+          <circle cx="180" cy="120" r="6" fill="#fff"/>
+          <circle cx="220" cy="180" r="6" fill="#fff"/>
+        </svg>
+      </div>
+      <div class="map-info">
+        <div class="scenario-tag">SSP 2-4.5 · SUSTAINABLE</div>
+        <h3>Sustainable extraction rate</h3>
+        <p>Maximum sustainable heat-extraction rate over 100 years without violating the minimum fluid temperature.</p>
+        <div class="open">Open map <span>→</span></div>
+      </div>
+    </a>
+
+    <!-- Map 6: Sustainable SSP585 -->
+    <a class="map-card" href="map_ssp585_sustainable.html" target="_blank" data-tags="ssp585 sustainable">
+      <div class="map-preview">
+        <span class="badge live">LIVE</span>
+        <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+          <rect width="400" height="300" fill="#f1ebe1"/>
+          <path d="M 120 50 Q 100 80 110 130 Q 90 170 130 210 Q 160 250 220 240 Q 290 230 300 180 Q 320 130 290 80 Q 250 40 200 50 Q 160 55 120 50 Z" fill="url(#m5)" opacity="1"/>
+          <circle cx="180" cy="120" r="6" fill="#fff"/>
+          <circle cx="220" cy="180" r="6" fill="#fff"/>
+        </svg>
+      </div>
+      <div class="map-info">
+        <div class="scenario-tag">SSP 5-8.5 · SUSTAINABLE</div>
+        <h3>Sustainable extraction rate</h3>
+        <p>Long-term sustainable heat extraction under high-warming scenario. Notably enhanced renewability potential.</p>
+        <div class="open">Open map <span>→</span></div>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<!-- ============ HOW TO USE ============ -->
+<section class="guide-section">
+  <div class="guide-inner">
+    <div>
+      <div class="eyebrow">→ Quick guide</div>
+      <h2>How to read the <em>maps</em>.</h2>
+    </div>
+    <div class="guide-list">
+      <div class="guide-item">
+        <div class="num">01</div>
+        <div>
+          <h4>Click any card to open the live map</h4>
+          <p>Each map opens in a new tab. Use mouse-wheel or pinch to zoom; click and drag to pan around Germany.</p>
+        </div>
+      </div>
+      <div class="guide-item">
+        <div class="num">02</div>
+        <div>
+          <h4>Toggle layers in the top-right</h4>
+          <p>Each scenario has multiple layers (mean, 25th/50th/75th percentiles). Switch between them via the layer control.</p>
+        </div>
+      </div>
+      <div class="guide-item">
+        <div class="num">03</div>
+        <div>
+          <h4>Hover or click for values</h4>
+          <p>Hovering over a region shows the heat-extraction rate or power output for that grid cell in W/m or W.</p>
+        </div>
+      </div>
+      <div class="guide-item">
+        <div class="num">04</div>
+        <div>
+          <h4>Compare scenarios</h4>
+          <p>Open two tabs side-by-side (one SSP 2-4.5, one SSP 5-8.5) to compare regional differences directly.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <h4>About these maps</h4>
+      <p>All maps were generated from the BHE simulation notebook using folium / Leaflet.js. Underlying data: 8 CMIP6 GCMs at ~5 km resolution, processed via Google Earth Engine and bounded by Germany's EPSG:4326 shapefile.</p>
+    </div>
+    <div>
+      <h4>Navigate</h4>
+      <ul>
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="../thesis/index.html">Research</a></li>
+        <li><a href="index.html">Live Maps</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Contact</h4>
+      <ul>
+        <li><a href="mailto:[YOUR_EMAIL]">[YOUR_EMAIL]</a></li>
+        <li><a href="https://github.com/VaibhavJ97">GitHub</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 Vaibhav Jaiswal</span>
+    <span>Maps · folium · Leaflet.js</span>
+  </div>
+</footer>
+
+<script>
+// Filter pills
+document.querySelectorAll('.pill').forEach(pill => {
+  pill.addEventListener('click', () => {
+    document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+    pill.classList.add('active');
+    const filter = pill.dataset.filter;
+    document.querySelectorAll('.map-card').forEach(card => {
+      const tags = card.dataset.tags || '';
+      if (filter === 'all' || tags.includes(filter)) {
+        card.style.display = '';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  });
+});
+</script>
+
+</body>
+</html>
