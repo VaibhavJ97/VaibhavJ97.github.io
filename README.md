@@ -1,173 +1,131 @@
-# 🌍 Geothermal Thesis Website — Free Hosting Guide
+# 🚀 Portfolio Site v3 — What's New
 
-A complete static website for showcasing your master's thesis on climate change & shallow geothermal energy in Germany. Includes deployment instructions for **100% free** hosting of all your content — including TIFF files, Python notebooks, and GEE scripts.
+## ✨ Major upgrades
+
+### 1. 🎯 LIVE Interactive Map Explorer (NEW!)
+A fully interactive map at `/maps-page/live-explorer.html` that:
+- Reads your TIFF files directly from the GitHub `data/` folder
+- Has **dropdowns** to switch between climate models (BBC, CanESM, GFDL, GISS, HadGEM, IPSL, MIROC, MPI)
+- Has **dropdowns** to switch between SSP 2-4.5 / SSP 5-8.5 scenarios
+- Has **dropdowns** for 5 different colormaps (Viridis, Magma, Plasma, Reds, Thermal)
+- **Click anywhere on the map** to query the temperature at that point
+- Shows live stats (min/max/mean temperature)
+- Zero server needed — pure browser-based!
+
+This is exactly like having your Jupyter notebook dropdowns on a public webpage.
+
+### 2. 📋 Real CV Content
+Homepage now uses your actual experience from both CVs:
+- IONOS SE (Web Dev / TYPO3)
+- Hydrosion GmbH (Geothermal exploration)
+- KIT Institute of Applied Geosciences (Lab work)
+- KIT M.Sc. (with full thesis details)
+- B.Sc. from Babasaheb Bhimrao Ambedkar University
+
+### 3. 📥 BOTH CVs available for download
+Two prominent download cards on the homepage:
+- `Vaibhav_CV.pdf` — Geoscience focus
+- `Vaibhav_CV_Dev.pdf` — Web development focus
+
+### 4. ✅ Real contact info baked in
+- Email: vaibhavjaiswal1234@gmail.com
+- Phone: +49 151 4338 3819
+- Address: Rheinstraße 30, 76185 Karlsruhe
+- GitHub: VaibhavJ97
 
 ---
 
-## 📁 What's in this folder
+## 📂 Final folder structure
 
 ```
-geothermal-website/
-├── index.html              ← The website (main page)
-├── files/                  ← Place your downloadable files here
+your-repo/
+├── index.html              ← HOME (CV intro, skills, experience, education, certs)
+├── assets/
+│   └── style.css           ← Shared styles
+├── thesis/
+│   └── index.html          ← RESEARCH page
+├── maps-page/
+│   ├── index.html          ← MAPS HUB (with featured live explorer)
+│   ├── live-explorer.html  ← ⭐ NEW! Live interactive map with dropdowns
+│   └── map_*.html          ← 6 placeholder slots for folium maps
+├── files/
 │   ├── Master_thesis_Vaibhav_Jaiswal.pdf
 │   ├── Single_BHE_Analysis_GEE_CMIP6_Folium.ipynb
-│   └── GEE_Analysis.pdf
-├── maps/                   ← Folium HTML maps go here
-│   └── germany_geothermal.html
-└── README.md               ← This file
+│   ├── GEE_Analysis.pdf
+│   ├── Vaibhav_CV.pdf       ← NEW
+│   └── Vaibhav_CV_Dev.pdf   ← NEW
+└── data/                    ← Your 16 TIFFs (already on GitHub)
 ```
 
 ---
 
-## 🚀 Recommended Free Hosting Stack
+## 🚀 How to deploy
 
-| File type | Hosted on | Limit | Why |
-|---|---|---|---|
-| Website (HTML/CSS) | **GitHub Pages** | 1 GB site, 100 GB/mo bandwidth | Free, fast CDN, custom domain |
-| Thesis PDF | GitHub repo | 100 MB/file | Direct download |
-| Python notebooks | GitHub repo | renders natively | Beautiful preview |
-| Folium HTML maps | GitHub Pages | unlimited (small) | Interactive, embedded |
-| **Large GeoTIFF files** | **Zenodo** | **50 GB / record** | Free, citable DOI, permanent |
-| GEE JavaScript | GitHub repo | tiny files | Source control |
+### Step 1: Wipe your existing site files
+Go to https://github.com/VaibhavJ97/VaibhavJ97.github.io and delete:
+- The old `index.html`
+- The old `files/` folder (we'll re-upload with CVs added)
+- The old `maps/` folder (replaced by `maps-page/`)
+- The old `thesis/` folder if it exists
+- The old `assets/` folder if it exists
 
----
+⚠️ **DO NOT DELETE** the `data/` folder! Your 16 TIFFs are there and the live explorer needs them.
 
-## ⚡ Quick Start (3 steps, ~15 min)
+### Step 2: Upload new files
+1. Click "Add file" → "Upload files"
+2. Open the unzipped `portfolio-v3` folder
+3. Select ALL contents (Ctrl+A) — including all subfolders
+4. Drag into GitHub upload area
+5. Commit changes
 
-### Step 1 — Create a GitHub account
-Go to **https://github.com/signup** if you don't have one. Free forever.
+### Step 3: Test the live explorer
+1. Wait 1-2 minutes for GitHub Pages to rebuild
+2. Visit: `https://VaibhavJ97.github.io/maps-page/live-explorer.html`
+3. You should see a map of Germany with temperature colors
+4. Try changing the dropdowns!
 
-### Step 2 — Create your site repo
-1. Click **+ → New repository**
-2. Name it `your-username.github.io` (replace `your-username` with your actual GitHub username — this exact naming is what makes it a free website)
-3. Set it to **Public**
-4. Click **Create repository**
-
-### Step 3 — Upload everything
-1. On your new repo page, click **uploading an existing file**
-2. Drag the entire contents of this `geothermal-website/` folder into the upload area
-3. Scroll down, click **Commit changes**
-4. Wait ~1 minute, then visit: **`https://your-username.github.io`**
-
-🎉 Your website is live!
+If the map shows an error like "file not found":
+- Make sure your `data/` folder still has the TIFFs
+- Make sure the repo is **Public** (Settings → General)
 
 ---
 
-## 📦 Hosting the Large TIFF Files (>100 MB)
+## 🎨 Customization tips
 
-GitHub limits individual files to 100 MB. Your CMIP6 GeoTIFFs are likely larger. Use **Zenodo** instead — it's run by CERN, free forever, and gives you a citable DOI (perfect for a thesis!).
+### Add your photo
+1. Save your photo as `profile.jpg` (square or 4:5 ratio works best)
+2. Upload it to the `assets/` folder on GitHub
+3. Edit `index.html`: find the `<div class="placeholder">` section and replace with:
+   ```html
+   <img src="assets/profile.jpg" alt="Vaibhav Jaiswal">
+   ```
 
-### Upload TIFFs to Zenodo:
+### Add LinkedIn URL
+In `index.html`, search for "LinkedIn" — currently no LinkedIn link is in the file because I didn't see one in your CV. You can add one in the contact strip and footer easily.
 
-1. Go to **https://zenodo.org/** and sign in (use GitHub login — easiest)
-2. Click **+ New upload**
-3. Drag all your `.tif` files (you can upload up to 50 GB per record)
-4. Fill in:
-   - **Title**: e.g. *"CMIP6 Ground Surface Temperature Projections for Germany (SSP 2-4.5 & 5-8.5)"*
-   - **Authors**: Your name
-   - **Description**: Brief description from your thesis abstract
-   - **License**: Creative Commons Attribution 4.0 (CC-BY-4.0) — most open
-   - **Resource type**: Dataset
-5. Click **Publish**
-6. You'll get a permanent URL like `https://zenodo.org/records/1234567` and a DOI like `10.5281/zenodo.1234567`
-
-### Then update `index.html`:
-Find the line with `href="https://zenodo.org/"` and replace it with your actual Zenodo URL.
-
-**Bonus**: A Zenodo DOI lets people *cite* your dataset in their papers — a huge plus for academic visibility.
-
----
-
-## 🗺️ Generating Folium Maps for the Site
-
-Your notebook already creates folium maps. To embed them on the site:
-
+### Replace placeholder folium maps
+The 6 map cards still link to placeholder files. To replace them with real folium maps from your notebook:
 ```python
-# In your Jupyter notebook
-m = folium.Map(...)
-# ... add your layers ...
-
-# Save to the maps/ folder
-m.save('maps/germany_geothermal.html')
+m.save('map_ssp245_50yr_extraction.html')
+# etc for each scenario
 ```
-
-Then commit & push that HTML file to your GitHub repo. It'll be live at:
-`https://your-username.github.io/maps/germany_geothermal.html`
+Upload these files to `maps-page/` folder, replacing the placeholders.
 
 ---
 
-## 🎨 Customizing the Website
+## 🔧 How the LIVE explorer works (technical)
 
-### Change name / contact info
-Open `index.html`, search for:
-- `Vaibhav Jaiswal` → your name
-- `your.email@example.com` → your email
-- `https://github.com/` → your GitHub profile
-- LinkedIn / ORCID — replace `#` with your actual links
+The live map uses three open-source JS libraries (no server needed):
+- **Leaflet.js** — the map renderer
+- **georaster + georaster-layer-for-leaflet** — reads GeoTIFFs directly in the browser
+- **chroma-js** — color scale generation
 
-### Change colors
-At the top of `index.html` (in `<style>`), modify the CSS variables:
-```css
---accent: #b8501e;       /* terracotta — change to any color */
---earth: #3d5a3d;        /* deep forest green */
-```
+When you change a dropdown, the JavaScript:
+1. Constructs the filename: `{Model}_{scenario}_2000_2100_Germany_mean.tif`
+2. Fetches it from `https://VaibhavJ97.github.io/data/{filename}`
+3. Parses the GeoTIFF with georaster
+4. Computes min/max/mean stats
+5. Renders the raster with the chosen colormap
+6. Adds click-to-query interactivity
 
-### Change the hero text
-Search for `Climate change & the future of` in `index.html` and edit.
-
----
-
-## 🔗 Custom Domain (Optional, $0–12/year)
-
-Want `vaibhavjaiswal.com` instead of `username.github.io`?
-
-1. Buy a domain at **Namecheap**, **Porkbun**, or **Cloudflare** (~$10/year)
-2. In your GitHub repo: **Settings → Pages → Custom domain** → enter your domain
-3. Add the DNS records GitHub shows you to your domain registrar
-4. Done — HTTPS is free & automatic via GitHub
-
----
-
-## 📋 File Hosting Summary — What Goes Where
-
-| Your file | Where to put it | URL pattern |
-|---|---|---|
-| `Master_thesis.pdf` | `files/` in GitHub repo | `username.github.io/files/Master_thesis.pdf` |
-| `analysis.ipynb` | `files/` in GitHub repo | renders on github.com automatically |
-| `GEE_script.js` | `files/` in GitHub repo | direct view + download |
-| `output_map.html` (folium) | `maps/` in GitHub repo | `username.github.io/maps/output_map.html` |
-| `BBC_ssp245.tif` (large) | **Zenodo** | `zenodo.org/records/XXXXX` |
-| `CanESM_ssp585.tif` (large) | **Zenodo** (same record) | same URL, list all together |
-
----
-
-## 🆘 Alternative Free Hosts (if you don't want GitHub)
-
-| Platform | Best for | Note |
-|---|---|---|
-| **Netlify** | Drag-and-drop deploy | 100 GB bandwidth/mo, free |
-| **Cloudflare Pages** | Same as GitHub Pages | Unlimited bandwidth |
-| **Vercel** | Same idea, very fast | Free for personal use |
-| **Hugging Face Spaces** | If you want to add a Python demo too | Free GPU/CPU options |
-
-For TIFFs specifically, alternatives to Zenodo:
-- **Figshare** — similar to Zenodo, also free with DOI
-- **Open Science Framework (OSF)** — free, 50 GB
-- **Hugging Face Datasets** — free, unlimited (great for ML)
-
----
-
-## ✅ Final Checklist Before Going Live
-
-- [ ] Replaced "your.email@example.com" with real email
-- [ ] Updated GitHub link in footer
-- [ ] Uploaded TIFFs to Zenodo, got DOI, updated link in `index.html`
-- [ ] Generated & added folium maps to `maps/` folder
-- [ ] Tested site on mobile (it's responsive — should work)
-- [ ] Added thesis PDF to `files/` folder
-- [ ] (Optional) Custom domain configured
-
----
-
-**Built with ❤️ for open science.**
+Total file size: ~5-15 MB per TIFF, loads in 1-3 seconds on average broadband.
