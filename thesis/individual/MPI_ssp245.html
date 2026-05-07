@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Map Not Available Yet</title>
+<style>
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+    background: #faf7f2;
+    color: #1a1612;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0; padding: 40px;
+  }
+  .box { max-width: 540px; text-align: center; }
+  h1 { font-family: Georgia, serif; font-size: 1.7rem; margin-bottom: 16px; font-weight: 600; }
+  .accent { color: #b8501e; font-style: italic; font-weight: 400; }
+  p { color: #4a423a; line-height: 1.7; margin-bottom: 16px; font-size: 0.96rem; }
+  .info {
+    background: #fff;
+    border: 1px solid #d8cfc1;
+    padding: 22px 26px;
+    margin-top: 22px;
+    text-align: left;
+    border-radius: 4px;
+  }
+  code {
+    background: #f1ebe1;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    font-size: 0.86em;
+    color: #7a2e10;
+  }
+  .info ol { padding-left: 20px; line-height: 1.85; color: #4a423a; font-size: 0.92rem; }
+  .info ol li strong { color: #1a1612; }
+  .map-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    color: #b8501e;
+    background: #f1ebe1;
+    padding: 10px 14px;
+    margin-bottom: 18px;
+    border-left: 3px solid #b8501e;
+    text-align: left;
+  }
+</style>
+</head>
+<body>
+<div class="box">
+  <h1>This <span class="accent">map</span> hasn't been generated yet.</h1>
+  <div class="map-name" id="map-id">__MAP_ID__</div>
+  <p>14 of the 16 individual model maps were extracted directly from the Jupyter notebook outputs. The 2 MPI maps and the 8 ensemble maps need one more notebook run to appear here.</p>
+
+  <div class="info">
+    <ol>
+      <li><strong>Open the notebook</strong> on your computer (with the TIFFs in the same folder)</li>
+      <li><strong>Run the missing cells</strong>:
+        <ul style="margin-top: 6px;">
+          <li>Cells 33–36 → MPI maps (~5 min each)</li>
+          <li>Cells 37–38 → Ensemble maps (instant if data is in memory)</li>
+        </ul>
+      </li>
+      <li><strong>Save the notebook</strong> (the outputs persist with the file)</li>
+      <li><strong>Re-run my extraction</strong> - or just save each cell's output as <code>{name}.html</code> and upload to <code>maps-page/individual/</code> or <code>maps-page/ensemble/</code></li>
+    </ol>
+  </div>
+</div>
+<script>
+  // Try to read the file name from the URL and show it
+  const path = window.location.pathname;
+  const file = path.split('/').pop().replace('.html', '');
+  document.getElementById('map-id').textContent = file;
+</script>
+</body>
+</html>
