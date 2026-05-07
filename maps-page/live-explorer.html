@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Live Climate Ensemble Explorer | Vaibhav Jaiswal</title>
+<meta name="description" content="Live interactive map showing CMIP6 ensemble statistics (Mean, P25, P50, P75) for ground surface temperature across Germany." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,800;1,9..144,400&family=JetBrains+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<link rel="stylesheet" href="../assets/style.css">
+
+<style>
+body { overflow: hidden; }
+
+.map-page {
+  position: fixed;
+  top: 56px;
+  left: 0; right: 0; bottom: 0;
+  display: grid;
+  grid-template-columns: 380px 1fr;
+}
+
+.map-sidebar {
+  background: var(--paper);
+  border-right: 1px solid var(--line);
+  overflow-y: auto;
+  padding: 24px 26px 60px;
+}
+.map-sidebar h1 { font-size: 1.4rem; font-weight: 600; margin-bottom: 8px; }
+.map-sidebar h1 em { color: var(--accent-deep); font-style: italic; font-weight: 300; }
+.map-sidebar .lead { font-size: 0.88rem; color: var(--ink-soft); margin-bottom: 24px; line-height: 1.6; }
+
+.control-group { margin-bottom: 18px; }
+.control-group label {
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 8px;
+}
+.control-group select, .control-group input[type="range"] {
+  width: 100%; padding: 11px 14px;
+  font-size: 0.92rem; font-family: 'Inter', sans-serif;
+  background: var(--bg); color: var(--ink);
+  border: 1px solid var(--line); border-radius: 2px;
+  cursor: pointer; transition: border-color 0.2s;
+  appearance: none; -webkit-appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%231a1612' stroke-width='2'><polyline points='6 9 12 15 18 9'/></svg>");
+  background-repeat: no-repeat; background-position: right 14px center;
+  padding-right: 36px;
+}
+.control-group select:hover { border-color: var(--ink); }
+.control-group select:focus { outline: none; border-color: var(--accent); }
+.control-group .help { font-size: 0.74rem; color: var(--ink-faint); margin-top: 6px; font-style: italic; line-height: 1.4; }
+
+/* Stat tabs - matches notebook P25/P50/P75/Mean */
+.stat-tabs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+  margin-bottom: 6px;
+}
+.stat-tab {
+  background: var(--bg);
+  border: 1px solid var(--line);
+  padding: 10px 4px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  color: var(--ink-soft);
+}
+.stat-tab:hover { border-color: var(--ink); color: var(--ink); }
+.stat-tab.active { background: var(--ink); color: var(--bg); border-color: var(--ink); font-weight: 600; }
+.stat-tab small { display: block; font-size: 0.6rem; opacity: 0.7; margin-top: 2px; letter-spacing: 0.08em; }
+
+/* Ensemble panel */
+.ensemble-panel {
+  background: var(--bg);
+  border: 1px solid var(--line);
+  padding: 16px;
+  margin-top: 16px;
+}
+.ensemble-panel h3 {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem; letter-spacing: 0.15em;
+  color: var(--ink-faint); text-transform: uppercase;
+  margin-bottom: 12px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.ensemble-panel h3 .badge {
+  background: var(--accent); color: var(--bg);
+  padding: 2px 6px; font-size: 0.6rem;
+  letter-spacing: 0.1em; border-radius: 2px;
+}
+.stat-row {
+  display: flex; justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px dashed var(--line);
+  font-size: 0.85rem;
+}
+.stat-row:last-child { border-bottom: none; }
+.stat-row .key { color: var(--ink-soft); display: flex; align-items: center; gap: 6px; }
+.stat-row .key small { font-size: 0.7rem; color: var(--ink-faint); font-family: 'JetBrains Mono', monospace; }
+.stat-row .value {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 500; color: var(--ink);
+}
+.stat-row.highlight .value { color: var(--accent); font-weight: 600; }
+
+/* Per-model contribution table */
+.models-table {
+  margin-top: 18px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  padding: 14px;
+}
+.models-table h3 {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem; letter-spacing: 0.15em;
+  color: var(--ink-faint); text-transform: uppercase; margin-bottom: 10px;
+}
+.compare-table { width: 100%; font-size: 0.78rem; border-collapse: collapse; }
+.compare-table th {
+  text-align: left; padding: 6px 4px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem; color: var(--ink-faint);
+  letter-spacing: 0.08em; text-transform: uppercase;
+  border-bottom: 1px solid var(--line);
+}
+.compare-table th:not(:first-child) { text-align: right; }
+.compare-table td {
+  padding: 6px 4px;
+  font-family: 'JetBrains Mono', monospace;
+  border-bottom: 1px dashed var(--line);
+}
+.compare-table td:first-child { color: var(--ink-soft); }
+.compare-table td:not(:first-child) { text-align: right; color: var(--ink); }
+.compare-table tr:last-child td { border-bottom: none; }
+.compare-table tr.highlight td { background: rgba(184, 80, 30, 0.08); color: var(--accent-deep); font-weight: 600; }
+
+.legend { margin-top: 18px; padding: 14px; background: var(--bg); border: 1px solid var(--line); }
+.legend h3 { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; letter-spacing: 0.15em; color: var(--ink-faint); text-transform: uppercase; margin-bottom: 10px; }
+.legend-bar { height: 16px; border-radius: 2px; margin-bottom: 6px; }
+.legend-labels { display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--ink-faint); }
+
+.info-card { margin-top: 20px; padding: 14px; background: var(--ink); color: var(--bg); }
+.info-card p { font-size: 0.78rem; line-height: 1.6; color: rgba(250,247,242,0.8); }
+.info-card a { color: #ff8a4f; }
+
+.back-link {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.78rem;
+  color: var(--ink-soft); text-decoration: none;
+  margin-bottom: 14px; transition: color 0.2s;
+}
+.back-link:hover { color: var(--accent); }
+
+.map-wrapper { position: relative; background: var(--bg-alt); }
+#map { width: 100%; height: 100%; }
+
+.loading-overlay {
+  position: absolute; inset: 0;
+  background: rgba(250, 247, 242, 0.92);
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  gap: 16px; z-index: 1000;
+  pointer-events: none; opacity: 0;
+  transition: opacity 0.3s;
+}
+.loading-overlay.active { opacity: 1; pointer-events: all; }
+.spinner {
+  width: 40px; height: 40px;
+  border: 3px solid var(--line);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading-overlay span { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; color: var(--ink-soft); letter-spacing: 0.1em; }
+.loading-overlay .progress-text {
+  font-size: 0.78rem; color: var(--ink-faint);
+  margin-top: 4px;
+}
+
+.status-badge {
+  position: absolute; top: 16px; right: 16px;
+  background: var(--paper); border: 1px solid var(--line);
+  padding: 8px 14px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem; z-index: 500;
+  display: flex; align-items: center; gap: 8px;
+  max-width: 360px;
+}
+.status-badge::before {
+  content: ""; width: 8px; height: 8px;
+  background: var(--accent); border-radius: 50%;
+  animation: pulse-dot 2s ease-in-out infinite;
+  flex-shrink: 0;
+}
+@keyframes pulse-dot { 0%,100% { opacity: 0.4; } 50% { opacity: 1; } }
+
+@media (max-width: 900px) {
+  .map-page { grid-template-columns: 1fr; grid-template-rows: auto 1fr; }
+  .map-sidebar { max-height: 60vh; padding: 18px; }
+  body { overflow: auto; }
+}
+
+.topbar { position: fixed; }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <a href="../index.html" class="brand">Vaibhav <span>Jaiswal</span></a>
+  <nav>
+    <a href="../index.html">Home</a>
+    <a href="../thesis/index.html">Research</a>
+    <a href="index.html" class="active">Maps</a>
+    <a href="../index.html#contact">Contact</a>
+  </nav>
+</header>
+
+<div class="map-page">
+
+  <aside class="map-sidebar">
+    <a href="index.html" class="back-link">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+      Back to all maps
+    </a>
+
+    <h1>Live <em>ensemble</em> explorer</h1>
+    <p class="lead">Just like in the Jupyter notebook — choose a scenario and statistic. The map and stats are computed across all 8 CMIP6 climate models.</p>
+
+    <div class="control-group">
+      <label for="scenario-select">Climate Scenario (SSP)</label>
+      <select id="scenario-select">
+        <option value="ssp245" selected>SSP 2-4.5 — Modest mitigation</option>
+        <option value="ssp585">SSP 5-8.5 — High emissions</option>
+      </select>
+      <p class="help">Loads all 8 models and computes ensemble statistics.</p>
+    </div>
+
+    <div class="control-group">
+      <label>Ensemble Statistic</label>
+      <div class="stat-tabs">
+        <div class="stat-tab active" data-stat="mean">Mean<small>μ</small></div>
+        <div class="stat-tab" data-stat="p25">P25<small>25th</small></div>
+        <div class="stat-tab" data-stat="p50">Median<small>P50</small></div>
+        <div class="stat-tab" data-stat="p75">P75<small>75th</small></div>
+      </div>
+      <p class="help">Same statistics computed in your notebook (np.nanmean / np.nanpercentile across the 8-model stack).</p>
+    </div>
+
+    <div class="control-group">
+      <label for="colormap-select">Color Scheme</label>
+      <select id="colormap-select">
+        <option value="viridis" selected>Viridis (default)</option>
+        <option value="magma">Magma</option>
+        <option value="plasma">Plasma</option>
+        <option value="reds">Reds (heat)</option>
+        <option value="thermal">Thermal</option>
+      </select>
+    </div>
+
+    <!-- Ensemble stats display -->
+    <div class="ensemble-panel">
+      <h3>Ensemble statistics <span class="badge" id="active-stat-badge">MEAN</span></h3>
+      <div class="stat-row highlight">
+        <span class="key">Currently shown</span>
+        <span class="value" id="stat-current">— °C</span>
+      </div>
+      <div class="stat-row">
+        <span class="key">Mean <small>μ</small></span>
+        <span class="value" id="stat-mean">— °C</span>
+      </div>
+      <div class="stat-row">
+        <span class="key">P25 <small>25th pct</small></span>
+        <span class="value" id="stat-p25">— °C</span>
+      </div>
+      <div class="stat-row">
+        <span class="key">Median <small>P50</small></span>
+        <span class="value" id="stat-p50">— °C</span>
+      </div>
+      <div class="stat-row">
+        <span class="key">P75 <small>75th pct</small></span>
+        <span class="value" id="stat-p75">— °C</span>
+      </div>
+      <div class="stat-row">
+        <span class="key">Spread <small>P75−P25</small></span>
+        <span class="value" id="stat-iqr">— °C</span>
+      </div>
+      <div class="stat-row">
+        <span class="key">Min · Max</span>
+        <span class="value" id="stat-range">— °C</span>
+      </div>
+    </div>
+
+    <!-- Per-model individual values -->
+    <div class="models-table">
+      <h3>Per-model means</h3>
+      <table class="compare-table">
+        <thead>
+          <tr><th>Model</th><th>Mean °C</th></tr>
+        </thead>
+        <tbody id="models-body">
+          <tr><td colspan="2" style="text-align:center;color:#8a7f72">Loading...</td></tr>
+        </tbody>
+      </table>
+      <p class="help" style="margin-top: 8px;">Each row is one CMIP6 GCM. The ensemble stats above are computed across all 8.</p>
+    </div>
+
+    <!-- Legend -->
+    <div class="legend">
+      <h3>Temperature scale</h3>
+      <div class="legend-bar" id="legend-bar"></div>
+      <div class="legend-labels">
+        <span id="legend-min">cold</span>
+        <span id="legend-max">warm</span>
+      </div>
+    </div>
+
+    <div class="info-card">
+      <p><strong>What this is:</strong> The browser fetches all 8 GCM TIFFs for the chosen scenario, stacks them per-pixel, and computes Mean / P25 / P50 / P75 — exactly the workflow in your Jupyter notebook (cells 37-38).<br><br>
+      <strong>Boundary:</strong> Germany outline from Natural Earth (public GeoJSON).<br>
+      <strong>Source:</strong> <a href="https://github.com/VaibhavJ97/VaibhavJ97.github.io/tree/main/data" target="_blank">data folder on GitHub</a>.</p>
+    </div>
+  </aside>
+
+  <div class="map-wrapper">
+    <div class="status-badge"><span id="status-text">Loading...</span></div>
+    <div id="map"></div>
+    <div class="loading-overlay" id="loader">
+      <div class="spinner"></div>
+      <span id="loader-text">Loading ensemble...</span>
+      <span class="progress-text" id="loader-progress"></span>
+    </div>
+  </div>
+
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/proj4@2.9.0/dist/proj4.js"></script>
+<script src="https://unpkg.com/georaster@1.6.0/dist/georaster.browser.bundle.min.js"></script>
+<script src="https://unpkg.com/georaster-layer-for-leaflet@3.10.0/dist/georaster-layer-for-leaflet.min.js"></script>
+<script src="https://unpkg.com/chroma-js@2.4.2/chroma.min.js"></script>
+
+<script>
+// ============ CONFIG ============
+const DATA_BASE_URL = "https://VaibhavJ97.github.io/data/";
+const MODELS = ["BBC", "CanESM", "GFDL", "GISS", "HadGEM", "IPSL", "MIROC", "MPI"];
+
+const COLORMAPS = {
+  viridis: ['#440154', '#3b528b', '#21908d', '#5dc863', '#fde725'],
+  magma:   ['#000004', '#3b0f70', '#8c2981', '#de4968', '#fe9f6d', '#fcfdbf'],
+  plasma:  ['#0d0887', '#6a00a8', '#b12a90', '#e16462', '#fca636', '#f0f921'],
+  reds:    ['#fff5f0', '#fcbba1', '#fb6a4a', '#cb181d', '#67000d'],
+  thermal: ['#0d0887', '#5302a3', '#8b0aa5', '#b83289', '#db5c68', '#f48849', '#febd2a', '#f0f921']
+};
+
+// ============ MAP INIT ============
+const map = L.map('map', {
+  center: [51.0, 10.4],
+  zoom: 6,
+  minZoom: 5, maxZoom: 12
+});
+
+L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+  attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+  subdomains: 'abcd', maxZoom: 19
+}).addTo(map);
+
+let currentLayer = null;
+let germanyLayer = null;
+let cachedRasters = { ssp245: null, ssp585: null }; // store loaded model arrays
+let cachedStats = { ssp245: null, ssp585: null };   // computed ensemble stats
+let currentRasterTemplate = null; // for click queries (same geo for all)
+let activeStatistic = 'mean';
+
+// ============ GERMANY BOUNDARY ============
+async function loadGermanyBoundary() {
+  // Public GeoJSON of country outlines (Natural Earth via datasets repo)
+  const sources = [
+    'https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson',
+    'https://datahub.io/core/geo-countries/r/countries.geojson'
+  ];
+
+  for (const url of sources) {
+    try {
+      const r = await fetch(url);
+      if (!r.ok) continue;
+      const data = await r.json();
+      const germany = data.features.find(f => {
+        const p = f.properties;
+        return p.ADMIN === 'Germany' || p.NAME === 'Germany' || p.name === 'Germany';
+      });
+      if (!germany) continue;
+
+      germanyLayer = L.geoJSON(germany, {
+        style: {
+          color: '#1a1612',
+          weight: 2.5,
+          fill: false,
+          opacity: 0.95
+        },
+        interactive: false
+      }).addTo(map);
+      return;
+    } catch (e) { /* try next */ }
+  }
+  console.warn('Could not load Germany boundary from any source');
+}
+
+// ============ ENSEMBLE LOADING ============
+async function loadEnsemble(scenario) {
+  // Already cached?
+  if (cachedRasters[scenario]) return cachedRasters[scenario];
+
+  const rasters = [];
+  for (let i = 0; i < MODELS.length; i++) {
+    const model = MODELS[i];
+    document.getElementById('loader-progress').textContent =
+      `Fetching ${model} (${i+1}/${MODELS.length})...`;
+
+    const url = DATA_BASE_URL + `${model}_${scenario}_2000_2100_Germany_mean.tif`;
+    try {
+      const resp = await fetch(url);
+      if (!resp.ok) throw new Error(`${model}: HTTP ${resp.status}`);
+      const ab = await resp.arrayBuffer();
+      const gr = await parseGeoraster(ab);
+      rasters.push({ model, georaster: gr });
+    } catch (e) {
+      console.warn(`Skipped ${model}: ${e.message}`);
+      rasters.push({ model, georaster: null, error: e.message });
+    }
+  }
+
+  cachedRasters[scenario] = rasters;
+  // Use first valid raster as template for click queries
+  if (!currentRasterTemplate) {
+    const firstValid = rasters.find(r => r.georaster);
+    if (firstValid) currentRasterTemplate = firstValid.georaster;
+  }
+  return rasters;
+}
+
+// ============ ENSEMBLE STATISTICS ============
+// Compute Mean, P25, P50, P75 per pixel across the 8-model stack (matches notebook)
+function computeEnsembleStats(rasters) {
+  const valid = rasters.filter(r => r.georaster);
+  if (valid.length === 0) return null;
+
+  const template = valid[0].georaster;
+  const h = template.height, w = template.width;
+  const ndv = template.noDataValue;
+
+  // Per-pixel stat grids
+  const meanGrid = new Float32Array(h * w);
+  const p25Grid = new Float32Array(h * w);
+  const p50Grid = new Float32Array(h * w);
+  const p75Grid = new Float32Array(h * w);
+  meanGrid.fill(NaN); p25Grid.fill(NaN); p50Grid.fill(NaN); p75Grid.fill(NaN);
+
+  // Also compute domain-wide aggregates per model (for the per-model table)
+  const perModelMean = {};
+  for (let r of valid) {
+    let sum = 0, count = 0;
+    const vals = r.georaster.values[0];
+    for (let row of vals) {
+      for (let v of row) {
+        if (v !== ndv && !isNaN(v) && v !== null && Number.isFinite(v)) {
+          sum += v; count++;
+        }
+      }
+    }
+    perModelMean[r.model] = count > 0 ? sum / count : null;
+  }
+
+  // Per-pixel stack
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) {
+      const stack = [];
+      for (let r of valid) {
+        const v = r.georaster.values[0][y]?.[x];
+        if (v !== ndv && v !== null && !isNaN(v) && Number.isFinite(v)) {
+          stack.push(v);
+        }
+      }
+      if (stack.length === 0) continue;
+      stack.sort((a, b) => a - b);
+      const idx = y * w + x;
+      meanGrid[idx] = stack.reduce((a, b) => a + b, 0) / stack.length;
+      p25Grid[idx] = quantile(stack, 0.25);
+      p50Grid[idx] = quantile(stack, 0.50);
+      p75Grid[idx] = quantile(stack, 0.75);
+    }
+  }
+
+  // Domain stats per stat type (for sidebar display)
+  const statSummary = (grid) => {
+    const arr = [];
+    for (let v of grid) if (!isNaN(v)) arr.push(v);
+    if (arr.length === 0) return null;
+    arr.sort((a, b) => a - b);
+    return {
+      mean: arr.reduce((a, b) => a + b, 0) / arr.length,
+      min: arr[0],
+      max: arr[arr.length - 1],
+      p25: quantile(arr, 0.25),
+      p50: quantile(arr, 0.50),
+      p75: quantile(arr, 0.75)
+    };
+  };
+
+  return {
+    grids: { mean: meanGrid, p25: p25Grid, p50: p50Grid, p75: p75Grid },
+    summary: {
+      mean: statSummary(meanGrid),
+      p25: statSummary(p25Grid),
+      p50: statSummary(p50Grid),
+      p75: statSummary(p75Grid)
+    },
+    perModelMean,
+    template: { width: w, height: h, ndv }
+  };
+}
+
+function quantile(sortedArr, q) {
+  if (sortedArr.length === 0) return NaN;
+  const pos = (sortedArr.length - 1) * q;
+  const base = Math.floor(pos);
+  const rest = pos - base;
+  if (sortedArr[base + 1] !== undefined) {
+    return sortedArr[base] + rest * (sortedArr[base + 1] - sortedArr[base]);
+  }
+  return sortedArr[base];
+}
+
+// ============ RENDER ============
+function renderMap(scenario, statType) {
+  const stats = cachedStats[scenario];
+  if (!stats) return;
+
+  const grid = stats.grids[statType];
+  const summary = stats.summary[statType];
+  const template = cachedRasters[scenario].find(r => r.georaster).georaster;
+  const colormap = document.getElementById('colormap-select').value;
+  const colors = COLORMAPS[colormap];
+
+  // Build a fake georaster that uses our computed grid
+  const newValues = [];
+  for (let y = 0; y < template.height; y++) {
+    const row = [];
+    for (let x = 0; x < template.width; x++) {
+      const v = grid[y * template.width + x];
+      row.push(isNaN(v) ? template.noDataValue : v);
+    }
+    newValues.push(row);
+  }
+
+  const newGeoraster = {
+    ...template,
+    values: [newValues]
+  };
+
+  // Update stats panel
+  const labels = { mean: 'Mean', p25: 'P25', p50: 'Median (P50)', p75: 'P75' };
+  document.getElementById('active-stat-badge').textContent = labels[statType].toUpperCase();
+  document.getElementById('stat-current').textContent = summary.mean.toFixed(2) + ' °C  (avg)';
+
+  document.getElementById('stat-mean').textContent = stats.summary.mean.mean.toFixed(2) + ' °C';
+  document.getElementById('stat-p25').textContent = stats.summary.p25.mean.toFixed(2) + ' °C';
+  document.getElementById('stat-p50').textContent = stats.summary.p50.mean.toFixed(2) + ' °C';
+  document.getElementById('stat-p75').textContent = stats.summary.p75.mean.toFixed(2) + ' °C';
+  document.getElementById('stat-iqr').textContent =
+    (stats.summary.p75.mean - stats.summary.p25.mean).toFixed(2) + ' °C';
+  document.getElementById('stat-range').textContent =
+    summary.min.toFixed(1) + ' · ' + summary.max.toFixed(1) + ' °C';
+
+  document.getElementById('legend-min').textContent = summary.min.toFixed(1) + ' °C';
+  document.getElementById('legend-max').textContent = summary.max.toFixed(1) + ' °C';
+
+  const scale = chroma.scale(colors).domain([summary.min, summary.max]);
+  document.getElementById('legend-bar').style.background =
+    `linear-gradient(to right, ${colors.join(', ')})`;
+
+  // Update per-model table
+  let html = '';
+  // Sort models by mean
+  const sortedModels = MODELS.map(m => ({
+    model: m,
+    mean: stats.perModelMean[m]
+  })).sort((a, b) => (b.mean || -Infinity) - (a.mean || -Infinity));
+  for (let m of sortedModels) {
+    const val = m.mean == null ? '—' : m.mean.toFixed(2) + '°';
+    html += `<tr><td>${m.model}</td><td>${val}</td></tr>`;
+  }
+  document.getElementById('models-body').innerHTML = html;
+
+  // Replace map layer
+  if (currentLayer) map.removeLayer(currentLayer);
+  currentLayer = new GeoRasterLayer({
+    georaster: newGeoraster,
+    opacity: 0.78,
+    pixelValuesToColorFn: vals => {
+      const v = vals[0];
+      if (v === template.noDataValue || v === null || isNaN(v)) return null;
+      return scale(v).hex();
+    },
+    resolution: 256
+  });
+  currentLayer.addTo(map);
+  if (germanyLayer) germanyLayer.bringToFront();
+  map.fitBounds([[47.3, 5.9], [55.1, 15.0]]);
+  currentRasterTemplate = newGeoraster;
+
+  setStatus(`SSP ${scenario === 'ssp245' ? '2-4.5' : '5-8.5'} · ${labels[statType]} · 8-model ensemble`);
+}
+
+// ============ MAIN LOAD ============
+async function loadAndRender() {
+  const scenario = document.getElementById('scenario-select').value;
+  showLoader('Loading 8-model ensemble...');
+  try {
+    const rasters = await loadEnsemble(scenario);
+    document.getElementById('loader-progress').textContent = 'Computing ensemble statistics...';
+    if (!cachedStats[scenario]) {
+      cachedStats[scenario] = computeEnsembleStats(rasters);
+    }
+    if (!cachedStats[scenario]) {
+      throw new Error('No valid rasters loaded');
+    }
+    renderMap(scenario, activeStatistic);
+    hideLoader();
+  } catch (e) {
+    console.error(e);
+    hideLoader();
+    setStatus('Error: ' + e.message);
+    showErrorOnMap('ensemble', e.message);
+  }
+}
+
+// ============ CLICK QUERY ============
+map.on('click', function(e) {
+  if (!currentRasterTemplate) return;
+  const lat = e.latlng.lat;
+  const lng = e.latlng.lng;
+  const x = Math.floor((lng - currentRasterTemplate.xmin) / currentRasterTemplate.pixelWidth);
+  const y = Math.floor((currentRasterTemplate.ymax - lat) / currentRasterTemplate.pixelHeight);
+
+  if (x < 0 || y < 0 || x >= currentRasterTemplate.width || y >= currentRasterTemplate.height) {
+    L.popup().setLatLng(e.latlng).setContent('<b>Outside data extent</b>').openOn(map);
+    return;
+  }
+
+  const scenario = document.getElementById('scenario-select').value;
+  const stats = cachedStats[scenario];
+  if (!stats) return;
+  const idx = y * currentRasterTemplate.width + x;
+  const labels = { mean: 'Mean', p25: 'P25', p50: 'Median', p75: 'P75' };
+
+  L.popup().setLatLng(e.latlng).setContent(`
+    <div style="font-family:'JetBrains Mono',monospace;font-size:11px;min-width:160px">
+      <strong style="font-family:'Fraunces',serif;font-size:14px;color:#b8501e">
+        Ensemble at this point
+      </strong><br><br>
+      <div style="display:grid;grid-template-columns:1fr auto;gap:4px 12px;font-size:11px">
+        <span>Mean</span><b>${fmt(stats.grids.mean[idx])}</b>
+        <span>P25</span><b>${fmt(stats.grids.p25[idx])}</b>
+        <span>Median</span><b>${fmt(stats.grids.p50[idx])}</b>
+        <span>P75</span><b>${fmt(stats.grids.p75[idx])}</b>
+      </div><br>
+      <span style="color:#8a7f72;font-size:10px">${lat.toFixed(3)}, ${lng.toFixed(3)}</span>
+    </div>
+  `).openOn(map);
+});
+
+function fmt(v) { return isNaN(v) ? '—' : v.toFixed(2) + '°C'; }
+function showLoader(text) { document.getElementById('loader-text').textContent = text || 'Loading...'; document.getElementById('loader').classList.add('active'); }
+function hideLoader() { document.getElementById('loader').classList.remove('active'); }
+function setStatus(text) { document.getElementById('status-text').textContent = text; }
+function showErrorOnMap(filename, msg) {
+  if (currentLayer) map.removeLayer(currentLayer);
+  L.popup().setLatLng([51.0, 10.4]).setContent(`
+    <div style="max-width:260px">
+      <strong style="color:#b8501e">Could not load ensemble</strong><br><br>
+      <span style="font-size:12px;color:#666">
+        ${msg}<br><br>
+        Make sure all 8 TIFFs are in your <code>data/</code> folder and the repo is public.
+      </span>
+    </div>
+  `).openOn(map);
+}
+
+// ============ EVENT LISTENERS ============
+document.getElementById('scenario-select').addEventListener('change', loadAndRender);
+document.getElementById('colormap-select').addEventListener('change', () => {
+  const scenario = document.getElementById('scenario-select').value;
+  if (cachedStats[scenario]) renderMap(scenario, activeStatistic);
+});
+
+document.querySelectorAll('.stat-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.stat-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    activeStatistic = tab.dataset.stat;
+    const scenario = document.getElementById('scenario-select').value;
+    if (cachedStats[scenario]) renderMap(scenario, activeStatistic);
+  });
+});
+
+// Initial
+loadGermanyBoundary();
+loadAndRender();
+</script>
+
+</body>
+</html>
