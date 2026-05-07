@@ -1,17 +1,4 @@
-# 🚀 Portfolio Site v5 — Clean Final Version
-
-## ✨ What's in this version
-
-A fully working multi-page CV portfolio with a **live ensemble-based interactive map**, with NO placeholder Google Drive links.
-
-### What was removed in v5
-- ❌ All `[Certificate (add link) →]` placeholder buttons
-- ❌ All `[Reference (add link) →]` placeholder pills
-- ❌ Cert cards no longer link anywhere — they're clean visual badges
-- ❌ Note about "click to view on Google Drive" in cert section header
-
-The page is now visually clean — no broken/empty placeholder UI.
-
+# 🚀 Portfolio Site
 ---
 
 ## 📂 What's still in here (your real CV content)
