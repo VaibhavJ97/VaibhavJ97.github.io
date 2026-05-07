@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Master Thesis Project - Vaibhav Jaiswal</title>
+<meta name="description" content="Master's thesis on the impact of climate change on shallow geothermal energy systems in Germany under CMIP6 projections, with live interactive maps." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,800;1,9..144,400&family=JetBrains+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="../assets/style.css">
+
+<style>
+/* ============ THESIS HERO ============ */
+.thesis-hero {
+  min-height: 70vh;
+  padding: 140px 40px 60px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+  max-width: 1400px;
+  margin: 0 auto;
+  position: relative;
+}
+.thesis-hero::before {
+  content: ""; position: absolute; top: 100px; right: 40px;
+  width: 380px; height: 380px;
+  background: radial-gradient(circle at 30% 30%, var(--accent) 0%, transparent 60%);
+  opacity: 0.08; filter: blur(40px); z-index: -1;
+}
+.thesis-hero .eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 28px;
+  display: flex; align-items: center; gap: 12px;
+}
+.thesis-hero .eyebrow::before { content: ""; width: 32px; height: 1px; background: var(--accent); }
+.thesis-hero h1 {
+  font-size: clamp(2.4rem, 5.5vw, 4.4rem);
+  margin-bottom: 28px; font-weight: 400;
+}
+.thesis-hero h1 em { font-style: italic; color: var(--accent-deep); font-weight: 300; }
+.thesis-hero .lead {
+  font-size: 1.1rem; color: var(--ink-soft);
+  margin-bottom: 36px; max-width: 520px; line-height: 1.7;
+}
+.thesis-hero .hero-cta { display: flex; gap: 14px; flex-wrap: wrap; }
+
+.thesis-hero-visual {
+  position: relative; aspect-ratio: 1 / 1; max-width: 520px; justify-self: end;
+}
+.thesis-hero-svg { width: 100%; height: 100%; }
+
+@keyframes pulse-heat { 0%,100% { opacity: 0.4; } 50% { opacity: 1; } }
+.heat-pulse { animation: pulse-heat 2.5s ease-in-out infinite; }
+
+@media (max-width: 900px) {
+  .thesis-hero { grid-template-columns: 1fr; padding: 120px 20px 60px; gap: 40px; }
+  .thesis-hero-visual { justify-self: center; max-width: 380px; }
+}
+
+/* ============ ABSTRACT ============ */
+.abstract-section {
+  background: var(--paper);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.abstract-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 80px; align-items: start; }
+.abstract-grid .label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--ink-faint); padding-top: 8px; border-top: 1px solid var(--ink);
+}
+.abstract-text {
+  font-family: 'Fraunces', serif; font-size: 1.25rem;
+  line-height: 1.55; color: var(--ink); font-weight: 300;
+}
+.abstract-text .drop {
+  font-size: 4rem; float: left; line-height: 0.9;
+  margin: 8px 12px 0 0; color: var(--accent); font-weight: 600;
+}
+@media (max-width: 720px) {
+  .abstract-grid { grid-template-columns: 1fr; gap: 24px; }
+  .abstract-text { font-size: 1.1rem; }
+}
+
+/* ============ KEY FINDINGS ============ */
+.findings { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border-top: 1px solid var(--line); }
+.finding {
+  padding: 36px 28px;
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  background: var(--bg);
+  transition: background 0.3s;
+}
+.finding:hover { background: var(--bg-alt); }
+.finding:last-child { border-right: none; }
+.finding .num {
+  font-family: 'Fraunces', serif; font-size: 3rem; font-weight: 400;
+  color: var(--accent); line-height: 1; margin-bottom: 16px;
+}
+.finding .num small { font-size: 1.2rem; color: var(--ink-soft); }
+.finding .label {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.7rem;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--ink-faint); margin-bottom: 10px;
+}
+.finding p { font-size: 0.9rem; color: var(--ink-soft); line-height: 1.55; }
+@media (max-width: 900px) {
+  .findings { grid-template-columns: 1fr 1fr; }
+  .finding:nth-child(2) { border-right: none; }
+}
+@media (max-width: 520px) {
+  .findings { grid-template-columns: 1fr; }
+  .finding { border-right: none; }
+}
+
+/* ============ METHODS ============ */
+.methods-flow { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; margin-top: 40px; }
+.method-step {
+  padding: 28px 24px;
+  border-left: 1px solid var(--line); position: relative;
+}
+.method-step:first-child { border-left: none; }
+.method-step .step-num {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.7rem;
+  color: var(--accent); letter-spacing: 0.2em; margin-bottom: 14px;
+}
+.method-step h4 { font-size: 1.1rem; margin-bottom: 10px; font-weight: 600; }
+.method-step p { font-size: 0.88rem; color: var(--ink-soft); line-height: 1.55; }
+@media (max-width: 900px) {
+  .methods-flow { grid-template-columns: 1fr 1fr; }
+  .method-step { border-left: none; border-top: 1px solid var(--line); padding-top: 20px; }
+  .method-step:nth-child(odd) { border-right: 1px solid var(--line); padding-right: 20px; }
+}
+@media (max-width: 520px) {
+  .methods-flow { grid-template-columns: 1fr; }
+  .method-step:nth-child(odd) { border-right: none; }
+}
+
+/* ============ MAP EXPLORER (full width, below content) ============ */
+.explorer-section {
+  background: var(--bg-alt);
+  border-top: 1px solid var(--line);
+  padding: 80px 0 0;
+  margin-top: 40px;
+}
+.explorer-section .section-header {
+  max-width: 1400px;
+  margin: 0 auto 50px;
+  padding: 0 40px;
+}
+
+/* Explorer container */
+.explorer-container {
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  background: var(--paper);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  min-height: 700px;
+}
+
+.explorer-sidebar {
+  background: var(--paper);
+  border-right: 1px solid var(--line);
+  padding: 32px 28px;
+  overflow-y: auto;
+  max-height: 800px;
+}
+
+.explorer-sidebar h3.sidebar-title {
+  font-size: 1.3rem; font-weight: 600; margin-bottom: 8px;
+}
+.explorer-sidebar h3.sidebar-title em { color: var(--accent-deep); font-style: italic; font-weight: 300; }
+.explorer-sidebar .sidebar-lead {
+  font-size: 0.88rem; color: var(--ink-soft);
+  margin-bottom: 24px; line-height: 1.6;
+}
+
+/* Mode tabs */
+.mode-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+.mode-tab {
+  background: var(--bg);
+  padding: 14px 8px;
+  text-align: center;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  transition: all 0.2s;
+  border-right: 1px solid var(--line);
+}
+.mode-tab:last-child { border-right: none; }
+.mode-tab:hover { color: var(--ink); background: var(--bg-alt); }
+.mode-tab.active { background: var(--ink); color: var(--bg); font-weight: 500; }
+.mode-tab small { display: block; font-size: 0.7rem; opacity: 0.7; margin-top: 4px; font-family: 'JetBrains Mono', monospace; letter-spacing: 0.05em; }
+
+/* Controls */
+.control-group { margin-bottom: 18px; }
+.control-group label {
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 8px;
+}
+.control-group select {
+  width: 100%; padding: 12px 14px;
+  font-size: 0.92rem; font-family: 'Inter', sans-serif;
+  background: var(--bg); color: var(--ink);
+  border: 1px solid var(--line); border-radius: 2px;
+  cursor: pointer; transition: border-color 0.2s;
+  appearance: none; -webkit-appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%231a1612' stroke-width='2'><polyline points='6 9 12 15 18 9'/></svg>");
+  background-repeat: no-repeat; background-position: right 14px center;
+  padding-right: 36px;
+}
+.control-group select:hover { border-color: var(--ink); }
+.control-group select:focus { outline: none; border-color: var(--accent); }
+.control-group .help { font-size: 0.78rem; color: var(--ink-faint); margin-top: 6px; font-style: italic; line-height: 1.5; }
+
+/* Layer info - swatches will update with color scheme */
+.layer-info {
+  background: var(--bg); border: 1px solid var(--line);
+  padding: 14px 16px; margin-top: 18px;
+}
+.layer-info h4 {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem; letter-spacing: 0.15em;
+  color: var(--ink-faint); text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.layer-info .layer {
+  padding: 8px 0;
+  border-bottom: 1px dashed var(--line);
+  font-size: 0.82rem;
+  display: flex; align-items: center; gap: 10px;
+}
+.layer-info .layer:last-child { border-bottom: none; }
+.layer-info .layer .swatch {
+  width: 14px; height: 14px;
+  border-radius: 2px;
+  flex-shrink: 0;
+  transition: background 0.3s;
+}
+.layer-info .layer .name { color: var(--ink-soft); line-height: 1.3; }
+.layer-info .help-text {
+  font-size: 0.78rem; color: var(--ink-faint);
+  margin-top: 10px; font-style: italic; line-height: 1.5;
+}
+
+
+
+/* Map iframe area */
+.map-frame-wrapper {
+  position: relative;
+  background: #f1ebe1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.map-frame-inner {
+  flex: 1;
+  position: relative;
+}
+#map-frame {
+  width: 100%; height: 100%;
+  border: none; display: block;
+}
+.loading-overlay {
+  position: absolute; inset: 0;
+  background: rgba(250, 247, 242, 0.94);
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  gap: 14px; z-index: 100;
+  pointer-events: none; opacity: 0;
+  transition: opacity 0.3s;
+}
+.loading-overlay.active { opacity: 1; pointer-events: all; }
+.spinner {
+  width: 40px; height: 40px;
+  border: 3px solid var(--line);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading-overlay span {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem; color: var(--ink-soft);
+  letter-spacing: 0.1em;
+}
+
+/* Source info */
+.source-card {
+  margin-top: 20px; padding: 14px;
+  background: var(--ink); color: var(--bg);
+}
+.source-card p { font-size: 0.78rem; line-height: 1.6; color: rgba(250,247,242,0.8); }
+.source-card a { color: #ff8a4f; }
+
+/* Mobile */
+@media (max-width: 900px) {
+  .explorer-container { grid-template-columns: 1fr; }
+  .explorer-sidebar { max-height: none; border-right: none; border-bottom: 1px solid var(--line); }
+  .map-frame-wrapper { min-height: 600px; }
+}
+
+/* Pending badge */
+.pending-tag {
+  display: inline-block;
+  background: rgba(184, 80, 30, 0.15);
+  color: var(--accent);
+  padding: 1px 6px;
+  font-size: 0.65rem;
+  letter-spacing: 0.05em;
+  border-radius: 2px;
+  margin-left: 4px;
+  font-family: 'JetBrains Mono', monospace;
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <a href="../index.html" class="brand">Vaibhav <span>Jaiswal</span></a>
+  <nav>
+    <a href="../index.html">Home</a>
+    <a href="index.html" class="active">Master Thesis Project</a>
+  </nav>
+</header>
+
+<!-- ============ THESIS HERO ============ -->
+<section class="thesis-hero fade-in">
+  <div>
+    <div class="eyebrow">M.Sc. Thesis · KIT · 2025</div>
+    <h1>Climate change & the future of <em>shallow geothermal</em> energy in Germany.</h1>
+    <p class="lead">A semi-analytical model coupling CMIP6 climate projections with borehole heat exchanger physics, quantifying how a warming subsurface reshapes Germany's renewable heating potential through 2100.</p>
+    <div class="hero-cta">
+      <a href="#explorer" class="btn btn-primary">
+        Explore the live maps
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+      </a>
+      <a href="#methods" class="btn btn-ghost">View methodology</a>
+    </div>
+  </div>
+
+  <div class="thesis-hero-visual">
+    <svg class="thesis-hero-svg" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="ground" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#e8d9c4"/>
+          <stop offset="40%" stop-color="#c89878"/>
+          <stop offset="100%" stop-color="#7a4a2e"/>
+        </linearGradient>
+        <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#faf7f2"/>
+          <stop offset="100%" stop-color="#f1ebe1"/>
+        </linearGradient>
+        <radialGradient id="heat" cx="0.5" cy="0.5" r="0.5">
+          <stop offset="0%" stop-color="#b8501e" stop-opacity="0.6"/>
+          <stop offset="100%" stop-color="#b8501e" stop-opacity="0"/>
+        </radialGradient>
+        <marker id="arrow" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+          <path d="M 0 0 L 6 3 L 0 6 z" fill="#b8501e"/>
+        </marker>
+      </defs>
+      <rect x="0" y="0" width="500" height="180" fill="url(#sky)"/>
+      <circle cx="380" cy="90" r="32" fill="#b8501e" opacity="0.85"/>
+      <circle cx="380" cy="90" r="48" fill="#b8501e" opacity="0.15"/>
+      <rect x="0" y="180" width="500" height="320" fill="url(#ground)"/>
+      <line x1="0" y1="240" x2="500" y2="240" stroke="#7a4a2e" stroke-width="0.5" opacity="0.4" stroke-dasharray="2,4"/>
+      <line x1="0" y1="320" x2="500" y2="320" stroke="#7a4a2e" stroke-width="0.5" opacity="0.4" stroke-dasharray="2,4"/>
+      <line x1="0" y1="400" x2="500" y2="400" stroke="#7a4a2e" stroke-width="0.5" opacity="0.4" stroke-dasharray="2,4"/>
+      <ellipse cx="250" cy="350" rx="120" ry="160" fill="url(#heat)" class="heat-pulse"/>
+      <rect x="246" y="180" width="8" height="280" fill="#1a1612" rx="2"/>
+      <path d="M 248 190 Q 248 460 252 460 Q 252 190 252 190" stroke="#b8501e" stroke-width="1.5" fill="none"/>
+      <circle cx="250" cy="180" r="6" fill="#1a1612"/>
+      <circle cx="250" cy="180" r="3" fill="#b8501e"/>
+      <g font-family="JetBrains Mono, monospace" font-size="9" fill="#3d2818" opacity="0.7">
+        <text x="20" y="245">0 m</text>
+        <text x="20" y="325">50 m</text>
+        <text x="20" y="405">100 m</text>
+      </g>
+      <g font-family="JetBrains Mono, monospace" font-size="10" fill="#7a2e10">
+        <text x="320" y="230">+2.5°C</text>
+        <text x="320" y="320">+1.7°C</text>
+        <text x="320" y="410">+0.8°C</text>
+      </g>
+      <g stroke="#b8501e" stroke-width="1.2" fill="none" opacity="0.7">
+        <path d="M 100 200 L 100 230" marker-end="url(#arrow)"/>
+        <path d="M 160 200 L 160 230" marker-end="url(#arrow)"/>
+        <path d="M 340 200 L 340 230" marker-end="url(#arrow)"/>
+        <path d="M 400 200 L 400 230" marker-end="url(#arrow)"/>
+      </g>
+      <g font-family="Fraunces, serif" font-size="11" fill="#1a1612" font-style="italic" opacity="0.6">
+        <text x="20" y="40">Borehole heat exchanger</text>
+        <text x="20" y="56" font-size="9" font-style="normal" font-family="JetBrains Mono">↳ schematic, Germany subsurface</text>
+      </g>
+    </svg>
+  </div>
+</section>
+
+<!-- ============ ABSTRACT ============ -->
+<section id="abstract" class="abstract-section">
+  <div class="abstract-grid">
+    <div class="label">Abstract</div>
+    <div class="abstract-text">
+      <span class="drop">U</span>rban centers face increasing pressure to achieve carbon neutrality. This thesis develops a Python-based analytical model that couples CMIP6 climate projections with borehole heat exchanger physics, quantifying how a warming subsurface reshapes the geothermal heat-extraction potential across Germany under SSP 2-4.5 and SSP 5-8.5 scenarios, over 50-year and 100-year sustainable operating horizons.
+    </div>
+  </div>
+</section>
+
+<!-- ============ KEY FINDINGS ============ -->
+<section id="findings" style="padding-top: 60px;">
+  <div class="section-header">
+    <div class="eyebrow">§ 03 - Key results</div>
+    <h2>Warming substantially boosts <em>geothermal yield</em>.</h2>
+    <p>Each degree of subsurface warming effectively substitutes ~4 metres of drilling depth, a measurable economic and physical lever.</p>
+  </div>
+</section>
+
+<div class="findings">
+  <div class="finding">
+    <div class="label">SSP 2-4.5 by 2100</div>
+    <div class="num">+1.7<small>°C</small></div>
+    <p>Mean shallow ground temperature rise under modest mitigation (±0.6 °C across the CMIP6 ensemble).</p>
+  </div>
+  <div class="finding">
+    <div class="label">SSP 5-8.5 by 2100</div>
+    <div class="num">+3.1<small>°C</small></div>
+    <p>Subsurface warming under high-emissions trajectory (±1.1 °C ensemble spread).</p>
+  </div>
+  <div class="finding">
+    <div class="label">Extraction efficiency</div>
+    <div class="num">+8-24<small>%</small></div>
+    <p>Increase in geothermal heat-extraction potential by 2100 vs. current baseline conditions.</p>
+  </div>
+  <div class="finding">
+    <div class="label">Drilling equivalent</div>
+    <div class="num">~4<small>m / °C</small></div>
+    <p>Each 1 °C of warming substitutes roughly 4 m of borehole depth for equivalent heat supply.</p>
+  </div>
+</div>
+
+<!-- ============ METHODS ============ -->
+<section id="methods">
+  <div class="section-header">
+    <div class="eyebrow">§ 02 - Workflow</div>
+    <h2>From climate model to <em>borehole physics</em>.</h2>
+    <p>Four-stage pipeline integrating CMIP6 ensembles, FLS-based heat-transport modeling, and interactive geospatial visualization.</p>
+  </div>
+
+  <div class="methods-flow">
+    <div class="method-step">
+      <div class="step-num">→ 01 / DATA</div>
+      <h4>CMIP6 acquisition</h4>
+      <p>8 GCMs from Google Earth Engine under SSP 2-4.5 & SSP 5-8.5; reprojected to EPSG:4326.</p>
+    </div>
+    <div class="method-step">
+      <div class="step-num">→ 02 / MODEL</div>
+      <h4>FLS heat transport</h4>
+      <p>Finite Line Source theory (Rivera 2017) with superposed surface boundary heating.</p>
+    </div>
+    <div class="method-step">
+      <div class="step-num">→ 03 / SOLVE</div>
+      <h4>Brent's iteration</h4>
+      <p>Root-finding for sustainable extraction rate <span class="mono">qₗ</span> at minimum fluid temperature.</p>
+    </div>
+    <div class="method-step">
+      <div class="step-num">→ 04 / VISUAL</div>
+      <h4>Folium maps</h4>
+      <p>Per-scenario interactive layers across Germany: extraction rate, power, sustainable yield.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ INTERACTIVE EXPLORER ============ -->
+<section id="explorer" class="explorer-section">
+  <div class="section-header">
+    <div class="eyebrow">§ 04 - Interactive Explorer</div>
+    <h2>Browse <em>every</em> map in this thesis.</h2>
+    <p>14 individual model maps are live now. The remaining 10 (MPI + ensemble) need a final notebook run before they appear here. Switch between climate models, scenarios, and color schemes to compare results.</p>
+  </div>
+
+  <div class="explorer-container">
+    <aside class="explorer-sidebar">
+      <h3 class="sidebar-title">Map <em>explorer</em></h3>
+      <p class="sidebar-lead">14 maps live, 10 ready once the remaining notebook cells are run.</p>
+
+      <div class="mode-tabs">
+        <div class="mode-tab active" data-mode="individual">
+          Individual model<small>1 of 8</small>
+        </div>
+        <div class="mode-tab" data-mode="ensemble">
+          Ensemble<small>8-model stats</small>
+        </div>
+      </div>
+
+      <!-- INDIVIDUAL controls -->
+      <div id="individual-controls">
+        <div class="control-group">
+          <label for="model-select">Climate Model (GCM)</label>
+          <select id="model-select">
+            <option value="BBC">BBC</option>
+            <option value="CanESM" selected>CanESM</option>
+            <option value="GFDL">GFDL</option>
+            <option value="GISS">GISS</option>
+            <option value="HadGEM">HadGEM</option>
+            <option value="IPSL">IPSL</option>
+            <option value="MIROC">MIROC</option>
+            <option value="MPI">MPI (pending)</option>
+          </select>
+          <p class="help">Single CMIP6 General Circulation Model.</p>
+        </div>
+
+        <div class="control-group">
+          <label for="scenario-individual">Climate Scenario (SSP)</label>
+          <select id="scenario-individual">
+            <option value="ssp245" selected>SSP 2-4.5 (modest mitigation)</option>
+            <option value="ssp585">SSP 5-8.5 (high emissions)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- ENSEMBLE controls -->
+      <div id="ensemble-controls" style="display:none;">
+        <div class="control-group">
+          <label for="stat-select">Ensemble Statistic</label>
+          <select id="stat-select">
+            <option value="mean" selected>Mean (μ) (pending)</option>
+            <option value="p25">25th Percentile (pending)</option>
+            <option value="p50">Median (P50) (pending)</option>
+            <option value="p75">75th Percentile (pending)</option>
+          </select>
+          <p class="help">Computed across all 8 climate models per pixel.</p>
+        </div>
+
+        <div class="control-group">
+          <label for="scenario-ensemble">Climate Scenario (SSP)</label>
+          <select id="scenario-ensemble">
+            <option value="ssp245" selected>SSP 2-4.5 (modest mitigation)</option>
+            <option value="ssp585">SSP 5-8.5 (high emissions)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Toggleable layers - swatches match the actual map colors -->
+      <div class="layer-info">
+        <h4>6 Toggleable Layers</h4>
+        <div class="layer">
+          <span class="swatch" style="background:#21908d"></span>
+          <span class="name">Max Heat Extraction Rate <small>(50yr, no sustainable)</small></span>
+        </div>
+        <div class="layer">
+          <span class="swatch" style="background:#cb181d"></span>
+          <span class="name">Usable Power <small>(50yr)</small></span>
+        </div>
+        <div class="layer">
+          <span class="swatch" style="background:#21908d"></span>
+          <span class="name">Sustainable Heat Extraction Rate <small>(50yr)</small></span>
+        </div>
+        <div class="layer">
+          <span class="swatch" style="background:#cb181d"></span>
+          <span class="name">Usable Power under non-renewable rates</span>
+        </div>
+        <div class="layer">
+          <span class="swatch" style="background:#21908d"></span>
+          <span class="name">Max Sustainable Heat Extraction Rate <small>(100yr)</small></span>
+        </div>
+        <div class="layer">
+          <span class="swatch" style="background:#cb181d"></span>
+          <span class="name">Usable Power under renewable rates <small>(100yr)</small></span>
+        </div>
+        <p class="help-text">Toggle these inside the map (top-right control panel). Colors match the map: viridis for heat, reds for power.</p>
+      </div>
+
+      <div class="source-card">
+        <p><strong>Source:</strong> <a href="https://github.com/VaibhavJ97/VaibhavJ97.github.io" target="_blank">GitHub repository</a> · <a href="../files/Single_BHE_Analysis_GEE_CMIP6_Folium.ipynb" target="_blank">Jupyter Notebook</a></p>
+      </div>
+    </aside>
+
+    <div class="map-frame-wrapper">
+      <div class="map-frame-inner">
+        <iframe id="map-frame" src="about:blank" title="BHE map"></iframe>
+        <div class="loading-overlay" id="loader">
+          <div class="spinner"></div>
+          <span id="loader-text">Loading map...</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <h4>About this thesis</h4>
+      <p>Master's thesis submitted at Karlsruhe Institute of Technology (KIT). All code, data, and documentation are openly available for academic and research reuse under appropriate attribution.</p>
+    </div>
+    <div>
+      <h4>Navigate</h4>
+      <ul>
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="index.html">Master Thesis Project</a></li>
+        <li><a href="#explorer">Map Explorer</a></li>
+        <li><a href="#methods">Methodology</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Contact</h4>
+      <ul>
+        <li><a href="mailto:vaibhavjaiswal1234@gmail.com">vaibhavjaiswal1234@gmail.com</a></li>
+        <li><a href="https://github.com/VaibhavJ97/VaibhavJ97.github.io" target="_blank">GitHub Repository</a></li>
+        <li><a href="https://www.linkedin.com/in/vaibhavgeo/" target="_blank">LinkedIn</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 Vaibhav Jaiswal</span>
+    <span>KIT · M.Sc. Thesis</span>
+  </div>
+</footer>
+
+<script>
+// ============================================
+// MAP EXPLORER LOGIC
+// ============================================
+let currentMode = 'individual';
+
+function showLoader(text) {
+  document.getElementById('loader-text').textContent = text || 'Loading...';
+  document.getElementById('loader').classList.add('active');
+}
+function hideLoader() {
+  document.getElementById('loader').classList.remove('active');
+}
+
+function buildUrl() {
+  if (currentMode === 'individual') {
+    const model = document.getElementById('model-select').value;
+    const scenario = document.getElementById('scenario-individual').value;
+    return `individual/${model}_${scenario}.html`;
+  } else {
+    const stat = document.getElementById('stat-select').value;
+    const scenario = document.getElementById('scenario-ensemble').value;
+    return `ensemble/${scenario}_${stat}.html`;
+  }
+}
+
+function loadMap() {
+  const url = buildUrl();
+  showLoader(`Loading ${url}...`);
+  const iframe = document.getElementById('map-frame');
+  iframe.onload = () => hideLoader();
+  iframe.onerror = () => hideLoader();
+  iframe.src = url;
+}
+
+// Mode tabs
+document.querySelectorAll('.mode-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.mode-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    currentMode = tab.dataset.mode;
+    document.getElementById('individual-controls').style.display =
+      currentMode === 'individual' ? '' : 'none';
+    document.getElementById('ensemble-controls').style.display =
+      currentMode === 'ensemble' ? '' : 'none';
+    loadMap();
+  });
+});
+
+// Selectors
+['model-select', 'scenario-individual', 'stat-select', 'scenario-ensemble'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('change', loadMap);
+});
+
+// Initial
+loadMap();
+</script>
+
+</body>
+</html>
