@@ -628,6 +628,14 @@
         </select>
       </div>
 
+      <div class="control-group">
+        <label for="scale-mode">Color Scale Mode</label>
+        <select id="scale-mode">
+          <option value="auto" selected>Auto-stretch (visible variation)</option>
+          <option value="fixed">Fixed (2-55 W/m, 100-6000 W)</option>
+        </select>
+      </div>
+
       <!-- REAL layer toggles -->
       <div class="layer-toggles">
         <h4>Toggleable Layers</h4>
@@ -827,10 +835,41 @@ async function loadGermanyBoundary() {
 function renderArrayToImageURL(arr2d, layerType) {
   const rows = arr2d.length;
   const cols = arr2d[0].length;
-  const range = RANGES[layerType];
   const cmapName = currentColormaps[layerType];
   const colors = COLORMAPS[cmapName];
-  const scale = chroma.scale(colors).domain([range.min, range.max]);
+  
+  // Determine domain: either fixed (notebook scale) or auto-stretched
+  const stretchMode = document.getElementById('scale-mode')?.value || 'auto';
+  let domainMin, domainMax;
+  if (stretchMode === 'fixed') {
+    const range = RANGES[layerType];
+    domainMin = range.min;
+    domainMax = range.max;
+  } else {
+    // Auto-stretch: use actual data min/max
+    let actualMin = Infinity, actualMax = -Infinity;
+    for (const row of arr2d) {
+      for (const v of row) {
+        if (v !== null && v !== undefined && Number.isFinite(v)) {
+          if (v < actualMin) actualMin = v;
+          if (v > actualMax) actualMax = v;
+        }
+      }
+    }
+    if (actualMin === Infinity) {
+      // No data - fallback to fixed
+      const range = RANGES[layerType];
+      domainMin = range.min; domainMax = range.max;
+    } else {
+      domainMin = actualMin;
+      domainMax = actualMax;
+    }
+  }
+  const scale = chroma.scale(colors).domain([domainMin, domainMax]);
+  
+  // Store the active domain so legend can read it
+  if (!window._activeDomains) window._activeDomains = {};
+  window._activeDomains[layerType] = { min: domainMin, max: domainMax };
   
   // Step 1: Render small native-resolution canvas
   const smallCanvas = document.createElement('canvas');
@@ -973,7 +1012,27 @@ function updateLegendsAndSwatches() {
   document.getElementById('legend-bar-power').style.background =
     `linear-gradient(to right, ${powerColors.join(', ')})`;
   
-  // Mid-color swatches for layer toggles
+  // Update legend value labels based on scale mode
+  const stretchMode = document.getElementById('scale-mode')?.value || 'auto';
+  const heatLegendVals = document.querySelector('.legend-mini:nth-of-type(1) .vals');
+  const powerLegendVals = document.querySelector('.legend-mini:nth-of-type(2) .vals');
+  
+  if (stretchMode === 'auto' && window._activeDomains) {
+    const heatDom = window._activeDomains.heat;
+    const powerDom = window._activeDomains.power;
+    if (heatDom && heatLegendVals) {
+      const step = (heatDom.max - heatDom.min) / 4;
+      heatLegendVals.innerHTML = `<span>${heatDom.min.toFixed(1)}</span><span>${(heatDom.min+step).toFixed(1)}</span><span>${(heatDom.min+2*step).toFixed(1)}</span><span>${(heatDom.min+3*step).toFixed(1)}</span><span>${heatDom.max.toFixed(1)}</span>`;
+    }
+    if (powerDom && powerLegendVals) {
+      const step = (powerDom.max - powerDom.min) / 4;
+      powerLegendVals.innerHTML = `<span>${powerDom.min.toFixed(0)}</span><span>${(powerDom.min+step).toFixed(0)}</span><span>${(powerDom.min+2*step).toFixed(0)}</span><span>${(powerDom.min+3*step).toFixed(0)}</span><span>${powerDom.max.toFixed(0)}</span>`;
+    }
+  } else if (stretchMode === 'fixed') {
+    if (heatLegendVals) heatLegendVals.innerHTML = '<span>2</span><span>14</span><span>27</span><span>41</span><span>55</span>';
+    if (powerLegendVals) powerLegendVals.innerHTML = '<span>100</span><span>1575</span><span>3050</span><span>4525</span><span>6000</span>';
+  }
+  
   const heatMid = heatColors[Math.floor(heatColors.length / 2)];
   const powerMid = powerColors[Math.floor(powerColors.length / 2)];
   document.querySelectorAll('.swatch-heat').forEach(s => s.style.background = heatMid);
@@ -1071,6 +1130,10 @@ document.getElementById('cmap-heat').addEventListener('change', e => {
 });
 document.getElementById('cmap-power').addEventListener('change', e => {
   currentColormaps.power = e.target.value;
+  updateLegendsAndSwatches();
+  redrawAllLayers();
+});
+document.getElementById('scale-mode').addEventListener('change', () => {
   updateLegendsAndSwatches();
   redrawAllLayers();
 });
