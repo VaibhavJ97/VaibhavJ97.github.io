@@ -395,9 +395,9 @@
     <h1>Climate change & the future of <em>shallow geothermal</em> energy in Germany.</h1>
     <p class="lead">A semi-analytical model coupling CMIP6 climate projections with borehole heat exchanger physics, quantifying how a warming subsurface reshapes Germany's renewable heating potential through 2100.</p>
     <div class="hero-cta">
-      <a href="#explorer" class="btn btn-primary">
+      <a href="map-fullscreen.html" target="_blank" rel="noopener" class="btn btn-primary">
         Explore the live maps
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/><path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"/></svg>
       </a>
       <a href="#methods" class="btn btn-ghost">View methodology</a>
     </div>
@@ -539,6 +539,10 @@
     <div class="eyebrow">§ 04 - Interactive Explorer</div>
     <h2>Browse <em>every</em> map in this thesis.</h2>
     <p>Real BHE simulation output rendered live in your browser. Switch climate models, scenarios, color schemes, and toggle individual layers - all instantly.</p>
+    <a href="map-fullscreen.html" target="_blank" rel="noopener" class="btn btn-primary" style="margin-top: 24px;">
+      Open in fullscreen
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/><path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"/></svg>
+    </a>
   </div>
 
   <div class="explorer-container">
@@ -625,14 +629,6 @@
           <option value="hot">Hot</option>
           <option value="autumn">Autumn</option>
           <option value="copper">Copper</option>
-        </select>
-      </div>
-
-      <div class="control-group">
-        <label for="scale-mode">Color Scale Mode</label>
-        <select id="scale-mode">
-          <option value="auto" selected>Auto-stretch (visible variation)</option>
-          <option value="fixed">Fixed (2-55 W/m, 100-6000 W)</option>
         </select>
       </div>
 
@@ -838,38 +834,11 @@ function renderArrayToImageURL(arr2d, layerType) {
   const cmapName = currentColormaps[layerType];
   const colors = COLORMAPS[cmapName];
   
-  // Determine domain: either fixed (notebook scale) or auto-stretched
-  const stretchMode = document.getElementById('scale-mode')?.value || 'auto';
-  let domainMin, domainMax;
-  if (stretchMode === 'fixed') {
-    const range = RANGES[layerType];
-    domainMin = range.min;
-    domainMax = range.max;
-  } else {
-    // Auto-stretch: use actual data min/max
-    let actualMin = Infinity, actualMax = -Infinity;
-    for (const row of arr2d) {
-      for (const v of row) {
-        if (v !== null && v !== undefined && Number.isFinite(v)) {
-          if (v < actualMin) actualMin = v;
-          if (v > actualMax) actualMax = v;
-        }
-      }
-    }
-    if (actualMin === Infinity) {
-      // No data - fallback to fixed
-      const range = RANGES[layerType];
-      domainMin = range.min; domainMax = range.max;
-    } else {
-      domainMin = actualMin;
-      domainMax = actualMax;
-    }
-  }
+  // Always use fixed scale: 2-55 W/m for heat, 100-6000 W for power (matches notebook)
+  const range = RANGES[layerType];
+  const domainMin = range.min;
+  const domainMax = range.max;
   const scale = chroma.scale(colors).domain([domainMin, domainMax]);
-  
-  // Store the active domain so legend can read it
-  if (!window._activeDomains) window._activeDomains = {};
-  window._activeDomains[layerType] = { min: domainMin, max: domainMax };
   
   // Step 1: Render small native-resolution canvas
   const smallCanvas = document.createElement('canvas');
@@ -1012,26 +981,11 @@ function updateLegendsAndSwatches() {
   document.getElementById('legend-bar-power').style.background =
     `linear-gradient(to right, ${powerColors.join(', ')})`;
   
-  // Update legend value labels based on scale mode
-  const stretchMode = document.getElementById('scale-mode')?.value || 'auto';
+  // Always show fixed legend values (matches notebook)
   const heatLegendVals = document.querySelector('.legend-mini:nth-of-type(1) .vals');
   const powerLegendVals = document.querySelector('.legend-mini:nth-of-type(2) .vals');
-  
-  if (stretchMode === 'auto' && window._activeDomains) {
-    const heatDom = window._activeDomains.heat;
-    const powerDom = window._activeDomains.power;
-    if (heatDom && heatLegendVals) {
-      const step = (heatDom.max - heatDom.min) / 4;
-      heatLegendVals.innerHTML = `<span>${heatDom.min.toFixed(1)}</span><span>${(heatDom.min+step).toFixed(1)}</span><span>${(heatDom.min+2*step).toFixed(1)}</span><span>${(heatDom.min+3*step).toFixed(1)}</span><span>${heatDom.max.toFixed(1)}</span>`;
-    }
-    if (powerDom && powerLegendVals) {
-      const step = (powerDom.max - powerDom.min) / 4;
-      powerLegendVals.innerHTML = `<span>${powerDom.min.toFixed(0)}</span><span>${(powerDom.min+step).toFixed(0)}</span><span>${(powerDom.min+2*step).toFixed(0)}</span><span>${(powerDom.min+3*step).toFixed(0)}</span><span>${powerDom.max.toFixed(0)}</span>`;
-    }
-  } else if (stretchMode === 'fixed') {
-    if (heatLegendVals) heatLegendVals.innerHTML = '<span>2</span><span>14</span><span>27</span><span>41</span><span>55</span>';
-    if (powerLegendVals) powerLegendVals.innerHTML = '<span>100</span><span>1575</span><span>3050</span><span>4525</span><span>6000</span>';
-  }
+  if (heatLegendVals) heatLegendVals.innerHTML = '<span>2</span><span>14</span><span>27</span><span>41</span><span>55</span>';
+  if (powerLegendVals) powerLegendVals.innerHTML = '<span>100</span><span>1575</span><span>3050</span><span>4525</span><span>6000</span>';
   
   const heatMid = heatColors[Math.floor(heatColors.length / 2)];
   const powerMid = powerColors[Math.floor(powerColors.length / 2)];
@@ -1130,10 +1084,6 @@ document.getElementById('cmap-heat').addEventListener('change', e => {
 });
 document.getElementById('cmap-power').addEventListener('change', e => {
   currentColormaps.power = e.target.value;
-  updateLegendsAndSwatches();
-  redrawAllLayers();
-});
-document.getElementById('scale-mode').addEventListener('change', () => {
   updateLegendsAndSwatches();
   redrawAllLayers();
 });
