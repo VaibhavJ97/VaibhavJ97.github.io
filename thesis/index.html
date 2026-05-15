@@ -508,21 +508,21 @@
   align-items: center;
   gap: 10px;
   padding: 12px 18px 12px 14px;
-  background: var(--ink);
+  background: var(--accent);
   color: var(--bg);
-  border: 1px solid var(--ink);
+  border: 2px solid var(--bg);
   border-radius: 100px;
   font-family: 'Inter', sans-serif;
   font-size: 0.92rem;
   font-weight: 500;
   cursor: pointer;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.18), 0 2px 6px rgba(0,0,0,0.1);
-  transition: background 0.2s, transform 0.15s, opacity 0.2s, visibility 0.2s;
+  box-shadow: 0 8px 24px rgba(184, 80, 30, 0.35), 0 3px 10px rgba(0,0,0,0.18);
+  transition: background 0.2s, transform 0.15s, opacity 0.2s, visibility 0.2s, box-shadow 0.2s;
 }
 #geochat-fab:hover {
-  background: var(--accent);
-  border-color: var(--accent);
+  background: var(--accent-deep);
   transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(184, 80, 30, 0.45), 0 4px 12px rgba(0,0,0,0.22);
 }
 #geochat-fab svg { flex-shrink: 0; }
 #geochat-fab.hidden {
