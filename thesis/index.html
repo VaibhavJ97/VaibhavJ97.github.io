@@ -14,6 +14,17 @@
 <link rel="stylesheet" href="../assets/style.css">
 
 <style>
+/* ============ STICKY TOPBAR (thesis page only) ============ */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(250, 247, 242, 0.92);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+
 /* ============ THESIS HERO ============ */
 .thesis-hero {
   min-height: 70vh;
@@ -487,6 +498,134 @@
   image-rendering: -moz-crisp-edges !important;
   image-rendering: crisp-edges !important;
 }
+/* ============ FLOATING GEOCHAT WIDGET ============ */
+#geochat-fab {
+  position: fixed;
+  left: 24px;
+  bottom: 24px;
+  z-index: 999;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 18px 12px 14px;
+  background: var(--ink);
+  color: var(--bg);
+  border: 1px solid var(--ink);
+  border-radius: 100px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.92rem;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.18), 0 2px 6px rgba(0,0,0,0.1);
+  transition: background 0.2s, transform 0.15s, opacity 0.2s, visibility 0.2s;
+}
+#geochat-fab:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+#geochat-fab svg { flex-shrink: 0; }
+#geochat-fab.hidden {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  pointer-events: none;
+}
+
+#geochat-panel {
+  position: fixed;
+  left: 24px;
+  bottom: 24px;
+  z-index: 999;
+  width: 420px;
+  height: 620px;
+  max-width: calc(100vw - 48px);
+  max-height: calc(100vh - 48px);
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.25), 0 6px 16px rgba(0,0,0,0.12);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px) scale(0.96);
+  transform-origin: bottom left;
+  transition: opacity 0.22s, transform 0.22s, visibility 0.22s;
+}
+#geochat-panel.open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+}
+
+.geochat-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  background: var(--ink);
+  color: var(--bg);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  flex-shrink: 0;
+}
+.geochat-panel-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+  color: var(--bg);
+}
+.geochat-panel-title em {
+  font-style: italic;
+  font-family: 'Fraunces', serif;
+  color: rgba(250, 247, 242, 0.6);
+  font-weight: 300;
+  letter-spacing: 0;
+}
+.geochat-panel-title .dot {
+  width: 8px;
+  height: 8px;
+  background: var(--accent);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--accent);
+}
+.geochat-panel-actions {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+.geochat-expand, .geochat-close {
+  background: none;
+  border: none;
+  color: rgba(250, 247, 242, 0.7);
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, color 0.15s;
+}
+.geochat-expand:hover, .geochat-close:hover {
+  background: rgba(255,255,255,0.1);
+  color: var(--bg);
+}
+#geochat-iframe {
+  flex: 1;
+  width: 100%;
+  border: none;
+  background: var(--bg);
+}
+
+@media (max-width: 600px) {
+  #geochat-fab { left: 16px; bottom: 16px; padding: 10px 16px 10px 12px; font-size: 0.85rem; }
+  #geochat-panel { left: 12px; right: 12px; bottom: 12px; width: auto; height: calc(100vh - 24px); }
+}
+
 </style>
 </head>
 <body>
@@ -1253,6 +1392,69 @@ document.querySelectorAll('.layer-toggle input[type="checkbox"]').forEach(cb => 
 updateLegendsAndSwatches();
 loadGermanyBoundary();
 loadData();
+</script>
+
+<!-- ============ FLOATING GEOCHAT WIDGET ============ -->
+<button id="geochat-fab" aria-label="Open GeoChat" title="Ask GeoChat about this thesis">
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+  <span>Ask GeoChat</span>
+</button>
+
+<div id="geochat-panel" aria-hidden="true">
+  <div class="geochat-panel-header">
+    <div class="geochat-panel-title">
+      <span class="dot"></span>
+      GeoChat
+      <em>about this thesis</em>
+    </div>
+    <div class="geochat-panel-actions">
+      <a href="https://vaibhavj97-geochat.vercel.app" target="_blank" rel="noopener" class="geochat-expand" title="Open in full window">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/><path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"/></svg>
+      </a>
+      <button class="geochat-close" aria-label="Close GeoChat">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+  <iframe id="geochat-iframe" title="GeoChat" loading="lazy" src=""></iframe>
+</div>
+
+<script>
+  (function() {
+    const fab = document.getElementById('geochat-fab');
+    const panel = document.getElementById('geochat-panel');
+    const iframe = document.getElementById('geochat-iframe');
+    const closeBtn = panel.querySelector('.geochat-close');
+    const GEOCHAT_URL = 'https://vaibhavj97-geochat.vercel.app/';
+    let isOpen = false;
+    let iframeLoaded = false;
+
+    function open() {
+      if (!iframeLoaded) {
+        iframe.src = GEOCHAT_URL;
+        iframeLoaded = true;
+      }
+      panel.classList.add('open');
+      panel.setAttribute('aria-hidden', 'false');
+      fab.classList.add('hidden');
+      isOpen = true;
+    }
+
+    function close() {
+      panel.classList.remove('open');
+      panel.setAttribute('aria-hidden', 'true');
+      fab.classList.remove('hidden');
+      isOpen = false;
+    }
+
+    fab.addEventListener('click', open);
+    closeBtn.addEventListener('click', close);
+
+    // Close on Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && isOpen) close();
+    });
+  })();
 </script>
 
 </body>
