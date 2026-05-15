@@ -187,9 +187,14 @@
 }
 .exploring-tags {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  padding-bottom: 4px;
 }
+.exploring-tags::-webkit-scrollbar { height: 4px; }
+.exploring-tags::-webkit-scrollbar-thumb { background: var(--line); border-radius: 2px; }
 .exploring-tags span {
   background: var(--paper);
   border: 1px solid var(--line);
@@ -198,6 +203,8 @@
   color: var(--ink-soft);
   font-family: 'Inter', sans-serif;
   border-radius: 2px;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 @media (max-width: 720px) { .exploring-strip { padding: 20px 20px; } }
 
@@ -271,17 +278,37 @@
   background: var(--paper); border: 1px solid var(--line); padding: 60px 50px;
   display: grid; grid-template-columns: 2fr 1fr; gap: 50px; align-items: center;
   position: relative; overflow: hidden;
+  text-decoration: none; color: var(--ink);
+  transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+}
+.cta-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(184, 80, 30, 0.10);
+}
+.cta-card:hover .cta-arrow {
+  color: var(--accent-deep);
+  transform: translateX(8px);
 }
 .cta-card::before {
   content: ""; position: absolute; top: 0; right: 0; bottom: 0; width: 50%;
   background: radial-gradient(circle at 80% 50%, var(--accent) 0%, transparent 65%);
   opacity: 0.08; pointer-events: none;
+  transition: opacity 0.2s;
 }
+.cta-card:hover::before { opacity: 0.18; }
 .cta-card .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin-bottom: 18px; }
-.cta-card h2 { font-size: clamp(1.6rem, 3.5vw, 2.4rem); margin-bottom: 18px; font-weight: 400; }
+.cta-card h2 { font-size: clamp(1.6rem, 3.5vw, 2.4rem); margin-bottom: 18px; font-weight: 400; color: var(--ink); }
 .cta-card h2 em { font-style: italic; color: var(--accent-deep); }
 .cta-card p { color: var(--ink-soft); margin-bottom: 28px; font-size: 1rem; }
-.cta-arrow { display: flex; justify-content: center; align-items: center; font-size: 5rem; color: var(--accent); font-family: 'Fraunces', serif; font-weight: 300; position: relative; z-index: 1; }
+.cta-arrow {
+  display: flex; justify-content: center; align-items: center;
+  font-size: 5rem; color: var(--accent);
+  font-family: 'Fraunces', serif; font-weight: 300;
+  position: relative; z-index: 1;
+  transition: color 0.2s, transform 0.2s;
+}
 @media (max-width: 720px) { .cta-card { grid-template-columns: 1fr; padding: 40px 24px; gap: 24px; } .cta-arrow { font-size: 3rem; } }
 
 /* Availability / Open to roles callout */
@@ -450,6 +477,7 @@
     <a href="https://vaibhavj97-thesis.vercel.app">Master Thesis Project</a>
     <a href="https://vaibhavj97-geochat.vercel.app" target="_blank" rel="noopener">GeoChat</a>
     <a href="https://vaibhavj97-bhe.vercel.app" target="_blank" rel="noopener">BHE Recommender</a>
+    <a href="https://github.com/VaibhavJ97" target="_blank" rel="noopener" aria-label="GitHub" title="GitHub profile">GitHub</a>
   </nav>
 </header>
 
@@ -497,7 +525,7 @@
   <div class="about-grid">
     <div class="label">§ About</div>
     <div class="about-text">
-      <p><span class="drop">I</span> work at the intersection of <strong>software development, data engineering, and applied geosciences</strong>. As a Working Student at IONOS SE in Karlsruhe, I build responsive HTML / CSS / JavaScript templates in a multi-brand TYPO3 environment and integrate AI tools (Claude, Copilot, MCP servers) into development workflows.</p>
+      <p>I work at the intersection of <strong>software development, data engineering, and applied geosciences</strong>. As a Working Student at IONOS SE in Karlsruhe, I build responsive HTML / CSS / JavaScript templates in a multi-brand TYPO3 environment and integrate AI tools (Claude, Copilot, MCP servers) into development workflows.</p>
       <p>In parallel, I built a <strong>4-site portfolio with serverless backends and AI integrations</strong>: an interactive thesis explorer with live map rendering, a Gemini-powered chatbot grounded in my research, and a borehole heat exchanger feasibility tool that generates PDF reports. Source on <a href="https://github.com/VaibhavJ97" target="_blank">GitHub</a>.</p>
       <p>My Master's thesis at <strong>KIT</strong> developed Python models combining CMIP6 climate projections with borehole heat exchanger physics to quantify how a warming climate reshapes geothermal energy potential across Germany. I previously worked on geothermal exploration at Hydrosion GmbH (lithium-from-brine, EnBW Bruchsal plant) and supported lab analyses at KIT.</p>
       <p>I'm interested in roles that combine <strong>Python, web development, data engineering, and AI integration</strong>, with bonus points for renewable energy, climate, or geospatial domains.</p>
@@ -518,47 +546,35 @@
   <div style="max-width: 1400px; margin: 0 auto; padding: 0 40px;">
     <div class="cta-stack">
 
-      <div class="cta-card">
+      <a href="https://vaibhavj97-thesis.vercel.app" class="cta-card">
         <div>
           <div class="eyebrow">→ Featured Project</div>
           <h2>Climate change & <em>geothermal energy</em> in Germany.</h2>
           <p>My master's thesis develops a semi-analytical model coupling CMIP6 climate projections with borehole heat exchanger physics - quantifying how subsurface warming reshapes Germany's renewable heating potential through 2100. Now also available as a <strong>live interactive web map</strong>.</p>
           <div class="tags"><span>Python</span><span>Leaflet.js</span><span>chroma-js</span><span>Google Earth Engine</span><span>JSON pipeline</span><span>Vercel</span></div>
-          <a href="https://vaibhavj97-thesis.vercel.app" class="btn btn-primary">
-            View the thesis
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
-          </a>
         </div>
         <div class="cta-arrow">→</div>
-      </div>
+      </a>
 
-      <div class="cta-card">
+      <a href="https://vaibhavj97-geochat.vercel.app" target="_blank" rel="noopener" class="cta-card">
         <div>
           <div class="eyebrow">→ AI Project · NEW</div>
           <h2>Ask my thesis with <em>GeoChat</em>.</h2>
           <p>An AI chatbot grounded in my Master's thesis data. Ask about methodology, scenarios, results, or what the numbers mean - and get answers built on real findings, not generic responses. Powered by Google Gemini, hosted on Vercel.</p>
           <div class="tags"><span>Vercel Serverless</span><span>Node.js</span><span>Google Gemini API</span><span>Vanilla JS</span><span>REST API</span></div>
-          <a href="https://vaibhavj97-geochat.vercel.app" target="_blank" rel="noopener" class="btn btn-primary">
-            Try GeoChat
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/><path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"/></svg>
-          </a>
         </div>
         <div class="cta-arrow">→</div>
-      </div>
+      </a>
 
-      <div class="cta-card">
+      <a href="https://vaibhavj97-bhe.vercel.app" target="_blank" rel="noopener" class="cta-card">
         <div>
           <div class="eyebrow">→ AI Project · NEW</div>
           <h2>Where should you drill? <em>BHE Recommender</em>.</h2>
           <p>An interactive geothermal feasibility tool. Click anywhere on Germany to read the sustainable heat-extraction rate at that exact location, then get a recommended borehole depth, expected kW output, full cost breakdown, and downloadable PDF report. Built directly on my thesis data, 5 km resolution. AI interpretation included.</p>
           <div class="tags"><span>Vercel Serverless</span><span>Node.js</span><span>Leaflet.js</span><span>jsPDF</span><span>Google Gemini API</span><span>Cost modeling</span></div>
-          <a href="https://vaibhavj97-bhe.vercel.app" target="_blank" rel="noopener" class="btn btn-primary">
-            Open BHE Recommender
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/><path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"/></svg>
-          </a>
         </div>
         <div class="cta-arrow">→</div>
-      </div>
+      </a>
 
     </div>
   </div>
@@ -655,15 +671,13 @@
 
 <!-- Currently exploring strip -->
 <div class="exploring-strip">
-  <div class="exploring-label">→ Currently exploring (through my portfolio projects)</div>
+  <div class="exploring-label">→ Currently exploring (through portfolio projects)</div>
   <div class="exploring-tags">
-    <span>Node.js & serverless functions</span>
-    <span>AI / LLM API integration (Gemini, Claude)</span>
-    <span>MCP server integration</span>
-    <span>Vercel architecture patterns</span>
-    <span>Interactive geospatial visualization</span>
-    <span>Client-side PDF generation (jsPDF)</span>
-    <span>Custom JSON data pipelines</span>
+    <span>Node.js & serverless</span>
+    <span>LLM API integration</span>
+    <span>MCP servers</span>
+    <span>Interactive geospatial JS</span>
+    <span>Custom JSON pipelines</span>
   </div>
 </div>
 
@@ -733,17 +747,14 @@
       <div class="timeline-content">
         <h3>Working Student - Geothermal Exploration & Data Analysis</h3>
         <div class="org">Hydrosion GmbH (Bruchsal Geothermal Power Plant - EnBW) · Munich, Germany</div>
-        <p>Conducted hydrogeochemical investigations and supported direct lithium extraction projects on geothermal brine.</p>
+        <p>Hydrogeochemical investigations and data analysis supporting direct lithium extraction from geothermal brine across 2 major projects (Li+Fluids and UnLimited).</p>
         <ul>
-          <li>Conducted hydrogeochemical investigations & sampling from deep geothermal sources</li>
-          <li>Worked on data processing and analysis for direct-lithium-extraction from geothermal brine on Li+Fluids and UnLimited projects</li>
-          <li>Performed geospatial data analysis in QGIS to support geothermal systems assessment across Germany</li>
-          <li>Created interactive Power BI dashboards with data storytelling for project stakeholders</li>
-          <li>Conducted quantitative data analysis using Excel and structured datasets for geothermal energy projects</li>
-          <li>Produced 5+ technical reports summarizing project progress, insights, and operational data</li>
-          <li>Supported technical documentation, reporting consistency, and internal communication across project teams</li>
-          <li>Assisted with documentation and environmental compliance support related to the JORC study</li>
-          <li>Contributed to process coordination, equipment logistics, and stock management with project partners</li>
+          <li>Processed and analyzed geochemical data for 2 direct-lithium-extraction projects (Li+Fluids, UnLimited) on geothermal brine from the EnBW Bruchsal plant</li>
+          <li>Built <strong>interactive Power BI dashboards</strong> for project stakeholders, turning raw geochemistry results into data stories</li>
+          <li>Performed <strong>geospatial analysis in QGIS</strong> to support geothermal systems assessment across Germany</li>
+          <li>Conducted hydrogeochemical sampling from deep geothermal sources and quantitative analysis using Excel and structured datasets</li>
+          <li>Produced <strong>5+ technical reports</strong> summarizing project progress, insights, and operational data; supported JORC-study documentation</li>
+          <li>Coordinated process logistics, equipment, and inventory with external project partners</li>
         </ul>
         
         <div class="tags"><span>Geothermal</span><span>Hydrogeochemistry</span><span>QGIS</span><span>Power BI</span><span>Lithium</span></div>
@@ -757,11 +768,10 @@
         <div class="org">Institute of Applied Geosciences · KIT · Germany</div>
         <p>Lab work on borehole heat exchanger materials and scientific visualization for academic publications.</p>
         <ul>
-          <li>Performed laboratory analyses on borehole heat exchanger and grouting material samples</li>
-          <li>Tested thermal conductivity, porosity, saturation, grain density, and wet bulk density</li>
-          <li>Designed and digitized 40+ maps, diagrams, and scientific visual assets using CorelDraw</li>
-          <li>Structured, documented, and evaluated 100+ datasets using Excel and Word</li>
-          <li>Performed petrographic and thin section analysis using microscopy and ImageJ for grain size & textural characterization</li>
+          <li>Performed laboratory analyses on <strong>borehole heat exchanger and grouting material samples</strong>, testing thermal conductivity, porosity, saturation, grain density, and wet bulk density</li>
+          <li>Designed and digitized <strong>40+ maps, diagrams, and scientific visual assets</strong> using CorelDraw for academic papers and presentations</li>
+          <li>Structured, documented, and evaluated <strong>100+ datasets</strong> using Excel and Word, building reusable data-organization templates for the lab</li>
+          <li>Performed petrographic and thin-section analysis using microscopy and ImageJ for grain size and textural characterization</li>
         </ul>
         
         <div class="tags"><span>Lab Analysis</span><span>BHE</span><span>Petrography</span><span>CorelDraw</span></div>
@@ -781,7 +791,7 @@
     <div class="timeline-row">
       <div class="year">10/2021 - 02/2026</div>
       <div class="timeline-content">
-        <h3>M.Sc. Applied Geosciences (Grade: 2.5)</h3>
+        <h3>M.Sc. Applied Geosciences (Graduated Feb 2026, Grade: 2.5)</h3>
         <div class="org">Karlsruhe Institute of Technology (KIT) · Germany</div>
         <p><strong>Thesis:</strong> Impact of Climate Change on the Geothermal Potential of Closed Systems Using GIS and Python - supervised by PD Dr. Kathrin Menberg & Dr. Susanne Benz.</p>
         <ul>
@@ -865,79 +875,10 @@
   </div>
 </section>
 
-<!-- ============ INTERNSHIPS / RESEARCH PROJECTS ============ -->
-<section id="internships">
-  <div class="section-header">
-    <div class="eyebrow">§ 06 - Internships & Research Projects</div>
-    <h2>Early <em>research</em> experience.</h2>
-  </div>
-
-  <div class="timeline">
-    <div class="timeline-row">
-      <div class="year">07/2021 - 08/2021</div>
-      <div class="timeline-content">
-        <h3>Summer Training - Petrographical Characterization of Lignite Deposits</h3>
-        <div class="org">Birbal Sahni Institute of Palaeosciences · Lucknow, India</div>
-        <p><strong>Title:</strong> Petrographical Characterization of the Lignite Deposits of Mangrol, Cambay Basin, Gujarat.</p>
-        <ul>
-          <li>Conducted petrographical characterization of lignite deposits using coal petrography & organic geochemistry concepts</li>
-          <li>Interpreted depositional conditions and hydrocarbon potential of Cambay Basin lignite deposits</li>
-          <li>Applied sedimentary basin analysis and organic matter evaluation</li>
-        </ul>
-
-      </div>
-    </div>
-
-    <div class="timeline-row">
-      <div class="year">06/2021 - 07/2021</div>
-      <div class="timeline-content">
-        <h3>Summer Internship - Geology & Reservoir Engineering</h3>
-        <div class="org">Oil India Limited · Assam, India</div>
-        <p><strong>Title:</strong> Overview of Geology and Reservoir Engineering Concepts.</p>
-        <ul>
-          <li>Gained practical exposure to geophysical survey methods, reservoir engineering, petrophysical properties, and coring techniques</li>
-          <li>Developed understanding of how geological, petrophysical, and engineering data combine to evaluate reservoir quality</li>
-        </ul>
-        
-      </div>
-    </div>
-
-    <div class="timeline-row">
-      <div class="year">06/2021 - 07/2021</div>
-      <div class="timeline-content">
-        <h3>Industrial Training - Hydrocarbon Exploration</h3>
-        <div class="org">Oil and Natural Gas Corporation (ONGC) · India</div>
-        <p><strong>Title:</strong> Tools & Techniques Used for Hydrocarbon Exploration in Chattisgarh Basin.</p>
-        <ul>
-          <li>Studied surface and subsurface exploration techniques in frontier basins</li>
-          <li>Learned geological mapping, subsurface interpretation, and basin evaluation workflows</li>
-          <li>Gained exposure to well logging, drilling operations, rig systems, and hydrocarbon exploration methods</li>
-        </ul>
-        
-      </div>
-    </div>
-
-    <div class="timeline-row">
-      <div class="year">06/2019</div>
-      <div class="timeline-content">
-        <h3>Summer Internship - Petrography to Petrogenesis</h3>
-        <div class="org">Kumaun University · Nainital, India</div>
-        <p><strong>Title:</strong> Petrography to petrogenesis of granitoids.</p>
-        <ul>
-          <li>Prepared rock thin sections and analyzed mineral optical properties using a light microscope</li>
-          <li>Identified mineral assemblages and textural relationships in granitoid samples</li>
-          <li>Applied IUGS classification principles and petrographic interpretation methods</li>
-        </ul>
-
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- ============ CERTIFICATIONS ============ -->
 <section id="certifications">
   <div class="section-header">
-    <div class="eyebrow">§ 07 - Certifications</div>
+    <div class="eyebrow">§ 06 - Certifications</div>
     <h2>Continuous <em>learning</em>.</h2>
     <p>Continuous learning across data science, geosciences, web development, and project management.</p>
   </div>
@@ -1005,7 +946,7 @@
   <div class="footer-inner">
     <div>
       <h4>Let's connect</h4>
-      <p>Open to opportunities in geospatial data science, renewable energy modeling, climate research, and full-stack web development. I respond to most messages within a few days.</p>
+      <p>Open to junior / mid roles in Python, web development, data engineering, and AI integration. Bonus domains: renewable energy, climate, geospatial. Based in Karlsruhe, valid German work permit, 1-month notice period. I respond to most messages within a few days.</p>
     </div>
     <div>
       <h4>Navigate</h4>
