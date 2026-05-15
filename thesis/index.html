@@ -141,6 +141,63 @@
   .geochat-banner-inner { gap: 18px; }
 }
 
+/* ============ BHE BANNER ============ */
+.bhe-banner {
+  background: var(--paper);
+  color: var(--ink);
+  border-bottom: 1px solid var(--line);
+  padding: 28px 40px;
+  position: relative;
+  overflow: hidden;
+}
+.bhe-banner::before {
+  content: "";
+  position: absolute;
+  top: 0; right: 0; bottom: 0; width: 60%;
+  background: radial-gradient(circle at 80% 50%, var(--accent) 0%, transparent 65%);
+  opacity: 0.10;
+  pointer-events: none;
+}
+.bhe-banner .geochat-banner-inner {
+  position: relative;
+  z-index: 1;
+}
+.bhe-banner .eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+.bhe-banner h3 {
+  font-size: 1.4rem;
+  font-weight: 400;
+  margin-bottom: 6px;
+  color: var(--ink);
+  font-family: 'Fraunces', serif;
+}
+.bhe-banner h3 em {
+  font-style: italic;
+  color: var(--accent-deep);
+  font-weight: 300;
+}
+.bhe-banner p {
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+  line-height: 1.6;
+  max-width: 640px;
+}
+.bhe-banner .btn-geochat {
+  background: var(--ink);
+  color: var(--bg);
+}
+.bhe-banner .btn-geochat:hover { background: var(--accent); }
+@media (max-width: 720px) {
+  .bhe-banner { padding: 24px 20px; }
+  .bhe-banner h3 { font-size: 1.2rem; }
+}
+
 /* ============ ABSTRACT ============ */
 .abstract-section {
   background: var(--paper);
@@ -464,6 +521,7 @@
     <a href="../index.html">Home</a>
     <a href="index.html" class="active">Master Thesis Project</a>
     <a href="https://vaibhavj97-geochat.vercel.app" target="_blank" rel="noopener">GeoChat</a>
+    <a href="https://vaibhavj97-bhe.vercel.app" target="_blank" rel="noopener">BHE Recommender</a>
   </nav>
 </header>
 
@@ -548,6 +606,21 @@
     </div>
     <a href="https://vaibhavj97-geochat.vercel.app" target="_blank" rel="noopener" class="btn-geochat">
       Try GeoChat
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/><path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"/></svg>
+    </a>
+  </div>
+</section>
+
+<!-- ============ BHE BANNER ============ -->
+<section class="bhe-banner">
+  <div class="geochat-banner-inner">
+    <div class="text">
+      <div class="eyebrow">→ AI Project · NEW</div>
+      <h3>Try the data interactively. <em>BHE Recommender</em>.</h3>
+      <p>Click anywhere on Germany and get a recommended borehole depth, expected sustainable output, full cost breakdown, and a downloadable PDF report. Built on this thesis's 5 km resolution data, with AI interpretation of every site.</p>
+    </div>
+    <a href="https://vaibhavj97-bhe.vercel.app" target="_blank" rel="noopener" class="btn-geochat">
+      Open BHE Recommender
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/><path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"/></svg>
     </a>
   </div>
@@ -821,6 +894,7 @@
         <li><a href="#explorer">Map Explorer</a></li>
         <li><a href="#methods">Methodology</a></li>
         <li><a href="https://vaibhavj97-geochat.vercel.app" target="_blank" rel="noopener">GeoChat (AI)</a></li>
+        <li><a href="https://vaibhavj97-bhe.vercel.app" target="_blank" rel="noopener">BHE Recommender</a></li>
       </ul>
     </div>
     <div>
