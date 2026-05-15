@@ -6,6 +6,19 @@
 <title>Vaibhav Jaiswal - Web Developer · Python · GIS · Geoscientist</title>
 <meta name="description" content="Python and web developer with a Master's in Applied Geosciences from KIT. Building AI-integrated tools, interactive maps, and Vercel serverless apps. Based in Karlsruhe, Germany." />
 
+<!-- Open Graph tags for LinkedIn / Twitter / WhatsApp previews -->
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Vaibhav Jaiswal - Web Developer · Python · GIS · Geoscientist" />
+<meta property="og:description" content="Python and web developer with a Master's in Applied Geosciences from KIT. Building AI-integrated tools, interactive maps, and Vercel serverless apps." />
+<meta property="og:url" content="https://vaibhavj97.vercel.app" />
+<meta property="og:site_name" content="Vaibhav Jaiswal" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Vaibhav Jaiswal - Web Developer · Python · GIS" />
+<meta name="twitter:description" content="Python and web developer with a Master's in Applied Geosciences from KIT." />
+
+<!-- Inline SVG favicon (VJ initials in accent color) -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23fffaf3'/%3E%3Ctext x='50' y='72' text-anchor='middle' fill='%23b8501e' font-family='Georgia, serif' font-weight='700' font-style='italic' font-size='70'%3EV%3C/text%3E%3C/svg%3E" />
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,800;1,9..144,400&family=JetBrains+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -155,6 +168,39 @@
 .skill-block ul li .level { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--ink-faint); }
 @media (max-width: 900px) { .skills-grid { grid-template-columns: 1fr; } .skill-block { border-right: none; } }
 
+/* Currently exploring strip - sits below skills-grid */
+.exploring-strip {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 28px 40px;
+  background: var(--bg-alt);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.exploring-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 14px;
+}
+.exploring-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.exploring-tags span {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  padding: 6px 12px;
+  font-size: 0.84rem;
+  color: var(--ink-soft);
+  font-family: 'Inter', sans-serif;
+  border-radius: 2px;
+}
+@media (max-width: 720px) { .exploring-strip { padding: 20px 20px; } }
+
 /* Skills detail */
 .skills-detail {
   padding: 60px 40px;
@@ -237,6 +283,101 @@
 .cta-card p { color: var(--ink-soft); margin-bottom: 28px; font-size: 1rem; }
 .cta-arrow { display: flex; justify-content: center; align-items: center; font-size: 5rem; color: var(--accent); font-family: 'Fraunces', serif; font-weight: 300; position: relative; z-index: 1; }
 @media (max-width: 720px) { .cta-card { grid-template-columns: 1fr; padding: 40px 24px; gap: 24px; } .cta-arrow { font-size: 3rem; } }
+
+/* Availability / Open to roles callout */
+.availability-section {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 80px 40px;
+}
+.availability-card {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 48px 56px;
+  border-radius: 4px;
+  position: relative;
+  overflow: hidden;
+}
+.availability-card::before {
+  content: "";
+  position: absolute;
+  top: 0; right: 0; bottom: 0; width: 45%;
+  background: radial-gradient(circle at 80% 50%, var(--accent) 0%, transparent 70%);
+  opacity: 0.18;
+  pointer-events: none;
+}
+.availability-card > * { position: relative; z-index: 1; }
+.availability-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 18px;
+}
+.availability-card h2 {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+  font-weight: 400;
+  margin: 0 0 30px;
+  line-height: 1.15;
+}
+.availability-card h2 em {
+  font-style: italic;
+  color: var(--accent);
+  font-weight: 300;
+}
+.availability-meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px 40px;
+  margin-bottom: 32px;
+}
+.availability-meta .meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.availability-meta .meta-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+  text-transform: uppercase;
+}
+.availability-meta .meta-value {
+  font-size: 0.92rem;
+  color: rgba(255, 250, 243, 0.88);
+  line-height: 1.5;
+}
+.availability-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.availability-card .btn-primary {
+  background: var(--accent);
+  color: var(--paper);
+  border-color: var(--accent);
+}
+.availability-card .btn-primary:hover {
+  background: var(--accent-deep);
+  border-color: var(--accent-deep);
+}
+.availability-card .btn-ghost {
+  color: var(--paper);
+  border-color: rgba(255, 250, 243, 0.4);
+}
+.availability-card .btn-ghost:hover {
+  background: var(--paper);
+  color: var(--ink);
+  border-color: var(--paper);
+}
+@media (max-width: 720px) {
+  .availability-section { padding: 50px 20px; }
+  .availability-card { padding: 32px 24px; }
+  .availability-meta { grid-template-columns: 1fr; gap: 14px; }
+}
 
 /* Stack of CTA cards (Featured Project + GeoChat) */
 .cta-stack { display: grid; gap: 20px; }
@@ -364,10 +505,107 @@
   </div>
 </section>
 
+<!-- ============ FEATURED WORK CTA ============ -->
+<section id="featured-work">
+  <div class="section-header">
+    <div class="eyebrow">§ 02 - Featured Work</div>
+    <h2>What I've <em>shipped</em>.</h2>
+    <p>4 connected web applications, 2 with serverless backends, 2 with AI integrations. All deployed and live. Source on GitHub.</p>
+  </div>
+</section>
+
+<section class="cta-section" style="max-width: none; padding-left: 0; padding-right: 0;">
+  <div style="max-width: 1400px; margin: 0 auto; padding: 0 40px;">
+    <div class="cta-stack">
+
+      <div class="cta-card">
+        <div>
+          <div class="eyebrow">→ Featured Project</div>
+          <h2>Climate change & <em>geothermal energy</em> in Germany.</h2>
+          <p>My master's thesis develops a semi-analytical model coupling CMIP6 climate projections with borehole heat exchanger physics - quantifying how subsurface warming reshapes Germany's renewable heating potential through 2100. Now also available as a <strong>live interactive web map</strong>.</p>
+          <div class="tags"><span>Python</span><span>Leaflet.js</span><span>chroma-js</span><span>Google Earth Engine</span><span>JSON pipeline</span><span>Vercel</span></div>
+          <a href="https://vaibhavj97-thesis.vercel.app" class="btn btn-primary">
+            View the thesis
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+          </a>
+        </div>
+        <div class="cta-arrow">→</div>
+      </div>
+
+      <div class="cta-card">
+        <div>
+          <div class="eyebrow">→ AI Project · NEW</div>
+          <h2>Ask my thesis with <em>GeoChat</em>.</h2>
+          <p>An AI chatbot grounded in my Master's thesis data. Ask about methodology, scenarios, results, or what the numbers mean - and get answers built on real findings, not generic responses. Powered by Google Gemini, hosted on Vercel.</p>
+          <div class="tags"><span>Vercel Serverless</span><span>Node.js</span><span>Google Gemini API</span><span>Vanilla JS</span><span>REST API</span></div>
+          <a href="https://vaibhavj97-geochat.vercel.app" target="_blank" rel="noopener" class="btn btn-primary">
+            Try GeoChat
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/><path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"/></svg>
+          </a>
+        </div>
+        <div class="cta-arrow">→</div>
+      </div>
+
+      <div class="cta-card">
+        <div>
+          <div class="eyebrow">→ AI Project · NEW</div>
+          <h2>Where should you drill? <em>BHE Recommender</em>.</h2>
+          <p>An interactive geothermal feasibility tool. Click anywhere on Germany to read the sustainable heat-extraction rate at that exact location, then get a recommended borehole depth, expected kW output, full cost breakdown, and downloadable PDF report. Built directly on my thesis data, 5 km resolution. AI interpretation included.</p>
+          <div class="tags"><span>Vercel Serverless</span><span>Node.js</span><span>Leaflet.js</span><span>jsPDF</span><span>Google Gemini API</span><span>Cost modeling</span></div>
+          <a href="https://vaibhavj97-bhe.vercel.app" target="_blank" rel="noopener" class="btn btn-primary">
+            Open BHE Recommender
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/><path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"/></svg>
+          </a>
+        </div>
+        <div class="cta-arrow">→</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ OPEN TO ROLES CALLOUT ============ -->
+<section id="availability" class="availability-section">
+  <div class="availability-card">
+    <div class="availability-label">→ Open to opportunities</div>
+    <h2>Looking for <em>my next role</em> in Germany.</h2>
+    <div class="availability-meta">
+      <div class="meta-item">
+        <span class="meta-label">Roles</span>
+        <span class="meta-value">Python · Web Development · Data Engineering · AI Integration</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Bonus domains</span>
+        <span class="meta-value">Renewable energy · Climate · Geospatial</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Location</span>
+        <span class="meta-value">Karlsruhe and surrounding region · Open to remote · Open to relocation within Germany</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Work permit</span>
+        <span class="meta-value">Holds a valid work permit for Germany</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Notice period</span>
+        <span class="meta-value">1 month</span>
+      </div>
+    </div>
+    <div class="availability-actions">
+      <a href="mailto:vaibhavjaiswal1234@gmail.com" class="btn btn-primary">
+        Email me
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      </a>
+      <a href="https://www.linkedin.com/in/vaibhavgeo/" target="_blank" rel="noopener" class="btn btn-ghost">Message on LinkedIn</a>
+      <a href="https://github.com/VaibhavJ97" target="_blank" rel="noopener" class="btn btn-ghost">View source on GitHub</a>
+    </div>
+  </div>
+</section>
+
 <!-- ============ SKILLS OVERVIEW ============ -->
 <section id="skills">
   <div class="section-header">
-    <div class="eyebrow">§ 02 - Skills & Tools</div>
+    <div class="eyebrow">§ 03 - Skills & Tools</div>
     <h2>What I <em>work with</em>.</h2>
     <p>A blend of geoscientific theory, data engineering, programming, and design - sharpened across academic research and industry projects.</p>
   </div>
@@ -415,6 +653,20 @@
   </div>
 </div>
 
+<!-- Currently exploring strip -->
+<div class="exploring-strip">
+  <div class="exploring-label">→ Currently exploring (through my portfolio projects)</div>
+  <div class="exploring-tags">
+    <span>Node.js & serverless functions</span>
+    <span>AI / LLM API integration (Gemini, Claude)</span>
+    <span>MCP server integration</span>
+    <span>Vercel architecture patterns</span>
+    <span>Interactive geospatial visualization</span>
+    <span>Client-side PDF generation (jsPDF)</span>
+    <span>Custom JSON data pipelines</span>
+  </div>
+</div>
+
 <!-- ============ DETAILED SKILL DESCRIPTIONS ============ -->
 <div class="skills-detail">
   <div class="skill-detail-block">
@@ -450,7 +702,7 @@
 <!-- ============ EXPERIENCE ============ -->
 <section id="experience">
   <div class="section-header">
-    <div class="eyebrow">§ 03 - Experience</div>
+    <div class="eyebrow">§ 04 - Experience</div>
     <h2>Where I've <em>worked</em>.</h2>
   </div>
 
@@ -460,16 +712,16 @@
       <div class="timeline-content">
         <h3>Working Student - Web Development & CMS Integration</h3>
         <div class="org">IONOS SE · Karlsruhe, Germany</div>
-        <p>Developing responsive web templates in a multi-brand environment, integrating AI tools (Claude, Copilot) with MCP servers to accelerate development workflows.</p>
+        <p>Building responsive web templates in a multi-brand TYPO3 environment and integrating AI tools (Claude, Copilot) with MCP servers to accelerate development workflows.</p>
         <ul>
-          <li>Developed responsive web templates using HTML, CSS, and JavaScript for marketing campaigns</li>
-          <li>Applied AI integration (Claude & Copilot) with MCP servers to accelerate code generation, improve code quality, and support live testing & debugging</li>
-          <li>Configured TYPO3 backend fields and created editor-friendly workflows using the MASK Extension</li>
-          <li>Managed media assets using Filelist/FAL and ensured structured content organization</li>
-          <li>Performed prelive and live testing for cross-browser compatibility & deployment stability</li>
+          <li>Built <strong>20+ responsive web templates across 5+ brand identities</strong> using HTML, CSS, JavaScript, TYPO3, and the MASK Extension for marketing campaign pages</li>
+          <li>Integrated <strong>AI tools (Claude, Copilot) with MCP servers</strong> to accelerate code generation, improve template quality, and shorten prelive-to-live testing cycles</li>
+          <li>Configured TYPO3 backend fields and built editor-friendly content workflows using the MASK Extension across multiple brand sites</li>
+          <li>Managed media assets via Filelist / FAL with structured content organization for high-traffic marketing campaigns</li>
+          <li>Owned prelive and live testing for cross-browser compatibility, supporting stable deployments across 5+ brand sites</li>
+          <li>Supported template migration from Generic templates to MASK-based using Git / GitHub version control</li>
           <li>Documented CMS workflows, editor guidelines, and template usage in Confluence</li>
-          <li>Supported template migration from Generic templates to MASK-based using GitHub version control</li>
-          <li>Collaborated with UX, Marketing, and Sales teams using Figma & Kanban-based Agile workflows in Jira</li>
+          <li>Collaborated with UX, Marketing, and Sales teams using Figma and Kanban-based Agile workflows in Jira</li>
         </ul>
         
         <div class="tags"><span>HTML/CSS/JS</span><span>TYPO3</span><span>AI/MCP</span><span>Figma</span><span>Agile</span></div>
@@ -521,7 +773,7 @@
 <!-- ============ EDUCATION ============ -->
 <section id="education">
   <div class="section-header">
-    <div class="eyebrow">§ 04 - Education</div>
+    <div class="eyebrow">§ 05 - Education</div>
     <h2>Where I've <em>studied</em>.</h2>
   </div>
 
@@ -616,7 +868,7 @@
 <!-- ============ INTERNSHIPS / RESEARCH PROJECTS ============ -->
 <section id="internships">
   <div class="section-header">
-    <div class="eyebrow">§ 05 - Internships & Research Projects</div>
+    <div class="eyebrow">§ 06 - Internships & Research Projects</div>
     <h2>Early <em>research</em> experience.</h2>
   </div>
 
@@ -682,61 +934,10 @@
   </div>
 </section>
 
-<!-- ============ FEATURED WORK CTA ============ -->
-<section class="cta-section" style="max-width: none; padding-left: 0; padding-right: 0;">
-  <div style="max-width: 1400px; margin: 0 auto; padding: 0 40px;">
-    <div class="cta-stack">
-
-      <div class="cta-card">
-        <div>
-          <div class="eyebrow">→ Featured Project</div>
-          <h2>Climate change & <em>geothermal energy</em> in Germany.</h2>
-          <p>My master's thesis develops a semi-analytical model coupling CMIP6 climate projections with borehole heat exchanger physics - quantifying how subsurface warming reshapes Germany's renewable heating potential through 2100. Now also available as a <strong>live interactive web map</strong>.</p>
-          <div class="tags"><span>Python</span><span>Leaflet.js</span><span>chroma-js</span><span>Google Earth Engine</span><span>JSON pipeline</span><span>Vercel</span></div>
-          <a href="https://vaibhavj97-thesis.vercel.app" class="btn btn-primary">
-            View the thesis
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
-          </a>
-        </div>
-        <div class="cta-arrow">→</div>
-      </div>
-
-      <div class="cta-card">
-        <div>
-          <div class="eyebrow">→ AI Project · NEW</div>
-          <h2>Ask my thesis with <em>GeoChat</em>.</h2>
-          <p>An AI chatbot grounded in my Master's thesis data. Ask about methodology, scenarios, results, or what the numbers mean - and get answers built on real findings, not generic responses. Powered by Google Gemini, hosted on Vercel.</p>
-          <div class="tags"><span>Vercel Serverless</span><span>Node.js</span><span>Google Gemini API</span><span>Vanilla JS</span><span>REST API</span></div>
-          <a href="https://vaibhavj97-geochat.vercel.app" target="_blank" rel="noopener" class="btn btn-primary">
-            Try GeoChat
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/><path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"/></svg>
-          </a>
-        </div>
-        <div class="cta-arrow">→</div>
-      </div>
-
-      <div class="cta-card">
-        <div>
-          <div class="eyebrow">→ AI Project · NEW</div>
-          <h2>Where should you drill? <em>BHE Recommender</em>.</h2>
-          <p>An interactive geothermal feasibility tool. Click anywhere on Germany to read the sustainable heat-extraction rate at that exact location, then get a recommended borehole depth, expected kW output, full cost breakdown, and downloadable PDF report. Built directly on my thesis data, 5 km resolution. AI interpretation included.</p>
-          <div class="tags"><span>Vercel Serverless</span><span>Node.js</span><span>Leaflet.js</span><span>jsPDF</span><span>Google Gemini API</span><span>Cost modeling</span></div>
-          <a href="https://vaibhavj97-bhe.vercel.app" target="_blank" rel="noopener" class="btn btn-primary">
-            Open BHE Recommender
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/><path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"/></svg>
-          </a>
-        </div>
-        <div class="cta-arrow">→</div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
 <!-- ============ CERTIFICATIONS ============ -->
 <section id="certifications">
   <div class="section-header">
-    <div class="eyebrow">§ 06 - Certifications</div>
+    <div class="eyebrow">§ 07 - Certifications</div>
     <h2>Continuous <em>learning</em>.</h2>
     <p>Continuous learning across data science, geosciences, web development, and project management.</p>
   </div>
@@ -795,46 +996,6 @@
       <div class="ribbon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3z"/></svg></div>
       <div><h4>Introduction to Remote Sensing</h4><div class="issuer">NPTEL</div></div>
       
-    </div>
-  </div>
-</section>
-
-<!-- ============ FIELD EXCURSIONS ============ -->
-<section id="field-excursions">
-  <div class="section-header">
-    <div class="eyebrow">§ 07 - Geological Field Excursions</div>
-    <h2>On the <em>ground</em>.</h2>
-    <p>Hands-on field experience across Europe and India in structural geology, regional mapping, and geothermal sites.</p>
-  </div>
-
-  <div class="chip-row">
-    <div class="chip">
-      <span class="name">Central Alps fieldwork - Austria</span>
-      <span class="when">3 days · 08/2024</span>
-    </div>
-    <div class="chip">
-      <span class="name">Structural mapping field - Sammann & Knittlingen</span>
-      <span class="when">3 days · 2024</span>
-    </div>
-    <div class="chip">
-      <span class="name">Regional geology - Derdinger Horn, Ottenau, Oberstrot, Überlingen</span>
-      <span class="when">3 days · 2024</span>
-    </div>
-    <div class="chip">
-      <span class="name">Advanced geological mapping - Naxos, Greece</span>
-      <span class="when">10 days · 2022</span>
-    </div>
-    <div class="chip">
-      <span class="name">Reservoir Geological field school - Knittlingen, Oberderdingen, Gaggenau, Baden-Baden</span>
-      <span class="when">5 days · 2022</span>
-    </div>
-    <div class="chip">
-      <span class="name">Geothermal plant & drilling site - Pullach, Holzkirchen, Graben-Neudorf, Rittershoffen</span>
-      <span class="when">2022</span>
-    </div>
-    <div class="chip">
-      <span class="name">Eduard Merkle GmbH limestone quarry & Hydroisotop GmbH</span>
-      <span class="when">2 days · 2022</span>
     </div>
   </div>
 </section>
