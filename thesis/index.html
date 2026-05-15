@@ -63,139 +63,115 @@
   .thesis-hero-visual { justify-self: center; max-width: 380px; }
 }
 
-/* ============ GEOCHAT BANNER ============ */
-.geochat-banner {
-  background: var(--ink);
-  color: var(--bg);
+
+/* ============ AI PROJECTS BANNER (GeoChat + BHE side by side) ============ */
+.ai-banner {
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
-  padding: 28px 40px;
+}
+.ai-banner-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+}
+.ai-banner-card {
+  padding: 28px 32px;
   position: relative;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 18px;
+  min-height: 200px;
 }
-.geochat-banner::before {
+.ai-banner-card::before {
   content: "";
   position: absolute;
   top: 0; right: 0; bottom: 0; width: 60%;
   background: radial-gradient(circle at 80% 50%, var(--accent) 0%, transparent 65%);
-  opacity: 0.18;
   pointer-events: none;
 }
-.geochat-banner-inner {
-  max-width: 1400px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 28px;
-  flex-wrap: wrap;
-  position: relative;
-  z-index: 1;
-}
-.geochat-banner .text { flex: 1; min-width: 280px; }
-.geochat-banner .eyebrow {
+.ai-banner-card .text { position: relative; z-index: 1; }
+.ai-banner-card .eyebrow {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--accent);
   margin-bottom: 10px;
 }
-.geochat-banner h3 {
-  font-size: 1.4rem;
+.ai-banner-card h3 {
+  font-size: 1.35rem;
   font-weight: 400;
-  margin-bottom: 6px;
-  color: var(--bg);
+  margin: 0 0 8px;
+  font-family: 'Fraunces', serif;
+  line-height: 1.2;
 }
-.geochat-banner h3 em {
+.ai-banner-card h3 em {
   font-style: italic;
-  color: var(--accent);
   font-weight: 300;
 }
-.geochat-banner p {
-  font-size: 0.92rem;
-  color: rgba(250, 247, 242, 0.75);
-  line-height: 1.6;
-  max-width: 640px;
+.ai-banner-card p {
+  font-size: 0.88rem;
+  line-height: 1.55;
+  margin: 0;
 }
-.geochat-banner .btn-geochat {
+.ai-banner-card .btn-ai {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: var(--accent);
-  color: var(--bg);
-  padding: 12px 22px;
+  padding: 11px 20px;
   border-radius: 2px;
   font-family: 'Inter', sans-serif;
-  font-size: 0.92rem;
+  font-size: 0.9rem;
   font-weight: 500;
   text-decoration: none;
   white-space: nowrap;
   transition: background 0.2s, transform 0.05s;
-}
-.geochat-banner .btn-geochat:hover { background: var(--accent-deep); }
-.geochat-banner .btn-geochat:active { transform: scale(0.98); }
-@media (max-width: 720px) {
-  .geochat-banner { padding: 24px 20px; }
-  .geochat-banner h3 { font-size: 1.2rem; }
-  .geochat-banner-inner { gap: 18px; }
-}
-
-/* ============ BHE BANNER ============ */
-.bhe-banner {
-  background: var(--paper);
-  color: var(--ink);
-  border-bottom: 1px solid var(--line);
-  padding: 28px 40px;
-  position: relative;
-  overflow: hidden;
-}
-.bhe-banner::before {
-  content: "";
-  position: absolute;
-  top: 0; right: 0; bottom: 0; width: 60%;
-  background: radial-gradient(circle at 80% 50%, var(--accent) 0%, transparent 65%);
-  opacity: 0.10;
-  pointer-events: none;
-}
-.bhe-banner .geochat-banner-inner {
   position: relative;
   z-index: 1;
+  align-self: flex-start;
 }
-.bhe-banner .eyebrow {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.72rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: 10px;
-}
-.bhe-banner h3 {
-  font-size: 1.4rem;
-  font-weight: 400;
-  margin-bottom: 6px;
-  color: var(--ink);
-  font-family: 'Fraunces', serif;
-}
-.bhe-banner h3 em {
-  font-style: italic;
-  color: var(--accent-deep);
-  font-weight: 300;
-}
-.bhe-banner p {
-  font-size: 0.92rem;
-  color: var(--ink-soft);
-  line-height: 1.6;
-  max-width: 640px;
-}
-.bhe-banner .btn-geochat {
+.ai-banner-card .btn-ai:active { transform: scale(0.98); }
+
+/* GeoChat card: dark ink with orange button */
+.ai-banner-card.geochat-card {
   background: var(--ink);
   color: var(--bg);
 }
-.bhe-banner .btn-geochat:hover { background: var(--accent); }
-@media (max-width: 720px) {
-  .bhe-banner { padding: 24px 20px; }
-  .bhe-banner h3 { font-size: 1.2rem; }
+.ai-banner-card.geochat-card::before { opacity: 0.18; }
+.ai-banner-card.geochat-card .eyebrow { color: var(--accent); }
+.ai-banner-card.geochat-card h3 { color: var(--bg); }
+.ai-banner-card.geochat-card h3 em { color: var(--accent); }
+.ai-banner-card.geochat-card p { color: rgba(250, 247, 242, 0.75); }
+.ai-banner-card.geochat-card .btn-ai {
+  background: var(--accent);
+  color: var(--bg);
+}
+.ai-banner-card.geochat-card .btn-ai:hover { background: var(--accent-deep); }
+
+/* BHE card: light paper with dark button */
+.ai-banner-card.bhe-card {
+  background: var(--paper);
+  color: var(--ink);
+  border-left: 1px solid var(--line);
+}
+.ai-banner-card.bhe-card::before { opacity: 0.10; }
+.ai-banner-card.bhe-card .eyebrow { color: var(--accent); }
+.ai-banner-card.bhe-card h3 { color: var(--ink); }
+.ai-banner-card.bhe-card h3 em { color: var(--accent-deep); }
+.ai-banner-card.bhe-card p { color: var(--ink-soft); }
+.ai-banner-card.bhe-card .btn-ai {
+  background: var(--ink);
+  color: var(--bg);
+}
+.ai-banner-card.bhe-card .btn-ai:hover { background: var(--accent); }
+
+@media (max-width: 820px) {
+  .ai-banner-inner { grid-template-columns: 1fr; }
+  .ai-banner-card { min-height: auto; }
+  .ai-banner-card.bhe-card { border-left: none; border-top: 1px solid var(--line); }
+  .ai-banner-card { padding: 24px 22px; }
+  .ai-banner-card h3 { font-size: 1.2rem; }
 }
 
 /* ============ ABSTRACT ============ */
@@ -596,33 +572,34 @@
   </div>
 </section>
 
-<!-- ============ GEOCHAT BANNER ============ -->
-<section class="geochat-banner">
-  <div class="geochat-banner-inner">
-    <div class="text">
-      <div class="eyebrow">→ AI Project · NEW</div>
-      <h3>Have a question? <em>Ask my thesis</em>.</h3>
-      <p>GeoChat is an AI assistant grounded in this thesis. Ask about methodology, scenarios, the numbers, what they mean, or anything else - get answers built on the actual research, powered by Google Gemini.</p>
-    </div>
-    <a href="https://vaibhavj97-geochat.vercel.app" target="_blank" rel="noopener" class="btn-geochat">
-      Try GeoChat
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/><path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"/></svg>
-    </a>
-  </div>
-</section>
+<!-- ============ AI PROJECTS BANNER (GeoChat + BHE side by side) ============ -->
+<section class="ai-banner">
+  <div class="ai-banner-inner">
 
-<!-- ============ BHE BANNER ============ -->
-<section class="bhe-banner">
-  <div class="geochat-banner-inner">
-    <div class="text">
-      <div class="eyebrow">→ AI Project · NEW</div>
-      <h3>Try the data interactively. <em>BHE Recommender</em>.</h3>
-      <p>Click anywhere on Germany and get a recommended borehole depth, expected sustainable output, full cost breakdown, and a downloadable PDF report. Built on this thesis's 5 km resolution data, with AI interpretation of every site.</p>
+    <div class="ai-banner-card geochat-card">
+      <div class="text">
+        <div class="eyebrow">→ AI Project · NEW</div>
+        <h3>Have a question? <em>Ask my thesis</em>.</h3>
+        <p>GeoChat is an AI assistant grounded in this thesis. Ask about methodology, scenarios, the numbers, or what they mean.</p>
+      </div>
+      <a href="https://vaibhavj97-geochat.vercel.app" target="_blank" rel="noopener" class="btn-ai">
+        Try GeoChat
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/><path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"/></svg>
+      </a>
     </div>
-    <a href="https://vaibhavj97-bhe.vercel.app" target="_blank" rel="noopener" class="btn-geochat">
-      Open BHE Recommender
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/><path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"/></svg>
-    </a>
+
+    <div class="ai-banner-card bhe-card">
+      <div class="text">
+        <div class="eyebrow">→ AI Project · NEW</div>
+        <h3>Try the data. <em>BHE Recommender</em>.</h3>
+        <p>Click anywhere on Germany. Get a recommended borehole depth, expected output, full cost breakdown, and a downloadable PDF report.</p>
+      </div>
+      <a href="https://vaibhavj97-bhe.vercel.app" target="_blank" rel="noopener" class="btn-ai">
+        Open BHE Recommender
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/><path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"/></svg>
+      </a>
+    </div>
+
   </div>
 </section>
 
