@@ -19,6 +19,50 @@
 <!-- Inline SVG favicon (VJ initials in accent color) -->
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23fffaf3'/%3E%3Ctext x='50' y='72' text-anchor='middle' fill='%23b8501e' font-family='Georgia, serif' font-weight='700' font-style='italic' font-size='70'%3EV%3C/text%3E%3C/svg%3E" />
 
+<!-- JSON-LD Person schema for SEO (helps Google recognize me in search) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Vaibhav Jaiswal",
+  "jobTitle": "Web Developer and Python Developer",
+  "description": "Python and web developer with a Master's in Applied Geosciences from KIT. Working Student at IONOS SE in Karlsruhe.",
+  "alumniOf": {
+    "@type": "EducationalOrganization",
+    "name": "Karlsruhe Institute of Technology",
+    "sameAs": "https://www.kit.edu/"
+  },
+  "worksFor": {
+    "@type": "Organization",
+    "name": "IONOS SE"
+  },
+  "knowsAbout": [
+    "Python",
+    "JavaScript",
+    "Web Development",
+    "Data Engineering",
+    "AI Integration",
+    "GIS",
+    "Geothermal Energy",
+    "TYPO3"
+  ],
+  "knowsLanguage": ["English", "Hindi", "German"],
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Karlsruhe",
+    "addressCountry": "DE"
+  },
+  "url": "https://vaibhavj97.vercel.app",
+  "sameAs": [
+    "https://github.com/VaibhavJ97",
+    "https://www.linkedin.com/in/vaibhavgeo/"
+  ]
+}
+</script>
+
+<!-- Prism.js for code syntax highlighting (dark Tomorrow theme) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,800;1,9..144,400&family=JetBrains+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -26,6 +70,27 @@
 <link rel="stylesheet" href="assets/style.css">
 
 <style>
+/* Skip-to-content link for keyboard accessibility */
+.skip-link {
+  position: absolute;
+  top: -48px;
+  left: 8px;
+  background: var(--ink);
+  color: var(--paper);
+  padding: 10px 18px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem;
+  text-decoration: none;
+  z-index: 9999;
+  border-radius: 0 0 4px 4px;
+  transition: top 0.15s;
+}
+.skip-link:focus {
+  top: 0;
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
 /* ============ STICKY TOPBAR ============ */
 .topbar {
   position: sticky;
@@ -208,6 +273,118 @@
 }
 @media (max-width: 720px) { .exploring-strip { padding: 20px 20px; } }
 
+/* Code samples section */
+.code-samples {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 80px 40px;
+  background: var(--bg);
+}
+.code-samples .section-header {
+  margin-bottom: 40px;
+}
+.code-samples-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+}
+.code-block {
+  display: flex;
+  flex-direction: column;
+}
+.code-caption {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+}
+.code-caption .source {
+  color: var(--ink-faint);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: none;
+  font-style: italic;
+}
+.code-block pre {
+  margin: 0 !important;
+  border-radius: 4px;
+  font-size: 0.8rem !important;
+  line-height: 1.55 !important;
+  padding: 22px 24px !important;
+  overflow-x: auto;
+}
+.code-block pre code {
+  font-family: 'JetBrains Mono', monospace !important;
+  font-size: 0.8rem !important;
+}
+.code-note {
+  margin-top: 14px;
+  font-size: 0.88rem;
+  color: var(--ink-faint);
+  line-height: 1.6;
+  font-style: italic;
+}
+.code-note strong { color: var(--ink-soft); font-style: normal; font-weight: 500; }
+@media (max-width: 900px) {
+  .code-samples-grid { grid-template-columns: 1fr; gap: 24px; }
+  .code-samples { padding: 50px 20px; }
+}
+
+/* Writing / Notes section */
+.writing-section {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 80px 40px;
+}
+.writing-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 18px;
+  margin-top: 40px;
+}
+.writing-card {
+  padding: 24px 26px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--accent);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.writing-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.06);
+}
+.writing-date {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 10px;
+}
+.writing-card h3 {
+  font-family: 'Fraunces', serif;
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin: 0 0 10px;
+  line-height: 1.3;
+}
+.writing-card p {
+  font-size: 0.88rem;
+  color: var(--ink-soft);
+  margin: 0;
+  line-height: 1.55;
+}
+@media (max-width: 900px) {
+  .writing-list { grid-template-columns: 1fr; }
+  .writing-section { padding: 50px 20px; }
+}
+
 /* Skills detail */
 .skills-detail {
   padding: 60px 40px;
@@ -287,6 +464,11 @@
   transform: translateY(-2px);
   box-shadow: 0 10px 30px rgba(184, 80, 30, 0.10);
 }
+.cta-card:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 4px;
+  border-color: var(--accent);
+}
 .cta-card:hover .cta-arrow {
   color: var(--accent-deep);
   transform: translateX(8px);
@@ -310,6 +492,43 @@
   transition: color 0.2s, transform 0.2s;
 }
 @media (max-width: 720px) { .cta-card { grid-template-columns: 1fr; padding: 40px 24px; gap: 24px; } .cta-arrow { font-size: 3rem; } }
+
+/* Project metrics strip - sits below Featured Work cards */
+.project-metrics {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 50px 40px 30px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 32px 56px;
+  background: var(--bg-alt);
+  border-bottom: 1px solid var(--line);
+}
+.project-metrics .metric {
+  text-align: center;
+}
+.project-metrics .num {
+  display: block;
+  font-family: 'Fraunces', serif;
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 300;
+  color: var(--accent);
+  line-height: 1;
+  margin-bottom: 6px;
+  font-style: italic;
+}
+.project-metrics .lbl {
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+@media (max-width: 720px) {
+  .project-metrics { padding: 30px 20px 20px; gap: 24px 32px; }
+}
 
 /* Availability / Open to roles callout */
 .availability-section {
@@ -470,6 +689,8 @@
 </head>
 <body>
 
+<a href="#main" class="skip-link">Skip to main content</a>
+
 <header class="topbar">
   <a href="index.html" class="brand">Vaibhav <span>Jaiswal</span></a>
   <nav>
@@ -482,7 +703,7 @@
 </header>
 
 <!-- ============ HERO ============ -->
-<section class="hero fade-in">
+<section id="main" class="hero fade-in">
   <div class="hero-text">
     <div class="eyebrow">Web Developer · Python · Data · GIS</div>
     <h1>Hi, I'm Vaibhav. I write <em>Python</em>, ship <em>web apps</em>, and integrate <em>AI</em>.</h1>
@@ -495,7 +716,6 @@
       <a href="https://vaibhavj97-thesis.vercel.app" class="btn btn-ghost">
         Explore Master Thesis
       </a>
-      <a href="https://github.com/VaibhavJ97" target="_blank" rel="noopener" class="btn btn-ghost">View source on GitHub</a>
     </div>
   </div>
 
@@ -580,6 +800,30 @@
   </div>
 </section>
 
+<!-- ============ PROJECT METRICS STRIP ============ -->
+<div class="project-metrics">
+  <div class="metric">
+    <span class="num">4</span>
+    <span class="lbl">Connected sites</span>
+  </div>
+  <div class="metric">
+    <span class="num">2</span>
+    <span class="lbl">Serverless backends</span>
+  </div>
+  <div class="metric">
+    <span class="num">24</span>
+    <span class="lbl">Datasets exported</span>
+  </div>
+  <div class="metric">
+    <span class="num">5 km</span>
+    <span class="lbl">Map resolution</span>
+  </div>
+  <div class="metric">
+    <span class="num">€0</span>
+    <span class="lbl">Monthly infra cost</span>
+  </div>
+</div>
+
 <!-- ============ OPEN TO ROLES CALLOUT ============ -->
 <section id="availability" class="availability-section">
   <div class="availability-card">
@@ -612,6 +856,8 @@
         Email me
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
       </a>
+      <!-- CALENDLY: Replace href="#" below with your real Calendly URL once you create the account (e.g. https://calendly.com/vaibhavjaiswal/30min) -->
+      <a href="#" target="_blank" rel="noopener" class="btn btn-ghost">Book a 30-min chat</a>
       <a href="https://www.linkedin.com/in/vaibhavgeo/" target="_blank" rel="noopener" class="btn btn-ghost">Message on LinkedIn</a>
       <a href="https://github.com/VaibhavJ97" target="_blank" rel="noopener" class="btn btn-ghost">View source on GitHub</a>
     </div>
@@ -713,10 +959,94 @@
   </div>
 </div>
 
+<!-- ============ CODE SAMPLES ============ -->
+<section id="code-samples" class="code-samples">
+  <div class="section-header">
+    <div class="eyebrow">§ 04 - Code samples</div>
+    <h2>A look at the <em>code</em>.</h2>
+    <p>Real snippets from my deployed projects. Python (thesis pipeline) on the left, Node.js (GeoChat serverless backend) on the right.</p>
+  </div>
+  <div class="code-samples-grid">
+
+    <div class="code-block">
+      <div class="code-caption">
+        <span>thesis · find_sustainable_q.py</span>
+        <span class="source">Python · scipy · numpy</span>
+      </div>
+<pre><code class="language-python">"""Find sustainable BHE extraction rate using Brent's method.
+Run for every 5 km pixel in Germany, across 8 CMIP6 models."""
+from scipy.optimize import brentq
+import numpy as np
+
+def find_sustainable_q(t_years, params, t_min=-1.5):
+    """Maximum q that keeps mean fluid temp above t_min
+    over t_years, per SIA 384/6."""
+    def temp_deficit(q):
+        # Moving Finite Line Source (Rivera 2017)
+        # + climate-driven surface trend (CMIP6)
+        return fls_fluid_temp(q, t_years, params) - t_min
+
+    # Brent's method: guaranteed convergence on sign change
+    return brentq(temp_deficit, a=1.0, b=100.0, xtol=0.01)
+
+# Solve for every grid cell, every scenario, every horizon
+q_grid = np.zeros_like(temperature_trend)
+for (y, x), _ in np.ndenumerate(q_grid):
+    q_grid[y, x] = find_sustainable_q(100, params_at(y, x))
+</code></pre>
+      <div class="code-note">
+        <strong>What this does:</strong> finds the maximum heat-extraction rate that keeps a borehole sustainable over 100 years. Called for every 5 km pixel in Germany, twice (SSP 2-4.5 and SSP 5-8.5), across 8 climate models. The output JSON feeds the live thesis map.
+      </div>
+    </div>
+
+    <div class="code-block">
+      <div class="code-caption">
+        <span>geochat · api/chat.js</span>
+        <span class="source">Node.js · Vercel · Gemini</span>
+      </div>
+<pre><code class="language-javascript">// GeoChat serverless function: inject thesis context, call Gemini.
+// Runs on Vercel free tier, costs €0/month at portfolio scale.
+export default async function handler(req, res) {
+  const { message, history = [] } = req.body;
+
+  const r = await fetch(
+    `${GEMINI_URL}?key=${process.env.GEMINI_API_KEY}`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        // Thesis context injected server-side, user never sees it
+        system_instruction: { parts: [{ text: THESIS_CONTEXT }] },
+        // Last 6 turns of history + new user message
+        contents: [
+          ...history.slice(-6).map(t => ({
+            role: t.role === 'user' ? 'user' : 'model',
+            parts: [{ text: t.content }]
+          })),
+          { role: 'user', parts: [{ text: message }] }
+        ],
+        generationConfig: { temperature: 0.4, maxOutputTokens: 1500 }
+      })
+    }
+  );
+
+  const data = await r.json();
+  const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+  return res.status(200).json({ reply });
+}
+</code></pre>
+      <div class="code-note">
+        <strong>What this does:</strong> takes a chat message, injects the entire thesis as a system instruction, sends recent history for follow-up context, and asks Gemini for a grounded answer. The whole thing runs as a single Vercel serverless function.
+      </div>
+    </div>
+
+  </div>
+</section>
+
 <!-- ============ EXPERIENCE ============ -->
 <section id="experience">
   <div class="section-header">
-    <div class="eyebrow">§ 04 - Experience</div>
+    <div class="eyebrow">§ 05 - Experience</div>
     <h2>Where I've <em>worked</em>.</h2>
   </div>
 
@@ -783,7 +1113,7 @@
 <!-- ============ EDUCATION ============ -->
 <section id="education">
   <div class="section-header">
-    <div class="eyebrow">§ 05 - Education</div>
+    <div class="eyebrow">§ 06 - Education</div>
     <h2>Where I've <em>studied</em>.</h2>
   </div>
 
@@ -878,7 +1208,7 @@
 <!-- ============ CERTIFICATIONS ============ -->
 <section id="certifications">
   <div class="section-header">
-    <div class="eyebrow">§ 06 - Certifications</div>
+    <div class="eyebrow">§ 07 - Certifications</div>
     <h2>Continuous <em>learning</em>.</h2>
     <p>Continuous learning across data science, geosciences, web development, and project management.</p>
   </div>
@@ -941,6 +1271,32 @@
   </div>
 </section>
 
+<!-- ============ WRITING / NOTES ============ -->
+<section id="writing" class="writing-section">
+  <div class="section-header">
+    <div class="eyebrow">§ 08 - Writing</div>
+    <h2>Notes I'm <em>working on</em>.</h2>
+    <p>Short writeups on the engineering behind my projects. First posts coming soon.</p>
+  </div>
+  <div class="writing-list">
+    <div class="writing-card">
+      <div class="writing-date">Coming soon</div>
+      <h3>How I built GeoChat: Vercel + Gemini + thesis context</h3>
+      <p>The architecture, the prompt engineering, what worked and what didn't, and why the whole thing costs €0 per month.</p>
+    </div>
+    <div class="writing-card">
+      <div class="writing-date">Coming soon</div>
+      <h3>5 km maps in the browser: lessons from the thesis explorer</h3>
+      <p>From Python notebook to JSON pipeline to canvas-rendered Leaflet overlays without dropping frames.</p>
+    </div>
+    <div class="writing-card">
+      <div class="writing-date">Coming soon</div>
+      <h3>BHE Recommender: how the cost model actually works</h3>
+      <p>Walkthrough of the calculation backend, the cost-range logic, and what it can and cannot tell you.</p>
+    </div>
+  </div>
+</section>
+
 <!-- ============ FOOTER / CONTACT ============ -->
 <footer id="contact">
   <div class="footer-inner">
@@ -971,6 +1327,10 @@
     <span>Built with care · Hosted on Vercel</span>
   </div>
 </footer>
+
+<!-- Prism.js for code syntax highlighting -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
 
 </body>
 </html>
