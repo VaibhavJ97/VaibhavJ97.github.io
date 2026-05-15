@@ -501,7 +501,7 @@
 /* ============ FLOATING GEOCHAT WIDGET ============ */
 #geochat-fab {
   position: fixed;
-  left: 24px;
+  right: 24px;
   bottom: 24px;
   z-index: 999;
   display: inline-flex;
@@ -534,11 +534,11 @@
 
 #geochat-panel {
   position: fixed;
-  left: 24px;
+  right: 24px;
   bottom: 24px;
   z-index: 999;
-  width: 420px;
-  height: 620px;
+  width: 500px;
+  height: 720px;
   max-width: calc(100vw - 48px);
   max-height: calc(100vh - 48px);
   background: var(--bg);
@@ -551,7 +551,7 @@
   opacity: 0;
   visibility: hidden;
   transform: translateY(20px) scale(0.96);
-  transform-origin: bottom left;
+  transform-origin: bottom right;
   transition: opacity 0.22s, transform 0.22s, visibility 0.22s;
 }
 #geochat-panel.open {
@@ -622,7 +622,7 @@
 }
 
 @media (max-width: 600px) {
-  #geochat-fab { left: 16px; bottom: 16px; padding: 10px 16px 10px 12px; font-size: 0.85rem; }
+  #geochat-fab { right: 16px; bottom: 16px; padding: 10px 16px 10px 12px; font-size: 0.85rem; }
   #geochat-panel { left: 12px; right: 12px; bottom: 12px; width: auto; height: calc(100vh - 24px); }
 }
 
@@ -1425,7 +1425,7 @@ loadData();
     const panel = document.getElementById('geochat-panel');
     const iframe = document.getElementById('geochat-iframe');
     const closeBtn = panel.querySelector('.geochat-close');
-    const GEOCHAT_URL = 'https://vaibhavj97-geochat.vercel.app/';
+    const GEOCHAT_URL = 'https://vaibhavj97-geochat.vercel.app/?embed=1';
     let isOpen = false;
     let iframeLoaded = false;
 
