@@ -19,6 +19,13 @@ The front door of my online portfolio. Cross-links to 3 other deployed projects 
 | Fonts | Fraunces, Inter, JetBrains Mono (all from Google Fonts) |
 | Analytics | Vercel Web Analytics |
 | Hosting | Vercel (auto-deploys from `main` branch) |
+| Development | AI-pair-programming (Claude, ChatGPT, GitHub Copilot) with full manual review |
+
+## How this site was built
+
+I built this with **AI-assisted development workflows** - using Anthropic Claude as the primary pair-programmer, ChatGPT for ideation and copy iteration, and GitHub Copilot for inline suggestions. The architecture decisions (vanilla stack, accessibility-first, no framework), the design system (cream + ink + orange palette, Fraunces + Inter + JetBrains Mono), and the content (every word) are mine. The code generation, refactoring, and iteration loops were AI-accelerated.
+
+This workflow is part of the stack I bring to my next role.
 
 ## Sections (top to bottom)
 
@@ -66,6 +73,7 @@ No `npm install`, no environment variables, no secrets.
 .
 ├── index.html         # The homepage (single file)
 ├── og-preview.png     # 1200x630 social-media preview image
+├── profile-photo.png  # About section photo
 ├── assets/
 │   └── style.css      # External stylesheet (some styles inlined in index.html)
 └── README.md
