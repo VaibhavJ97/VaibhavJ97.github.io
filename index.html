@@ -213,6 +213,28 @@
 /* About */
 .about-section { background: var(--paper); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 .about-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 80px; align-items: start; }
+.about-left {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+.profile-photo {
+  width: 100%;
+  max-width: 280px;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  object-position: center top;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  box-shadow: 0 6px 24px rgba(26, 22, 18, 0.08);
+  display: block;
+  filter: saturate(0.95);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+.profile-photo:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(184, 80, 30, 0.15);
+}
 .about-grid .label {
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.75rem; letter-spacing: 0.18em; text-transform: uppercase;
@@ -221,7 +243,13 @@
 .about-text { font-family: 'Fraunces', serif; font-size: 1.2rem; line-height: 1.6; color: var(--ink); font-weight: 300; }
 .about-text p + p { margin-top: 20px; }
 .about-text .drop { font-size: 4rem; float: left; line-height: 0.9; margin: 8px 12px 0 0; color: var(--accent); font-weight: 600; }
-@media (max-width: 720px) { .about-grid { grid-template-columns: 1fr; gap: 24px; } .about-text { font-size: 1.05rem; } }
+@media (max-width: 720px) {
+  .about-grid { grid-template-columns: 1fr; gap: 32px; }
+  .about-text { font-size: 1.05rem; }
+  .about-left { flex-direction: row; gap: 20px; align-items: flex-start; }
+  .profile-photo { max-width: 140px; flex-shrink: 0; }
+  .about-grid .label { padding-top: 4px; }
+}
 
 /* Skills */
 .skills-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border-top: 1px solid var(--line); }
@@ -749,7 +777,10 @@
 <!-- ============ ABOUT ============ -->
 <section class="about-section" id="about">
   <div class="about-grid">
-    <div class="label">§ About</div>
+    <div class="about-left">
+      <img src="profile-photo.png" alt="Vaibhav Jaiswal - Web Developer" class="profile-photo" loading="lazy" />
+      <div class="label">§ About</div>
+    </div>
     <div class="about-text">
       <p>I work at the intersection of <strong>software development, data engineering, and applied geosciences</strong>. As a Working Student at IONOS SE in Karlsruhe, I build responsive HTML / CSS / JavaScript templates in a multi-brand TYPO3 environment and integrate AI tools (Claude, Copilot, MCP servers) into development workflows.</p>
       <p>In parallel, I built a <strong>4-site portfolio with serverless backends and AI integrations</strong>: an interactive thesis explorer with live map rendering, a Gemini-powered chatbot grounded in my research, and a borehole heat exchanger feasibility tool that generates PDF reports. Source on <a href="https://github.com/VaibhavJ97" target="_blank">GitHub</a>.</p>
