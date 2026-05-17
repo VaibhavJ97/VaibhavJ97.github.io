@@ -27,6 +27,12 @@ I built this with **AI-assisted development workflows** - using Anthropic Claude
 
 This workflow is part of the stack I bring to my next role.
 
+## Architecture
+
+Single-file static site. No backend, no database, no build step. The browser fetches `index.html`, which inlines critical CSS and pulls fonts from Google Fonts and syntax highlighting from cdnjs. Vercel auto-deploys on every push to `main`. Total runtime: served from CDN edge, < 1 second first paint.
+
+The 4 sites in the portfolio (this homepage + 3 project sites) are independent Vercel projects but visually consistent. They cross-link via the navigation bar and footer.
+
 ## Sections (top to bottom)
 
 - Hero with positioning statement
@@ -83,8 +89,23 @@ No `npm install`, no environment variables, no secrets.
 
 MIT. Use any design or code you find useful.
 
-## About me
+## Disclaimer
+
+This is a personal portfolio, not a production application. Code is provided as-is. The "What I bring" claims describe my own work and ownership; the AI-assisted parts of the workflow are disclosed transparently.
+
+## About me / Contact
 
 I'm Vaibhav, a Web Developer with a Master's in Applied Geosciences from KIT. Working Student at IONOS SE in Karlsruhe. Open to roles in Python, web development, data engineering, and AI integration.
 
-[Portfolio](https://vaibhavj97.vercel.app) · [LinkedIn](https://www.linkedin.com/in/vaibhavgeo/) · [Book a call](https://calendly.com/vaibhavjaiswal1234/30min) · [Email](mailto:vaibhavjaiswal1234@gmail.com)
+- **Email**: vaibhavjaiswal1234@gmail.com
+- **Portfolio**: [vaibhavj97.vercel.app](https://vaibhavj97.vercel.app)
+- **LinkedIn**: [linkedin.com/in/vaibhavgeo](https://www.linkedin.com/in/vaibhavgeo/)
+- **GitHub**: [github.com/VaibhavJ97](https://github.com/VaibhavJ97)
+- **Book a 30-min call**: [calendly.com/vaibhavjaiswal1234/30min](https://calendly.com/vaibhavjaiswal1234/30min)
+- **Location**: Karlsruhe, Germany
+
+### My other repos
+
+- [Master Thesis Project](https://github.com/VaibhavJ97/kit-master-thesis-portfolio) - interactive climate-geothermal maps
+- [GeoChat](https://github.com/VaibhavJ97/geochat) - AI chatbot grounded in my thesis
+- [BHE Recommender](https://github.com/VaibhavJ97/bhe-recommender) - geothermal feasibility tool with PDF report
