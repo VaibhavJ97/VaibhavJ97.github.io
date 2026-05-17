@@ -19,8 +19,11 @@
 <meta property="og:image:type" content="image/png" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Vaibhav Jaiswal - Web Developer · Python · GIS" />
-<meta name="twitter:description" content="Python and web developer with a Master's in Applied Geosciences from KIT." />
+<meta name="twitter:description" content="Python and web developer with a Master's in Applied Geosciences from KIT. Building AI-integrated tools, interactive maps, and Vercel serverless apps." />
 <meta name="twitter:image" content="https://vaibhavj97.vercel.app/og-preview.png" />
+
+<!-- Canonical URL -->
+<link rel="canonical" href="https://vaibhavj97.vercel.app/" />
 
 <!-- Inline SVG favicon (VJ initials in accent color) -->
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23fffaf3'/%3E%3Ctext x='50' y='72' text-anchor='middle' fill='%23b8501e' font-family='Georgia, serif' font-weight='700' font-style='italic' font-size='70'%3EV%3C/text%3E%3C/svg%3E" />
@@ -33,6 +36,8 @@
   "name": "Vaibhav Jaiswal",
   "jobTitle": "Web Developer and Python Developer",
   "description": "Python and web developer with a Master's in Applied Geosciences from KIT. Working Student at IONOS SE in Karlsruhe.",
+  "email": "vaibhavjaiswal1234@gmail.com",
+  "image": "https://vaibhavj97.vercel.app/profile-photo.png",
   "alumniOf": {
     "@type": "EducationalOrganization",
     "name": "Karlsruhe Institute of Technology",
@@ -61,7 +66,8 @@
   "url": "https://vaibhavj97.vercel.app",
   "sameAs": [
     "https://github.com/VaibhavJ97",
-    "https://www.linkedin.com/in/vaibhavgeo/"
+    "https://www.linkedin.com/in/vaibhavgeo/",
+    "https://calendly.com/vaibhavjaiswal1234/30min"
   ]
 }
 </script>
@@ -355,6 +361,22 @@
   font-style: italic;
 }
 .code-note strong { color: var(--ink-soft); font-style: normal; font-weight: 500; }
+.code-source-link {
+  display: inline-block;
+  margin-top: 14px;
+  padding: 0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+.code-source-link:hover {
+  color: var(--accent-deep);
+  border-bottom-color: var(--accent);
+}
 @media (max-width: 900px) {
   .code-samples-grid { grid-template-columns: 1fr; gap: 24px; }
   .code-samples { padding: 50px 20px; }
@@ -772,11 +794,7 @@
       <div class="label">§ About</div>
     </div>
     <div class="about-text">
-      <p>I work at the intersection of <strong>software development, data engineering, and applied geosciences</strong>. As a Working Student at IONOS SE in Karlsruhe, I build responsive HTML / CSS / JavaScript templates in a multi-brand TYPO3 environment and integrate AI tools (Claude, Copilot, MCP servers) into development workflows.</p>
-      <p>In parallel, I built a <strong>4-site portfolio with serverless backends and AI integrations</strong>: an interactive thesis explorer with live map rendering, a Gemini-powered chatbot grounded in my research, and a borehole heat exchanger feasibility tool that generates PDF reports. Source on <a href="https://github.com/VaibhavJ97" target="_blank">GitHub</a>.</p>
-      <p>My Master's thesis at <strong>KIT</strong> developed Python models combining CMIP6 climate projections with borehole heat exchanger physics to quantify how a warming climate reshapes geothermal energy potential across Germany. I previously worked on geothermal exploration at Hydrosion GmbH (lithium-from-brine, EnBW Bruchsal plant) and supported lab analyses at KIT.</p>
-      <p><strong>How I work:</strong> I build using <strong>AI-pair-programming workflows</strong> - Anthropic Claude, ChatGPT, and GitHub Copilot are my collaborators across architecture, prototyping, debugging, and documentation. I design the system, define requirements, review every line, and ship. AI accelerates the writing; the thinking and ownership stay mine. This is part of why I could ship 4 deployed apps in parallel with my Master's thesis.</p>
-      <p>I'm interested in roles that combine <strong>Python, web development, data engineering, and AI integration</strong>, with bonus points for renewable energy, climate, or geospatial domains.</p>
+      <p>I'm a <strong>Web Developer with a Master's in Applied Geosciences from KIT</strong>. Working Student at IONOS SE since 2023. I build using <strong>AI-pair-programming workflows</strong> - Anthropic Claude, ChatGPT, and GitHub Copilot are my collaborators across architecture, prototyping, debugging, and documentation. I design the system, define requirements, review every line, and ship. AI accelerates the writing; the thinking and ownership stay mine. This is part of why I could ship 4 deployed apps in parallel with my Master's thesis.</p>
     </div>
   </div>
 </section>
@@ -786,7 +804,7 @@
   <div class="section-header">
     <div class="eyebrow">§ 02 - Featured Work</div>
     <h2>What I've <em>shipped</em>.</h2>
-    <p>4 connected web applications, 2 with serverless backends, 2 with AI integrations. All deployed and live. Source on GitHub.</p>
+    <p>3 featured web apps, 2 with serverless backends, 2 with AI integrations. All deployed and live. Source on GitHub.</p>
   </div>
 </section>
 
@@ -806,7 +824,7 @@
 
       <a href="https://vaibhavj97-geochat.vercel.app" target="_blank" rel="noopener" class="cta-card">
         <div>
-          <div class="eyebrow">→ AI Project · NEW</div>
+          <div class="eyebrow">→ AI Project</div>
           <h2>Ask my thesis with <em>GeoChat</em>.</h2>
           <p>An AI chatbot grounded in my Master's thesis data. Ask about methodology, scenarios, results, or what the numbers mean - and get answers built on real findings, not generic responses. Powered by Google Gemini, hosted on Vercel.</p>
           <div class="tags"><span>Vercel Serverless</span><span>Node.js</span><span>Google Gemini API</span><span>Vanilla JS</span><span>REST API</span></div>
@@ -816,7 +834,7 @@
 
       <a href="https://vaibhavj97-bhe.vercel.app" target="_blank" rel="noopener" class="cta-card">
         <div>
-          <div class="eyebrow">→ AI Project · NEW</div>
+          <div class="eyebrow">→ AI Project</div>
           <h2>Where should you drill? <em>BHE Recommender</em>.</h2>
           <p>An interactive geothermal feasibility tool. Click anywhere on Germany to read the sustainable heat-extraction rate at that exact location, then get a recommended borehole depth, expected kW output, full cost breakdown, and downloadable PDF report. Built directly on my thesis data, 5 km resolution. AI interpretation included.</p>
           <div class="tags"><span>Vercel Serverless</span><span>Node.js</span><span>Leaflet.js</span><span>jsPDF</span><span>Google Gemini API</span><span>Cost modeling</span></div>
@@ -880,12 +898,12 @@
       </div>
     </div>
     <div class="availability-actions">
-      <a href="mailto:vaibhavjaiswal1234@gmail.com" class="btn btn-primary">
-        Email me
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      <!-- CALENDLY: booking link (primary CTA - one click, low friction) -->
+      <a href="https://calendly.com/vaibhavjaiswal1234/30min" target="_blank" rel="noopener" class="btn btn-primary">
+        Book a 30-min chat
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
       </a>
-      <!-- CALENDLY: booking link -->
-      <a href="https://calendly.com/vaibhavjaiswal1234/30min" target="_blank" rel="noopener" class="btn btn-ghost">Book a 30-min chat</a>
+      <a href="mailto:vaibhavjaiswal1234@gmail.com" class="btn btn-ghost">Email me</a>
       <a href="https://www.linkedin.com/in/vaibhavgeo/" target="_blank" rel="noopener" class="btn btn-ghost">Message on LinkedIn</a>
       <a href="https://github.com/VaibhavJ97" target="_blank" rel="noopener" class="btn btn-ghost">View source on GitHub</a>
     </div>
@@ -906,39 +924,39 @@
     <div class="label">→ Programming & Backend</div>
     <h3>Code & APIs</h3>
     <ul>
-      <li>Python <span class="level">Advanced</span></li>
-      <li>JavaScript <span class="level">Advanced</span></li>
-      <li>Node.js <span class="level">Intermediate</span></li>
-      <li>SQL <span class="level">Intermediate</span></li>
-      <li>REST APIs <span class="level">Intermediate</span></li>
-      <li>Vercel Serverless Functions <span class="level">Intermediate</span></li>
-      <li>Git / GitHub <span class="level">Advanced</span></li>
+      <li>Python</li>
+      <li>JavaScript</li>
+      <li>Node.js</li>
+      <li>SQL</li>
+      <li>REST APIs</li>
+      <li>Vercel Serverless Functions</li>
+      <li>Git / GitHub</li>
     </ul>
   </div>
   <div class="skill-block">
     <div class="label">→ Web Development</div>
     <h3>Frontend & CMS</h3>
     <ul>
-      <li>HTML / CSS / JavaScript <span class="level">Advanced</span></li>
-      <li>TYPO3 / Fluid / TypoScript <span class="level">Advanced</span></li>
-      <li>Bootstrap / Responsive <span class="level">Advanced</span></li>
-      <li>Leaflet.js <span class="level">Advanced</span></li>
-      <li>AI / MCP Integration <span class="level">Advanced</span></li>
-      <li>Figma <span class="level">Intermediate</span></li>
-      <li>Jira / Confluence <span class="level">Advanced</span></li>
+      <li>HTML / CSS / JavaScript</li>
+      <li>TYPO3 / Fluid / TypoScript</li>
+      <li>Bootstrap / Responsive</li>
+      <li>Leaflet.js</li>
+      <li>AI / MCP Integration</li>
+      <li>Figma</li>
+      <li>Jira / Confluence</li>
     </ul>
   </div>
   <div class="skill-block">
     <div class="label">→ Data & GIS</div>
     <h3>Analysis & Geospatial</h3>
     <ul>
-      <li>Pandas / NumPy / SciPy <span class="level">Advanced</span></li>
-      <li>Jupyter / Colab <span class="level">Advanced</span></li>
-      <li>Power BI <span class="level">Intermediate</span></li>
-      <li>QGIS <span class="level">Advanced</span></li>
-      <li>Google Earth Engine <span class="level">Advanced</span></li>
-      <li>rasterio / geopandas <span class="level">Advanced</span></li>
-      <li>MATLAB <span class="level">Intermediate</span></li>
+      <li>Pandas / NumPy / SciPy</li>
+      <li>Jupyter / Colab</li>
+      <li>Power BI</li>
+      <li>QGIS</li>
+      <li>Google Earth Engine</li>
+      <li>rasterio / geopandas</li>
+      <li>MATLAB</li>
     </ul>
   </div>
 </div>
@@ -973,10 +991,6 @@
     <h4>Domain Knowledge - Energy & Geosciences</h4>
     <p><strong>Energy:</strong> Climate Change, Shallow Geothermal & Energy Transition, CO₂ Emission & Decarbonization Assessment.<br>
     <strong>Geosciences:</strong> Subsurface Drilling & Logging, Hydrogeochemical Sampling & Analysis, 3D Numerical Modelling, Hydrochemical Investigation.</p>
-  </div>
-  <div class="skill-detail-block">
-    <h4>Soft Skills</h4>
-    <p>Strong Communication, Attention to Detail, Fast Learner, Analytical Mindset, Problem Solving, Structured & Communicative, Intelligent Storytelling & Documentation.</p>
   </div>
   <div class="skill-detail-block">
     <h4>Languages</h4>
@@ -1026,6 +1040,7 @@ for (y, x), _ in np.ndenumerate(q_grid):
       <div class="code-note">
         <strong>What this does:</strong> finds the maximum heat-extraction rate that keeps a borehole sustainable over 100 years. Called for every 5 km pixel in Germany, twice (SSP 2-4.5 and SSP 5-8.5), across 8 climate models. The output JSON feeds the live thesis map.
       </div>
+      <a href="https://github.com/VaibhavJ97/kit-master-thesis-portfolio/blob/main/files/Single_BHE_Analysis_GEE_CMIP6_Folium.ipynb" target="_blank" rel="noopener" class="code-source-link">→ View full notebook on GitHub</a>
     </div>
 
     <div class="code-block">
@@ -1067,6 +1082,7 @@ export default async function handler(req, res) {
       <div class="code-note">
         <strong>What this does:</strong> takes a chat message, injects the entire thesis as a system instruction, sends recent history for follow-up context, and asks Gemini for a grounded answer. The whole thing runs as a single Vercel serverless function.
       </div>
+      <a href="https://github.com/VaibhavJ97/geochat/blob/main/api/chat.js" target="_blank" rel="noopener" class="code-source-link">→ View full source on GitHub</a>
     </div>
 
   </div>
@@ -1273,32 +1289,6 @@ export default async function handler(req, res) {
   </div>
 </section>
 
-<!-- ============ WRITING / NOTES ============ -->
-<section id="writing" class="writing-section">
-  <div class="section-header">
-    <div class="eyebrow">§ 08 - Writing</div>
-    <h2>Notes I'm <em>working on</em>.</h2>
-    <p>Short writeups on the engineering behind my projects. First posts coming soon.</p>
-  </div>
-  <div class="writing-list">
-    <div class="writing-card">
-      <div class="writing-date">Coming soon</div>
-      <h3>How I built GeoChat: Vercel + Gemini + thesis context</h3>
-      <p>The architecture, the prompt engineering, what worked and what didn't, and why the whole thing costs €0 per month.</p>
-    </div>
-    <div class="writing-card">
-      <div class="writing-date">Coming soon</div>
-      <h3>5 km maps in the browser: lessons from the thesis explorer</h3>
-      <p>From Python notebook to JSON pipeline to canvas-rendered Leaflet overlays without dropping frames.</p>
-    </div>
-    <div class="writing-card">
-      <div class="writing-date">Coming soon</div>
-      <h3>BHE Recommender: how the cost model actually works</h3>
-      <p>Walkthrough of the calculation backend, the cost-range logic, and what it can and cannot tell you.</p>
-    </div>
-  </div>
-</section>
-
 <!-- ============ FOOTER / CONTACT ============ -->
 <footer id="contact">
   <div class="footer-inner">
@@ -1321,6 +1311,7 @@ export default async function handler(req, res) {
         <li><a href="mailto:vaibhavjaiswal1234@gmail.com">vaibhavjaiswal1234@gmail.com</a></li>
         <li><a href="https://github.com/VaibhavJ97" target="_blank">GitHub</a></li>
         <li><a href="https://www.linkedin.com/in/vaibhavgeo/" target="_blank">LinkedIn</a></li>
+        <li><a href="https://calendly.com/vaibhavjaiswal1234/30min" target="_blank">Book a 30-min call</a></li>
       </ul>
     </div>
   </div>
