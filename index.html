@@ -180,24 +180,19 @@ section + section { border-top: 1px solid var(--line); }
 /* ============ CODE SAMPLES (light card + dark code inside) ============ */
 .code-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
 .code-card { display: flex; flex-direction: column; }
-.code-outer { background: var(--card); border: 1px solid var(--line); border-radius: 6px; overflow: hidden; display: flex; flex-direction: column; }
+.code-outer { background: #1e1e2e; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; display: flex; flex-direction: column; }
 .code-head { display: flex; justify-content: space-between; align-items: center; padding: 14px 20px; border-bottom: 1px solid var(--line); background: var(--card); }
 .code-head .label { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink); font-weight: 600; }
 .code-head .label .dot { color: var(--accent); margin-right: 6px; }
 .code-head a { font-family: var(--font-mono); font-size: 11px; color: var(--accent); letter-spacing: 0.04em; }
 .code-head a:hover { color: var(--accent-deep); text-decoration: underline; }
-.code-card pre { margin: 14px; padding: 22px 24px; background: #1e1e2e; color: #cdd6f4; font-family: var(--font-mono); font-size: 13px; line-height: 1.65; overflow-x: auto; border-radius: 6px; }
+.code-card pre { margin: 0; padding: 22px 24px; background: #1e1e2e; color: #cdd6f4; font-family: var(--font-mono); font-size: 13px; line-height: 1.65; overflow-x: auto; }
 .code-card .kw { color: #cba6f7; font-weight: 500; }
 .code-card .str { color: #a6e3a1; }
 .code-card .num { color: #fab387; }
 .code-card .cm { color: #6c7086; font-style: italic; }
 .code-card .fn { color: #89b4fa; }
 .code-card .prop { color: #f5c2e7; }
-.code-note { margin-top: 18px; padding: 0 4px; font-size: 14px; line-height: 1.65; color: var(--ink-soft); font-family: var(--font-sans); }
-.code-note strong { color: var(--ink); font-weight: 600; }
-.code-note em { font-style: italic; color: var(--ink-soft); }
-.code-link { display: inline-block; margin-top: 12px; padding: 0 4px; font-family: var(--font-mono); font-size: 13px; color: var(--accent); transition: color 0.2s; }
-.code-link:hover { color: var(--accent-deep); text-decoration: underline; }
 
 /* ============ TIMELINE (EXPERIENCE + EDUCATION) ============ */
 .timeline { display: flex; flex-direction: column; gap: 0; }
@@ -206,11 +201,12 @@ section + section { border-top: 1px solid var(--line); }
 .tl-row:last-child { border-bottom: 1px solid var(--ink); }
 .tl-when { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.04em; color: var(--muted); padding-top: 4px; position: relative; }
 .tl-when::after { display: none; }
+.tl-main { display: grid; grid-template-columns: 1fr auto; column-gap: 24px; row-gap: 0; }
 .tl-main h3 { font-family: var(--font-serif); font-size: 22px; font-weight: 600; letter-spacing: -0.012em; line-height: 1.2; margin-bottom: 4px; color: var(--ink); }
 .tl-main .who { font-family: var(--font-mono); font-size: 12px; color: var(--accent); font-weight: 500; margin-bottom: 14px; letter-spacing: 0.06em; text-transform: uppercase; }
-.tl-main .intro { font-size: 15px; line-height: 1.65; color: var(--ink-soft); margin-bottom: 14px; font-family: var(--font-sans); }
+.tl-main .intro { font-size: 15px; line-height: 1.65; color: var(--ink-soft); margin-bottom: 14px; font-family: var(--font-sans); grid-column: 1 / -1; grid-row: 2; }
 .tl-main .intro strong { font-weight: 600; color: var(--ink); }
-.tl-main ul { list-style: none; margin-bottom: 14px; }
+.tl-main ul { list-style: none; margin-bottom: 14px; grid-column: 1; grid-row: 3; }
 .tl-main li { font-size: 14px; line-height: 1.6; padding-left: 22px; position: relative; margin-bottom: 6px; color: var(--ink-soft); }
 .tl-main li::before { content: '•'; position: absolute; left: 4px; color: var(--accent); font-size: 18px; line-height: 1.5; font-weight: 700; }
 .tl-main li strong { color: var(--ink); font-weight: 600; }
@@ -222,27 +218,23 @@ section + section { border-top: 1px solid var(--line); }
 .notable { background: var(--bg-alt); padding: 14px 18px; border-left: 3px solid var(--accent); border-radius: 0 4px 4px 0; }
 .notable .label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 6px; font-weight: 500; }
 .notable .name { font-size: 14px; color: var(--ink); line-height: 1.45; font-family: var(--font-sans); }
-@media (max-width: 720px) { .tl-row { grid-template-columns: 1fr; gap: 12px; } .tl-when::after { display: none; } .tl-notables { grid-template-columns: 1fr; } }
+@media (max-width: 720px) { .tl-row { grid-template-columns: 1fr; gap: 12px; } .tl-when::after { display: none; } .tl-notables { grid-template-columns: 1fr; } .tl-main { grid-template-columns: 1fr; } .tl-tags-side { grid-row: auto; grid-column: 1; flex-direction: row; flex-wrap: wrap; padding-top: 0; margin-bottom: 14px; } }
 
 /* Tags on right of title row (for Education rows) */
-.tl-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; margin-bottom: 14px; flex-wrap: wrap; }
-.tl-head-text { flex: 1; min-width: 0; }
+.tl-head { display: contents; }
+.tl-head-text { grid-column: 1 / -1; grid-row: 1; margin-bottom: 14px; }
 .tl-head-text .who { margin-bottom: 0 !important; }
 .tl-head-text h3 { margin-bottom: 6px; }
-.tl-tags-side { display: flex; flex-wrap: wrap; gap: 5px; flex-shrink: 0; max-width: 220px; justify-content: flex-end; padding-top: 6px; }
-.tl-tags-side .tag { font-size: 11px; padding: 4px 9px; }
+.tl-tags-side { grid-column: 2; grid-row: 3; display: flex; flex-direction: column; align-items: flex-start; gap: 6px; align-self: start; }
+.tl-tags-side .tag { font-size: 11px; padding: 4px 9px; white-space: nowrap; }
 
 /* ============ CERTIFICATIONS (new card style) ============ */
 .certs-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-.cert { background: var(--card); border: 1px solid var(--line); border-radius: 4px; padding: 24px 26px; display: flex; flex-direction: column; gap: 14px; transition: all 0.2s; min-height: 140px; text-decoration: none; color: inherit; }
+.cert { background: var(--card); border: 1px solid var(--line); border-radius: 4px; padding: 16px 18px; display: flex; flex-direction: column; gap: 8px; transition: all 0.2s; min-height: 100px; text-decoration: none; color: inherit; }
 .cert:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 8px 22px rgba(45, 106, 79, 0.08); }
-.cert.featured { background: var(--accent); color: var(--bg); border-color: var(--accent); }
 .cert-num { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
-.cert.featured .cert-num { color: rgba(247, 245, 240, 0.85); }
-.cert-title { font-family: var(--font-serif); font-size: 19px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.25; color: var(--ink); }
-.cert.featured .cert-title { color: var(--bg); font-style: italic; font-weight: 500; }
+.cert-title { font-family: var(--font-serif); font-size: 16px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.25; color: var(--ink); }
 .cert-issuer { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin-top: auto; }
-.cert.featured .cert-issuer { color: rgba(247, 245, 240, 0.7); }
 @media (max-width: 900px) { .certs-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 600px) { .certs-grid { grid-template-columns: 1fr; } }
 
@@ -566,8 +558,6 @@ q_grid = np.<span class="fn">zeros_like</span>(temperature_trend)
 <span class="kw">for</span> (y, x), _ <span class="kw">in</span> np.<span class="fn">ndenumerate</span>(q_grid):
     q_grid[y, x] = <span class="fn">find_sustainable_q</span>(<span class="num">100</span>, <span class="fn">params_at</span>(y, x))</pre>
         </div>
-        <div class="code-note"><strong>What this does:</strong> <em>finds the maximum heat-extraction rate that keeps a borehole sustainable over 100 years. Called for every 5 km pixel in Germany, twice (SSP 2-4.5 and SSP 5-8.5), across 8 climate models. The output JSON feeds the live thesis map.</em></div>
-        <a href="https://github.com/VaibhavJ97/kit-master-thesis-portfolio" target="_blank" rel="noopener" class="code-link">→ View full notebook on GitHub</a>
       </div>
 
       <div class="code-card">
@@ -607,8 +597,6 @@ q_grid = np.<span class="fn">zeros_like</span>(temperature_trend)
   <span class="kw">return</span> res.<span class="fn">status</span>(<span class="num">200</span>).<span class="fn">json</span>({ reply });
 }</pre>
         </div>
-        <div class="code-note"><strong>What this does:</strong> <em>takes a chat message, injects the entire thesis as a system instruction, sends recent history for follow-up context, and asks Gemini for a grounded answer. The whole thing runs as a single Vercel serverless function.</em></div>
-        <a href="https://github.com/VaibhavJ97/geochat" target="_blank" rel="noopener" class="code-link">→ View full source on GitHub</a>
       </div>
 
     </div>
@@ -784,8 +772,8 @@ q_grid = np.<span class="fn">zeros_like</span>(temperature_trend)
     </div>
     <div class="certs-grid">
 
-      <div class="cert featured">
-        <div class="cert-num">CERT / 01 · FEATURED</div>
+      <div class="cert">
+        <div class="cert-num">CERT / 01</div>
         <div class="cert-title">Claude and Claude Code</div>
         <div class="cert-issuer">ANTHROPIC</div>
       </div>
