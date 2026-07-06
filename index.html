@@ -52,7 +52,7 @@
   "email": "vaibhavjaiswal1234@gmail.com",
   "alumniOf": { "@type": "EducationalOrganization", "name": "Karlsruhe Institute of Technology" },
   "worksFor": { "@type": "Organization", "name": "IONOS SE" },
-  "knowsAbout": ["Python", "JavaScript", "Node.js", "Software Development", "Web Development", "AI Integration", "LLM Integration", "RAG", "MCP", "REST APIs", "TYPO3", "Data Engineering"],
+  "knowsAbout": ["Python", "TypeScript", "JavaScript", "Node.js", "React", "Next.js", "Software Development", "Web Development", "AI Integration", "LLM Integration", "RAG", "Vector Search", "PostgreSQL", "REST APIs", "CI/CD", "TYPO3", "Data Engineering"],
   "knowsLanguage": ["English", "Hindi", "German"],
   "address": { "@type": "PostalAddress", "addressLocality": "Karlsruhe", "addressCountry": "DE" },
   "url": "https://vaibhavj97.vercel.app",
@@ -369,10 +369,10 @@ footer { margin-top: 0; padding: 80px 0 36px; background: var(--ink); color: var
       <nav id="primary-nav">
         <ul>
           <li><a href="index.html" class="active">Home</a></li>
-          <li><a href="https://vaibhavj97-jobmap.vercel.app" target="_blank" rel="noopener">JobMap</a></li>
-          <li><a href="https://vaibhavj97-geochat.vercel.app" target="_blank" rel="noopener">GeoChat</a></li>
-          <li><a href="https://vaibhavj97-bhe.vercel.app" target="_blank" rel="noopener">BHE Recommender</a></li>
-          <li><a href="https://vaibhavj97-thesis.vercel.app" target="_blank" rel="noopener">Thesis App</a></li>
+          <li><a href="https://vaibhavj97-jobmap.vercel.app">JobMap</a></li>
+          <li><a href="https://vaibhavj97-geochat.vercel.app">GeoChat</a></li>
+          <li><a href="https://vaibhavj97-bhe.vercel.app">BHE Recommender</a></li>
+          <li><a href="https://vaibhavj97-thesis.vercel.app">Thesis App</a></li>
         </ul>
       </nav>
       <button class="nav-toggle" id="nav-toggle" aria-label="Open menu" aria-controls="primary-nav" aria-expanded="false">
@@ -391,11 +391,11 @@ footer { margin-top: 0; padding: 80px 0 36px; background: var(--ink); color: var
 <!-- ============ HERO ============ -->
 <section class="hero">
   <div class="wrap">
-    <div class="hero-eyebrow">Software Developer · Python · JavaScript · AI Integration</div>
-    <h1>Hi, I'm Vaibhav. I write Python, ship full-stack web apps, and build with <em>AI</em>.</h1>
-    <p class="lead">Three years ago I knew the basics of HTML. Today I ship full-stack, AI-integrated apps end to end: Python backends, serverless APIs, and interactive JavaScript frontends. I work fast by treating <strong>Claude and Copilot as pair-programmers, not autocomplete</strong> - architecture and ownership stay mine. I build the smallest thing that actually works, then deploy it on free tiers. The projects below are the proof, not the pitch.</p>
+    <div class="hero-eyebrow">Software Developer · Full-Stack &amp; Web · Python · AI / LLM Integration</div>
+    <h1>Hi, I'm Vaibhav. I build full-stack web apps in Python and JavaScript, with <em>AI</em> wired in where it earns its place.</h1>
+    <p class="lead">I ship production-style apps end to end: Python and Node backends, serverless APIs, and interactive React and JavaScript frontends, with LLMs integrated for real features like semantic search, CV matching, and grounded chat. I work fast by treating <strong>Claude and Copilot as pair-programmers, not autocomplete</strong> - the architecture, the trade-offs, and the ownership stay mine. I build the smallest thing that actually works, deploy it on free tiers, and iterate from real use. The projects below are live and open source - the proof, not the pitch.</p>
     <div class="hero-cta">
-      <a href="#work" class="btn">See what I've built →</a>
+      <a href="#work" class="btn">See my work</a>
       <a href="https://github.com/VaibhavJ97" target="_blank" rel="noopener" class="btn btn-ghost">Browse the code</a>
     </div>
   </div>
@@ -414,8 +414,8 @@ footer { margin-top: 0; padding: 80px 0 36px; background: var(--ink); color: var
       </div>
       <div class="about-text">
         <p>I'm a developer who learned to ship in a real codebase. At <strong>IONOS SE</strong>, surrounded by production code and senior engineers patient enough to answer questions, coding stopped being a side interest and became the thing I do.</p>
-        <p>I work across the stack - <strong>Python, JavaScript, Node.js, SQL</strong> - and I'm especially drawn to <strong>AI integration</strong>: wiring LLMs into real products with serverless functions, context injection, and MCP. I default to small, deployable things over big plans: every project below is live, open source, and runs at €0 / month.</p>
-        <p>My background is in applied geosciences, which is where I got the data and the first hard problems worth solving in code. These days the science is the domain; software is the craft.</p>
+        <p>I work across the stack - <strong>Python, TypeScript, JavaScript, Node.js, React, SQL and Postgres</strong> - and I'm especially drawn to <strong>AI and LLM integration</strong>: wiring models into real products with serverless functions, retrieval and embeddings, context injection, and caching that keeps them fast and cheap. I care about the parts that make software real: tests, CI, rate limiting, and honest data sources over shortcuts.</p>
+        <p>I default to small, deployable things over big plans. Every project below is live, open source, and runs at &euro;0 / month - each one taught me a piece of the stack I now reach for by default. The tools change; shipping something that works and owning every line of it does not.</p>
       </div>
     </div>
   </div>
@@ -434,9 +434,9 @@ footer { margin-top: 0; padding: 80px 0 36px; background: var(--ink); color: var
       <a href="https://vaibhavj97-jobmap.vercel.app" target="_blank" rel="noopener" class="work-card">
         <div class="work-num">PROJECT / 01</div>
         <h3>JobMap<br><em>Full-stack job search on a map</em></h3>
-        <p>Aggregates European tech jobs from multiple public APIs in parallel, ranks each posting by relevance, and plots it on an interactive Leaflet map - click a marker to open the role. Built as a Next.js app with TypeScript and Node serverless functions.</p>
+        <p>Searches European tech jobs across many free sources in parallel - public APIs plus company ATS boards - then deduplicates by title, company and location, ranks by relevance, and plots them on an interactive Leaflet map. Upload a CV and each role is scored against it with Gemini and pgvector embeddings. Email auth, saved shortlists, rate limiting, caching, unit tests and CI. Built with Next.js, TypeScript and Postgres.</p>
         <div class="work-tags">
-          <span class="tag">next.js</span><span class="tag">typescript</span><span class="tag">react</span><span class="tag">node.js</span><span class="tag">leaflet</span>
+          <span class="tag">next.js</span><span class="tag">typescript</span><span class="tag">react</span><span class="tag">node.js</span><span class="tag">postgres</span><span class="tag">pgvector</span><span class="tag">gemini-api</span><span class="tag">auth.js</span><span class="tag">redis</span><span class="tag">vitest</span><span class="tag">github-actions</span><span class="tag">leaflet / carto</span>
         </div>
         <div class="work-foot">
           <span>vaibhavj97-jobmap.vercel.app</span>
@@ -449,7 +449,7 @@ footer { margin-top: 0; padding: 80px 0 36px; background: var(--ink); color: var
         <h3>GeoChat<br><em>RAG-style AI chatbot</em></h3>
         <p>A natural-language chatbot grounded in a private knowledge base. A Node.js serverless function injects domain context as a system instruction into Google Gemini, keeps the last 6 turns of conversation, and streams grounded answers. Runs on Vercel's free tier.</p>
         <div class="work-tags">
-          <span class="tag">node.js</span><span class="tag">gemini-api</span><span class="tag">serverless</span><span class="tag">context-injection</span><span class="tag">vercel</span>
+          <span class="tag">node.js</span><span class="tag">javascript</span><span class="tag">gemini-api</span><span class="tag">serverless</span><span class="tag">rest api</span><span class="tag">context-injection</span><span class="tag">conversation-memory</span><span class="tag">html/css</span><span class="tag">vercel</span>
         </div>
         <div class="work-foot">
           <span>vaibhavj97-geochat.vercel.app</span>
@@ -462,7 +462,7 @@ footer { margin-top: 0; padding: 80px 0 36px; background: var(--ink); color: var
         <h3>BHE Recommender<br><em>Interactive map + AI + PDF</em></h3>
         <p>Click anywhere on a map and get an instant feasibility report: a JavaScript cost model runs in the browser, an LLM generates a plain-language interpretation, and jsPDF builds a downloadable PDF. A full interactive tool with no backend server to maintain.</p>
         <div class="work-tags">
-          <span class="tag">javascript</span><span class="tag">leaflet</span><span class="tag">jspdf</span><span class="tag">gemini-api</span><span class="tag">geojson</span>
+          <span class="tag">javascript</span><span class="tag">node.js</span><span class="tag">leaflet</span><span class="tag">jspdf</span><span class="tag">chroma-js</span><span class="tag">gemini-api</span><span class="tag">serverless</span><span class="tag">geojson</span><span class="tag">vercel</span>
         </div>
         <div class="work-foot">
           <span>vaibhavj97-bhe.vercel.app</span>
@@ -475,23 +475,10 @@ footer { margin-top: 0; padding: 80px 0 36px; background: var(--ink); color: var
         <h3>Data Pipeline + Map Explorer<br><em>Python → JSON → live JS</em></h3>
         <p>A Python data pipeline (NumPy, SciPy, scipy.optimize) processes large scientific datasets and exports 24 JSON files rendered live with Leaflet.js and chroma-js. A fullscreen explorer with an embedded AI chatbot, all on static hosting.</p>
         <div class="work-tags">
-          <span class="tag">python</span><span class="tag">numpy/scipy</span><span class="tag">json-pipeline</span><span class="tag">leaflet.js</span><span class="tag">vercel</span>
+          <span class="tag">python</span><span class="tag">numpy/scipy</span><span class="tag">scipy.optimize</span><span class="tag">json-pipeline</span><span class="tag">javascript</span><span class="tag">leaflet.js</span><span class="tag">chroma-js</span><span class="tag">gemini-api</span><span class="tag">vercel</span>
         </div>
         <div class="work-foot">
           <span>vaibhavj97-thesis.vercel.app</span>
-          <span class="work-arrow">→</span>
-        </div>
-      </a>
-
-      <a href="https://github.com/VaibhavJ97" target="_blank" rel="noopener" class="work-card">
-        <div class="work-num">PROJECT / 05</div>
-        <h3>This Portfolio<br><em>Zero-framework, accessible</em></h3>
-        <p>Built with vanilla HTML, CSS, and JavaScript - no framework, no build step. Accessibility-first (skip links, focus rings, semantic HTML, JSON-LD), Open Graph cards, and Vercel Analytics. Loads in under a second from the edge.</p>
-        <div class="work-tags">
-          <span class="tag">html/css/js</span><span class="tag">accessibility</span><span class="tag">json-ld</span><span class="tag">no-build</span><span class="tag">vercel</span>
-        </div>
-        <div class="work-foot">
-          <span>github.com/VaibhavJ97</span>
           <span class="work-arrow">→</span>
         </div>
       </a>
@@ -504,9 +491,9 @@ footer { margin-top: 0; padding: 80px 0 36px; background: var(--ink); color: var
 <section>
   <div class="wrap">
     <div class="metrics-grid">
-      <div class="metric"><div class="metric-val">5</div><div class="metric-lab">Apps deployed</div></div>
-      <div class="metric"><div class="metric-val">2</div><div class="metric-lab">Serverless backends</div></div>
-      <div class="metric"><div class="metric-val">3</div><div class="metric-lab">LLM-integrated apps</div></div>
+      <div class="metric"><div class="metric-val">4</div><div class="metric-lab">Apps deployed</div></div>
+      <div class="metric"><div class="metric-val">3</div><div class="metric-lab">Serverless backends</div></div>
+      <div class="metric"><div class="metric-val">4</div><div class="metric-lab">LLM-integrated apps</div></div>
       <div class="metric"><div class="metric-val">20<span class="unit">+</span></div><div class="metric-lab">Web templates built</div></div>
       <div class="metric"><div class="metric-val">€0</div><div class="metric-lab">Monthly infra cost</div></div>
     </div>
@@ -541,7 +528,7 @@ footer { margin-top: 0; padding: 80px 0 36px; background: var(--ink); color: var
           </div>
         </div>
         <div class="roles-cta">
-          <a href="mailto:vaibhavjaiswal1234@gmail.com" class="btn">Email me →</a>
+          <a href="mailto:vaibhavjaiswal1234@gmail.com" class="btn">Email me</a>
           <a href="https://calendly.com/vaibhavjaiswal1234/30min" target="_blank" rel="noopener" class="btn btn-ghost">Book a 30-min call</a>
           <a href="https://www.linkedin.com/in/vaibhavgeo/" target="_blank" rel="noopener" class="btn btn-ghost">LinkedIn</a>
         </div>
@@ -563,26 +550,31 @@ footer { margin-top: 0; padding: 80px 0 36px; background: var(--ink); color: var
         <h4>Languages &amp; Backend</h4>
         <div class="skill-tags">
           <span class="tag">Python</span>
+          <span class="tag">TypeScript</span>
           <span class="tag">JavaScript</span>
           <span class="tag">Node.js</span>
+          <span class="tag">Next.js</span>
           <span class="tag">SQL</span>
+          <span class="tag">PostgreSQL / pgvector</span>
+          <span class="tag">Redis (Upstash)</span>
           <span class="tag">REST APIs</span>
           <span class="tag">Vercel Serverless</span>
           <span class="tag">Git / GitHub</span>
           <span class="tag">NumPy / Pandas / SciPy</span>
-          <span class="tag">Jupyter</span>
         </div>
       </div>
 
       <div class="skill-col">
         <h4>Web &amp; Frontend</h4>
         <div class="skill-tags">
-          <span class="tag">HTML / CSS / JS</span>
+          <span class="tag">React</span>
+          <span class="tag">Next.js (App Router)</span>
+          <span class="tag">HTML / CSS</span>
           <span class="tag">Responsive Design</span>
           <span class="tag">Web Accessibility (WCAG)</span>
           <span class="tag">TYPO3 / Fluid / TypoScript</span>
           <span class="tag">Bootstrap</span>
-          <span class="tag">Leaflet.js</span>
+          <span class="tag">Leaflet.js / CARTO</span>
           <span class="tag">jsPDF / chroma-js</span>
           <span class="tag">Figma</span>
         </div>
@@ -594,10 +586,17 @@ footer { margin-top: 0; padding: 80px 0 36px; background: var(--ink); color: var
           <span class="tag">Claude API</span>
           <span class="tag">Gemini API</span>
           <span class="tag">GitHub Copilot</span>
-          <span class="tag">MCP Servers</span>
-          <span class="tag">Prompt Engineering</span>
-          <span class="tag">Context Injection</span>
+          <span class="tag">Vector Embeddings</span>
+          <span class="tag">Semantic Search (pgvector)</span>
           <span class="tag">RAG Patterns</span>
+          <span class="tag">Grounded Generation</span>
+          <span class="tag">Context Injection</span>
+          <span class="tag">Conversation Memory</span>
+          <span class="tag">Prompt Engineering</span>
+          <span class="tag">Structured JSON Output</span>
+          <span class="tag">LLM Fallbacks</span>
+          <span class="tag">Response Caching</span>
+          <span class="tag">MCP Servers</span>
           <span class="tag">AI-Pair Programming</span>
         </div>
       </div>
@@ -605,11 +604,13 @@ footer { margin-top: 0; padding: 80px 0 36px; background: var(--ink); color: var
       <div class="skill-col">
         <h4>Data &amp; Tooling</h4>
         <div class="skill-tags">
+          <span class="tag">Vitest (unit testing)</span>
+          <span class="tag">GitHub Actions (CI/CD)</span>
+          <span class="tag">Neon Postgres</span>
           <span class="tag">Power BI &amp; DAX</span>
           <span class="tag">JSON Pipelines</span>
           <span class="tag">GeoJSON / NetCDF</span>
           <span class="tag">QGIS</span>
-          <span class="tag">Google Earth Engine</span>
           <span class="tag">Jira / Confluence</span>
           <span class="tag">Agile / Kanban</span>
         </div>
@@ -618,16 +619,14 @@ footer { margin-top: 0; padding: 80px 0 36px; background: var(--ink); color: var
     </div>
 
     <div class="exploring">
-      <div class="key">→ Currently exploring (through portfolio projects)</div>
+      <div class="key">Currently exploring (through portfolio projects)</div>
       <div class="exploring-tags">
         <span>FastAPI &amp; Python backends</span>
-        <span>LangChain &amp; agent workflows</span>
-        <span>RAG with vector stores</span>
+        <span>LangChain / agent workflows</span>
         <span>MCP server development</span>
-        <span>Docker &amp; Postgres</span>
-        <span>TypeScript</span>
-        <span>React</span>
-        <span>CI/CD with GitHub Actions</span>
+        <span>Docker &amp; containerization</span>
+        <span>Playwright end-to-end tests</span>
+        <span>Streaming LLM responses</span>
       </div>
     </div>
   </div>
@@ -731,7 +730,8 @@ grid = np.<span class="fn">zeros_like</span>(input_field)
               <div class="who">IONOS SE · Karlsruhe, Germany</div>
             </div>
             <div class="tl-tags-side">
-              <span class="tag">HTML/CSS/JS</span>
+              <span class="tag">HTML / CSS</span>
+              <span class="tag">JavaScript</span>
               <span class="tag">TYPO3</span>
               <span class="tag">AI / MCP</span>
               <span class="tag">Figma</span>
@@ -743,12 +743,14 @@ grid = np.<span class="fn">zeros_like</span>(input_field)
           </div>
           <p class="intro">Building responsive web templates in a multi-brand CMS environment and integrating AI tooling (Claude, Copilot, MCP servers) into the team's day-to-day development workflow.</p>
           <ul>
-            <li>Integrated <strong>AI tools (Claude, Copilot) with MCP servers</strong> to accelerate code generation, improve template quality, and shorten prelive-to-live testing cycles</li>
             <li>Built <strong>20+ responsive web templates across 5+ brand identities</strong> in HTML, CSS, JavaScript, and TYPO3 (Fluid / MASK Extension)</li>
             <li>Configured TYPO3 backend fields and built editor-friendly content workflows used across multiple brand sites</li>
-            <li>Owned prelive and live testing for cross-browser compatibility, supporting stable deployments across 5+ sites</li>
             <li>Supported template migration to a component-based system using Git / GitHub version control</li>
-            <li>Collaborated with UX, Marketing, and Sales using Figma and Kanban-based Agile workflows in Jira / Confluence</li>
+            <li>Owned prelive and live testing for cross-browser compatibility, supporting stable deployments across 5+ sites</li>
+            <li>Used AI tools including <strong>Anthropic Claude (Code and Chat) and GitHub Copilot</strong> for AI-assisted and pair programming, accelerating code development, improving quality, and shortening prelive-to-live testing, debugging and QA</li>
+            <li>Used <strong>Playwright MCP</strong> to run and debug frontend flows across multiple steps, surfacing layout and interaction issues early</li>
+            <li>Used an <strong>internal CSS-library MCP (Exos)</strong> to build and debug templates faster across a range of digital campaigns</li>
+            <li>Collaborated with UX, Marketing, and Sales using Figma and Kanban-based Agile workflows, and used <strong>Atlassian MCP</strong> to track Jira tickets and search and set up Confluence documentation directly from the editor</li>
           </ul>
         </div>
       </div>
@@ -953,10 +955,10 @@ grid = np.<span class="fn">zeros_like</span>(input_field)
         <h5>Navigate</h5>
         <ul>
           <li><a href="index.html">Home</a></li>
-          <li><a href="https://vaibhavj97-jobmap.vercel.app" target="_blank" rel="noopener">JobMap</a></li>
-          <li><a href="https://vaibhavj97-geochat.vercel.app" target="_blank" rel="noopener">GeoChat</a></li>
-          <li><a href="https://vaibhavj97-bhe.vercel.app" target="_blank" rel="noopener">BHE Recommender</a></li>
-          <li><a href="https://vaibhavj97-thesis.vercel.app" target="_blank" rel="noopener">Thesis App</a></li>
+          <li><a href="https://vaibhavj97-jobmap.vercel.app">JobMap</a></li>
+          <li><a href="https://vaibhavj97-geochat.vercel.app">GeoChat</a></li>
+          <li><a href="https://vaibhavj97-bhe.vercel.app">BHE Recommender</a></li>
+          <li><a href="https://vaibhavj97-thesis.vercel.app">Thesis App</a></li>
         </ul>
       </div>
       <div class="footer-col">
